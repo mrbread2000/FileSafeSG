@@ -24,7 +24,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Hold reference to all fills and buttons using variables
         final EditText etAge = (EditText) findViewById(R.id.etAge);
         final EditText etName = (EditText) findViewById(R.id.etName);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
@@ -43,15 +42,12 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            //Convert into JSON object
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
-                                //Redirect to login page if successful
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             } else {
-                                //If not successful, display error
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("Register Failed")
                                         .setNegativeButton("Retry", null)
@@ -63,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                //Create request
+
                 RegisterRequest registerRequest = new RegisterRequest(name, username, age, password, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);

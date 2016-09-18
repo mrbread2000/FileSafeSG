@@ -5,11 +5,13 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class RegisterRequest extends StringRequest {
-    private static final String REGISTER_REQUEST_URL = "filesafesg.byethost5.com/Register.php";
+    private static final String REGISTER_REQUEST_URL = "http://tonikamitv.hostei.com/Register.php";
     private Map<String, String> params;
 
-    public RegisterRequest(String name, String username, int age, String password, Response.Listener<String> listener){
+    public RegisterRequest(String name, String username, int age, String password, Response.Listener<String> listener) {
         super(Method.POST, REGISTER_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("name", name);
@@ -18,6 +20,7 @@ public class RegisterRequest extends StringRequest {
         params.put("password", password);
     }
 
+    @Override
     public Map<String, String> getParams() {
         return params;
     }
