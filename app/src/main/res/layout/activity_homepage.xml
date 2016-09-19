@@ -23,7 +23,7 @@
             android:layout_gravity="start|left|top"
             android:background="@android:color/holo_blue_dark"
             android:textColor="@android:color/white"
-            android:onClick="goToPhoto"
+            android:onClick="photoFolder"
             />
 
         <Button
@@ -34,7 +34,7 @@
             android:layout_gravity="end|right|top"
             android:background="@android:color/holo_red_light"
             android:textColor="@android:color/white"
-            android:onClick="goToDoc"
+            android:onClick="videoFolder"
             />
 
         <Button
@@ -45,7 +45,7 @@
             android:layout_gravity="start|left|bottom"
             android:background="@android:color/holo_green_light"
             android:textColor="@android:color/white"
-            android:onClick="goToIcon"
+            android:onClick="iconFolder"
             />
 
         <Button
@@ -56,7 +56,7 @@
             android:layout_gravity="end|right|bottom"
             android:background="@android:color/holo_orange_light"
             android:textColor="@android:color/white"
-            android:onClick="goToDoc"
+            android:onClick="docFolder"
             />
     </FrameLayout>
 </RelativeLayout>
