@@ -18,7 +18,7 @@
         <Button
             android:layout_width="180dp"
             android:layout_height="280dp"
-            android:text="Photo"
+            android:text="@string/Photo"
             android:id="@+id/button"
             android:layout_gravity="start|left|top"
             android:background="@android:color/holo_blue_dark"
@@ -29,7 +29,7 @@
         <Button
             android:layout_width="180dp"
             android:layout_height="280dp"
-            android:text="Video"
+            android:text="@string/Video"
             android:id="@+id/button2"
             android:layout_gravity="end|right|top"
             android:background="@android:color/holo_red_light"
@@ -40,7 +40,7 @@
         <Button
             android:layout_width="180dp"
             android:layout_height="280dp"
-            android:text="Change Icon"
+            android:text="@string/Change_Icon"
             android:id="@+id/button3"
             android:layout_gravity="start|left|bottom"
             android:background="@android:color/holo_green_light"
@@ -51,7 +51,7 @@
         <Button
             android:layout_width="180dp"
             android:layout_height="280dp"
-            android:text= "Document"
+            android:text= "@string/Document"
             android:id="@+id/button4"
             android:layout_gravity="end|right|bottom"
             android:background="@android:color/holo_orange_light"

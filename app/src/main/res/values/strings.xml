@@ -14,4 +14,12 @@
         completions."
     </string>
     <string name="title_activity_go_to_photo">goToPhoto</string>
+
+    <!-- Strings related to login -->
+    <string name="Photo">photo button</string>
+    <string name="Video">video button</string>
+    <string name="Change_Icon">icon button</string>
+    <string name="Document">document button</string>
+
+
 </resources>
