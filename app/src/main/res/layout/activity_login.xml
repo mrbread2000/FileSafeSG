@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".UserAreaActivity">
 
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="wrap_content"
