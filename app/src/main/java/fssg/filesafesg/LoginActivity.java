@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
                 final String secretQuestion = sSecretQuestion.getSelectedItem().toString();
-                final String secretAnswer = etPassword.getText().toString();
+                final String secretAnswer = etSecretAnswer.getText().toString();
 
                 // Response received from the server
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
