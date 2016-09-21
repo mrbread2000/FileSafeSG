@@ -28,11 +28,11 @@
     <!-- Strings related to Question and Answer -->
     <string name="secret_question_prompt">Choose a secret question</string>
     <string-array name="secret_question_arrays">
-        <item>What is your first best friend's name?</item>
-        <item>What is your first pet's name?</item>
-        <item>What is your first primary school's name?</item>
-        <item>What is your first crush's name?</item>
-        <item>What is your dream job?</item>
+        <item>"What is your first best friend's name?"</item>
+        <item>"What is your first pet's name?"</item>
+        <item>"What is your first primary school's name?"</item>
+        <item>"What is your first crush's name?"</item>
+        <item>"What is your dream job?"</item>
     </string-array>
 
 </resources>
