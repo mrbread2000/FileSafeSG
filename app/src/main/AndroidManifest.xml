@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity"></activity>
-
         <activity android:name=".filefolder"></activity>
 
     </application>

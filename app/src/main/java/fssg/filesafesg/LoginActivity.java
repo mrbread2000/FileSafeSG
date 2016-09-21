@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
-                                String name = jsonResponse.getString("name");
-                                int age = jsonResponse.getInt("age");
+                               // String name = jsonResponse.getString("name");
+                                //int age = jsonResponse.getInt("age");
 
                                 Intent intent = new Intent(LoginActivity.this, filefolder.class);
                                 //removed
