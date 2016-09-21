@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                                 int age = jsonResponse.getInt("age");
 
                                 Intent intent = new Intent(LoginActivity.this, filefolder.class);
+                                //removed
                                 //intent.putExtra("name", name);
                                 //intent.putExtra("username", username);
                                 LoginActivity.this.startActivity(intent);
