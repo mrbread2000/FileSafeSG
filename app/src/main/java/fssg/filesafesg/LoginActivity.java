@@ -53,9 +53,9 @@ public class LoginActivity extends AppCompatActivity {
                                 String name = jsonResponse.getString("name");
                                 int age = jsonResponse.getInt("age");
 
-                                Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
-                                intent.putExtra("name", name);
-                                intent.putExtra("username", username);
+                                Intent intent = new Intent(LoginActivity.this, filefolder.class);
+                                //intent.putExtra("name", name);
+                                //intent.putExtra("username", username);
                                 LoginActivity.this.startActivity(intent);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
