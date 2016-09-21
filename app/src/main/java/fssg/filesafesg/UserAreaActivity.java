@@ -37,5 +37,20 @@ public class UserAreaActivity extends AppCompatActivity {
         tvWelcomeMsg.setText(message);
         etUsername.setText(username);
         etAge.setText(age + "");
+        Button buttonOK;
+
+         buttonOK = (Button) findViewById(R.id.btnOK);
+        buttonOK.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(UserAreaActivity.this, filefolder.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
+
+
+
 }
