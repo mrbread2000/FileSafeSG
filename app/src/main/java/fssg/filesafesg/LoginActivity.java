@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
+        final Spinner sSecretQuestion = (Spinner) findViewById(R.id.sSecretQuestion);
+        final EditText etSecretAnswer = (EditText) findViewById(R.id.etSecretAnswer);
         final TextView tvRegisterLink = (TextView) findViewById(R.id.tvRegisterLink);
         final Button bLogin = (Button) findViewById(R.id.bSignIn);
 
@@ -39,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
+                final String secretQuestion = sSecretQuestion.getSelectedItem().toString();
+                final String secretAnswer = etPassword.getText().toString();
 
                 // Response received from the server
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -55,7 +60,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, UserAreaActivity.class);
                                 intent.putExtra("name", name);
                                 intent.putExtra("username", username);
-                                intent.putExtra("age", age);
+                                intent.putExtra("secretquestion", secretQuestion);
+                                intent.putExtra("secretanswer", secretAnswer);
                                 LoginActivity.this.startActivity(intent);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
