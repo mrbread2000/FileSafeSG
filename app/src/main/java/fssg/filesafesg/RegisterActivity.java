@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.*;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,16 +25,20 @@ public class RegisterActivity extends AppCompatActivity {
 
         final EditText etName = (EditText) findViewById(R.id.etName);
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etAge = (EditText) findViewById(R.id.etAge);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
+        final Spinner sQuestion = (Spinner) findViewById(R.id.sSecretQuestion);
+        final EditText etAnswer = (EditText) findViewById(R.id.etSecretAnswer);
         final Button bRegister = (Button) findViewById(R.id.bRegister);
+
+
 
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String name = etName.getText().toString();
                 final String username = etUsername.getText().toString();
-                final int age = Integer.parseInt(etAge.getText().toString());
+                final String question = sQuestion.getSelectedItem().toString();
+                final String answer = etAnswer.getText().toString();
                 final String password = etPassword.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -60,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
 
-                RegisterRequest registerRequest = new RegisterRequest(name, username, age, password, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(name, username, password, question, answer, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }

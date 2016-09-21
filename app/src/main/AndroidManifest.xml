@@ -23,7 +23,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".UserAreaActivity"></activity>
+        <activity android:name=".UserAreaActivity" />
+        <activity android:name=".Homepage" />
+        <activity
+            android:name=".photoFolder"
+            android:label="@string/title_activity_photo_folder"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".videoFolder"
+            android:label="@string/title_activity_video_folder"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".iconFolder"
+            android:label="@string/title_activity_icon_folder"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".docFolder"
+            android:label="@string/title_activity_doc_folder"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

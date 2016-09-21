@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:clickable="false">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="280dp"
+            android:text="@string/Photo"
+            android:id="@+id/button"
+            android:layout_gravity="start|left|top"
+            android:background="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
+            android:onClick="photoFolder"
+            />
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="280dp"
+            android:text="@string/Video"
+            android:id="@+id/button2"
+            android:layout_gravity="end|right|top"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:onClick="videoFolder"
+            />
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="280dp"
+            android:text="@string/Change_Icon"
+            android:id="@+id/button3"
+            android:layout_gravity="start|left|bottom"
+            android:background="@android:color/holo_green_light"
+            android:textColor="@android:color/white"
+            android:onClick="iconFolder"
+            />
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="280dp"
+            android:text= "@string/Document"
+            android:id="@+id/button4"
+            android:layout_gravity="end|right|bottom"
+            android:background="@android:color/holo_orange_light"
+            android:textColor="@android:color/white"
+            android:onClick="docFolder"
+            />
+    </FrameLayout>
+</RelativeLayout>
