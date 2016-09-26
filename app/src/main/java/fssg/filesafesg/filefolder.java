@@ -1,5 +1,6 @@
 package fssg.filesafesg;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ public class filefolder extends AppCompatActivity {
     GridView gv;
     ArrayList<File> list;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +39,21 @@ public class filefolder extends AppCompatActivity {
 
        list = imageReader(Environment.getExternalStorageDirectory());
 
+
         gv = (GridView) findViewById(R.id.gridView);
         gv.setAdapter(new GridAdapter());
-       // gv.setOnItemClickListener(new AdapterView.OnItemClickListener())
+
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view , int position, long id ){
+                startActivity(new Intent(getApplicationContext(),ViewImage.class).putExtra("img",list.get(position).toString()));
+
+
+
+            }
+        });
+
+
+
 
 
     }
@@ -74,17 +90,18 @@ public class filefolder extends AppCompatActivity {
     {
         ArrayList<File> a = new ArrayList<>();
         File[] files = root.listFiles();
-        for(int i = 0 ; i < files.length; i++)
-            if (files[i].isDirectory()){
-                a.addAll(imageReader(files[i]));
+        if(files != null) {
+            for (int i = 0; i < files.length; i++)
+                if (files[i].isDirectory()) {
+                    a.addAll(imageReader(files[i]));
 
 
-            }
-        else {
-                if(files[i].getName().endsWith(".jpg")){
-                    a.add(files[i]);
+                } else {
+                    if ((files[i].getName().endsWith(".jpg"))) {
+                        a.add(files[i]);
+                    }
                 }
-            }
+        }
      return a;
     }
 
