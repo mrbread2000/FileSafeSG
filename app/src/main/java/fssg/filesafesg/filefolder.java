@@ -74,17 +74,18 @@ public class filefolder extends AppCompatActivity {
     {
         ArrayList<File> a = new ArrayList<>();
         File[] files = root.listFiles();
-        for(int i = 0 ; i < files.length; i++)
-            if (files[i].isDirectory()){
-                a.addAll(imageReader(files[i]));
+        if (files != null) {
+            for (int i = 0; i < files.length; i++)
+                if (files[i].isDirectory()) {
+                    a.addAll(imageReader(files[i]));
 
 
-            }
-        else {
-                if(files[i].getName().endsWith(".jpg")){
-                    a.add(files[i]);
+                } else {
+                    if (files[i].getName().endsWith(".jpg")) {
+                        a.add(files[i]);
+                    }
                 }
-            }
+        }
      return a;
     }
 
