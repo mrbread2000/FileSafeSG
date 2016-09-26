@@ -23,12 +23,17 @@
 
     <include layout="@layout/content_doc_folder" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+
+    <ImageButton
+        android:layout_width="119dp"
+        android:layout_height="145dp"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        android:id="@+id/addPhotoB"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="buttonOnClick"
+        app:layout_anchorGravity="center_vertical|left"
+        android:layout_gravity="bottom|right" />
 
 </android.support.design.widget.CoordinatorLayout>

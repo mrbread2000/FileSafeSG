@@ -20,13 +20,18 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity"></activity>
         <activity android:name=".filefolder"></activity>
+        <activity android:name=".Homepage"></activity>
+        <activity android:name=".photoFolder"></activity>
+        <activity android:name=".videoFolder"></activity>
+        <activity android:name=".docFolder"></activity>
+        <activity android:name=".iconFolder"></activity>
+
 
     </application>
 
