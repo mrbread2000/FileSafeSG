@@ -3,6 +3,7 @@ package fssg.filesafesg;
 
 import android.util.Log;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -43,8 +44,10 @@ public class Utility {
 
         String hashed;
         md.reset();
-        md.update(sinput.getBytes());
+        md.update(sinput.getBytes(Charset.forName("UTF-8")));
         hashed = bytesToHex(md.digest());
+
+        System.out.println(hashed);
 
         return hashed;
 
