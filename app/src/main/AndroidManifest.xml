@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fssg.filesafesg">
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="24" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -27,6 +28,12 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity"></activity>
         <activity android:name=".filefolder"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Documents"></activity>
+        <activity android:name=".Photos"></activity>
+        <activity android:name=".Videos"></activity>
+
+
 
     </application>
 
