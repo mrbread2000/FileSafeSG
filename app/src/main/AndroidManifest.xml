@@ -27,11 +27,26 @@
         <activity android:name=".UserAreaActivity"></activity>
         <activity android:name=".filefolder"></activity>
         <activity android:name=".Homepage"></activity>
-        <activity android:name=".photoFolder"></activity>
-        <activity android:name=".videoFolder"></activity>
-        <activity android:name=".docFolder"></activity>
-        <activity android:name=".iconFolder"></activity>
+        <activity android:name=".photoFolder">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Homepage"/>
+        </activity>
+        <activity android:name=".videoFolder">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Homepage"/>
+        </activity>
+        <activity android:name=".docFolder">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Homepage"/>
+        </activity>
+        <activity android:name=".iconFolder">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Homepage"/>
+        </activity>
 
+        <!-- back button -->
+        <meta-data android:name="android.support.PARENT_ACTIVITY"
+            android:value=".Homepage"/>
 
     </application>
 

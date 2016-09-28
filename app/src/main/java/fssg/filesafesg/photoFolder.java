@@ -1,13 +1,16 @@
 package fssg.filesafesg;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class photoFolder extends AppCompatActivity implements View.OnClickListener {
-
 
     ImageButton button1;
 
@@ -15,11 +18,51 @@ public class photoFolder extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_folder);
-            button1 = (ImageButton) findViewById(R.id.addPhotoFileB);
-            button1.setOnClickListener(this); // calling onClick() method
 
+        //toolbar session
+        Toolbar my_toolbar = (Toolbar) findViewById(R.id.photo_folder_title);
+        setSupportActionBar(my_toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle(R.string.title_activity_photo_folder);
+        getSupportActionBar().setIcon(R.drawable.photo_icon);
+
+        button1 = (ImageButton) findViewById(R.id.addPhotoFileB);
+        button1.setOnClickListener(this); // calling onClick() method
+
+    }
+
+    //menu session
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_1:
+                Toast.makeText(photoFolder.this, "option 1 click", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menu_2:
+                Toast.makeText(photoFolder.this, "Return to Homepage", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(photoFolder.this, Homepage.class);
+                startActivity(intent);
+                break;
         }
 
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public void onClick(View v) {
 

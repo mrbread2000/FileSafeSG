@@ -22,34 +22,21 @@
 -->
 
     <Button
-        android:layout_width="180dp"
-        android:layout_height="280dp"
-        android:text= "@string/Document"
-        android:id="@+id/addDocButton"
-        android:layout_gravity="end|right|bottom"
-        android:background="@android:color/holo_orange_light"
+        android:layout_width="185dp"
+        android:layout_height="310dp"
+        android:text="@string/Change_Icon"
+        android:id="@+id/addIconButton"
+        android:layout_gravity="start|left|bottom"
+        android:background="@android:color/holo_green_light"
         android:textColor="@android:color/white"
-        android:onClick="docFolder"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-            android:layout_width="180dp"
-            android:layout_height="280dp"
-            android:text="@string/Change_Icon"
-            android:id="@+id/addIconButton"
-            android:layout_gravity="start|left|bottom"
-            android:background="@android:color/holo_green_light"
-            android:textColor="@android:color/white"
-            android:onClick="iconFolder"
+        android:onClick="iconFolder"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="180dp"
-        android:layout_height="280dp"
+        android:layout_width="185dp"
+        android:layout_height="310dp"
         android:text="@string/Video"
         android:id="@+id/addVideoButton"
         android:layout_gravity="end|right|top"
@@ -57,14 +44,12 @@
         android:textColor="@android:color/white"
         android:onClick="videoFolder"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/addDocButton"
-        android:layout_alignStart="@+id/addDocButton"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
-        android:layout_width="180dp"
-        android:layout_height="280dp"
+        android:layout_width="185dp"
+        android:layout_height="310dp"
         android:text="@string/Photo"
         android:id="@+id/addPhotoButton"
         android:layout_gravity="start|left|top"
@@ -74,4 +59,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="185dp"
+        android:layout_height="310dp"
+        android:text= "@string/Document"
+        android:id="@+id/addDocButton"
+        android:layout_gravity="end|right|bottom"
+        android:background="@android:color/holo_orange_light"
+        android:textColor="@android:color/white"
+        android:onClick="docFolder"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

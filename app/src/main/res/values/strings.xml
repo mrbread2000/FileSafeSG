@@ -20,10 +20,12 @@
     <string name="Video">video button</string>
     <string name="Change_Icon">icon button</string>
     <string name="Document">document button</string>
-    <string name="title_activity_photo_folder">photoFolder</string>
-    <string name="title_activity_video_folder">videoFolder</string>
-    <string name="title_activity_icon_folder">iconFolder</string>
-    <string name="title_activity_doc_folder">docFolder</string>
+    <string name="title_activity_photo_folder">PhotoFolder</string>
+    <string name="title_activity_video_folder">VideoFolder</string>
+    <string name="title_activity_icon_folder">IconFolder</string>
+    <string name="title_activity_doc_folder">DocFolder</string>
+    <string name="Homepage">Homepage</string>
+
 
     <!-- Strings related to Question and Answer -->
     <string name="secret_question_prompt">Choose a secret question</string>
@@ -34,5 +36,11 @@
         <item>"What is your first crush's name?"</item>
         <item>"What is your dream job?"</item>
     </string-array>
+
+    <!-- Strings for testing -->
+    <string name="Testing">testing string</string>
+
+
+
 
 </resources>

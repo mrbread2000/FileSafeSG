@@ -7,28 +7,16 @@
     android:fitsSystemWindows="true"
     tools:context="fssg.filesafesg.docFolder">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_doc_folder" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/doc_folder_title"/>
 
 
+    <!-- need change android:id= to correct file-->
     <ImageButton
         android:layout_width="119dp"
         android:layout_height="145dp"
         app:srcCompat="@android:drawable/ic_menu_add"
-        android:id="@+id/addPhotoB"
+        android:id="@+id/addPhotoFileB"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
