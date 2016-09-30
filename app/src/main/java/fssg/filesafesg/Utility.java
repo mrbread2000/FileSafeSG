@@ -24,6 +24,7 @@ public class Utility {
     private static void initialization(){
 
         if (!init) {
+            init = true;
 
             //encryption path
             encryptionPath = Environment.getExternalStorageDirectory().getAbsolutePath();
