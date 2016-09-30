@@ -17,15 +17,26 @@ import java.security.NoSuchAlgorithmException;
 
 public class Utility {
 
+    private static boolean init = false;
     private static MessageDigest md;
+    private static String encryptionPath = "";
 
-    //create message digest
     private static void initialization(){
 
-        if (md == null){
+        if (!init) {
+
+            //encryption path
+            encryptionPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            encryptionPath += "/FileSafeSGEncryption/";
+            File file = new File(encryptionPath);
+            if (!file.mkdir()) {
+                Log.e("Directory","Directory not created");
+            }
+
+            //create message digest
             try {
                 md = MessageDigest.getInstance("SHA-1");
-            } catch (NoSuchAlgorithmException err){
+            } catch (NoSuchAlgorithmException err) {
                 Log.e("FileSafeSG", "No SHA-1 algorithm is found.");
             }
         }
@@ -101,14 +112,11 @@ public class Utility {
 
     }
 
-    public static File getImageDirectory(String directoryName) {
-        // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), directoryName);
-        if (!file.mkdirs()) {
-            Log.e("Log Tag","Directory not created");
-        }
-        return file;
+    public static String getEncryptionDirectory() {
+
+        initialization();
+
+        return encryptionPath;
     }
 
 }

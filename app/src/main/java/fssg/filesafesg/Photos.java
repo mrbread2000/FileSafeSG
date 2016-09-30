@@ -76,52 +76,6 @@ public class Photos extends Activity {
 
     }
 
-    public void encrypt(View view) {
-        if (thumbnailsselection == null)
-            return;
-        for (int i = 0; i < thumbnailsselection.size(); i++) {
-            boolean selected = thumbnailsselection.get(i);
-            if (selected) {
-                String path = arrPath.get(i);
-                File filein = new File(path);
-                if (filein != null && filein.exists()){
-                    File imagedirectory = Utility.getImageDirectory("Encrypted Stuff");
-                    File fileout = new File(imagedirectory, "X" + filein.getName());
-                    try {
-                        CryptoUtility.encrypt("password", "salt", filein, fileout);
-                        //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
-                        System.out.println("Error encrypting file:\n" + e);
-                    }
-                }
-                scanMedia(path);
-            }
-        }
-    }
-
-
-    public void decrypt(View view) {
-        if (thumbnailsselection == null)
-            return;
-        for (int i = 0; i < thumbnailsselection.size(); i++) {
-            boolean selected = thumbnailsselection.get(i);
-            if (selected) {
-                String path = arrPath.get(i);
-                File filein = new File(path);
-                if (filein != null && filein.exists()){
-                    File imagedirectory = Utility.getImageDirectory("Encrypted Stuff");
-                    File fileout = new File(imagedirectory, "Y" + filein.getName());
-                    try {
-                        CryptoUtility.decrypt("password", "salt", filein, fileout);
-                        //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
-                        System.out.println("Error encrypting file:\n" + e);
-                    }
-                }
-                scanMedia(path);
-            }
-        }
-    }
 
     public void delete(View view) {
         if (thumbnailsselection == null)
@@ -131,14 +85,42 @@ public class Photos extends Activity {
             if (selected) {
                 String path = arrPath.get(i);
                 File file = new File(path);
-                if (file != null && file.exists())
+                if (file != null && file.exists()) {
                     file.delete();
+                }
                 scanMedia(path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
+                i--;
             }
         }
 
+
+    }
+
+    public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    String encryptionPathDir = Utility.getEncryptionDirectory();
+                    File fileout = new File(encryptionPathDir, "X" + filein.getName());
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        Log.d("ENCRYP File Get: ", filein.getPath());
+                        Log.d("ENCRYP File Save: ", fileout.getPath());
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                scanMedia(path);
+            }
+        }
     }
 
     private void scanMedia(String path) {
@@ -174,6 +156,7 @@ public class Photos extends Activity {
             arrPath.remove(i);
             count = count - 1;
             notifyDataSetChanged();
+
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {

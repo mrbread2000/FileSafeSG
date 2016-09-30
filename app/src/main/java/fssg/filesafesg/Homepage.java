@@ -33,8 +33,8 @@ public class Homepage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void iconFolder (View view){
-        Intent intent = new Intent(this, iconFolder.class);
+    public void encryptedFolder (View view){
+        Intent intent = new Intent(this, encryptionFolder.class);
         startActivity(intent);
     }
 

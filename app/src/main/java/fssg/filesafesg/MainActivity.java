@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button photos, videos, docs;
+    Button photos, videos, docs, encryptfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
+        encryptfiles = (Button) findViewById(R.id.encryptedfiles);
 
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), Documents.class);
+                startActivity(i);
+            }
+        });
+        encryptfiles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), EncryptionClass.class);
                 startActivity(i);
             }
         });

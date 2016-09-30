@@ -39,9 +39,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/photos"
         android:layout_marginTop="70dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="30dp"
         android:background="@android:color/holo_blue_bright"
         android:padding="40dp"
         android:text="Documents"
         android:textSize="13dp" />
+
+    <Button
+        android:id="@+id/encryptedfiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/videos"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="200dp"
+        android:background="@android:color/holo_blue_bright"
+        android:padding="40dp"
+        android:text="@string/Encrypted_Files"
+        android:textSize="13dp" />
+
 </RelativeLayout>

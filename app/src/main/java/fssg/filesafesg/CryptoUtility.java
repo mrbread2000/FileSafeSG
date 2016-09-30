@@ -22,13 +22,21 @@ public class CryptoUtility {
 
     private static void doCrypto(int ciphermode, String password, String salt, File filein, File fileout) throws Exception{
 
+
         //initialize secret key and cipher method
-        SecretKeyFactory skfactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        SecretKeyFactory skfactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes("UTF-8"), 5000, 256);
         SecretKey tmp = skfactory.generateSecret(spec);
         SecretKey secretkey = new SecretKeySpec(tmp.getEncoded(),"AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(ciphermode,secretkey);
+
+/*
+        //Simple secret key generation key
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+        SecretKeySpec keySpec = new SecretKeySpec((password + salt).getBytes("UTF-8"), "AES");
+        cipher.init(ciphermode,keySpec);
+        */
 
         //encrypt/decrypt file
         FileInputStream stream_in = new FileInputStream(filein);

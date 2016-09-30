@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!--
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,16 +10,6 @@
         android:id="@+id/deleteBtn"
         android:onClick="delete"
         />
-        -->
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text='encrypt'
-        android:id="@+id/encryptBtn"
-        android:onClick="encrypt"
-        />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,14 +17,9 @@
         android:id="@+id/decryptBtn"
         android:onClick="decrypt"
         />
-
-    <GridView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/gridView"
-        android:numColumns="3"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:gravity="center"
-        android:stretchMode="columnWidth"/>
+        android:id="@+id/listView"
+        />
 </LinearLayout>
