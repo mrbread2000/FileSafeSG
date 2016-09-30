@@ -29,6 +29,8 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UserAreaActivity"></activity>
         <activity android:name=".filefolder"></activity>
+        <activity android:name=".encryptionFolder"></activity>
+        <activity android:name=".EncryptionClass"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".Documents"></activity>
         <activity android:name=".Photos"></activity>

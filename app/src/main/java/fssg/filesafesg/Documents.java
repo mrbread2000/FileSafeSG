@@ -86,6 +86,7 @@ public class Documents extends AppCompatActivity {
                 scanMedia(path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
+                i--;
             }
         }
 

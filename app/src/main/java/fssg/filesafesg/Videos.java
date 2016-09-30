@@ -82,6 +82,7 @@ public class Videos extends Activity {
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
             }
+            i--;
         }
 
     }

@@ -80,6 +80,7 @@ public class EncryptionClass extends Activity {
                 scanMedia(path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
+                i--;
             }
         }
 
