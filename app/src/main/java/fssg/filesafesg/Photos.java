@@ -5,8 +5,10 @@ package fssg.filesafesg;
  */
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +25,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -68,6 +74,53 @@ public class Photos extends Activity {
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
 
+    }
+
+    public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    File imagedirectory = Utility.getImageDirectory("Encrypted Stuff");
+                    File fileout = new File(imagedirectory, "X" + filein.getName());
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                scanMedia(path);
+            }
+        }
+    }
+
+
+    public void decrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    File imagedirectory = Utility.getImageDirectory("Encrypted Stuff");
+                    File fileout = new File(imagedirectory, "Y" + filein.getName());
+                    try {
+                        CryptoUtility.decrypt("password", "salt", filein, fileout);
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                scanMedia(path);
+            }
+        }
     }
 
     public void delete(View view) {

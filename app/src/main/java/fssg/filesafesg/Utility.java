@@ -1,8 +1,16 @@
 package fssg.filesafesg;
 
 
+import android.app.Activity;
+import android.os.Environment;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -51,6 +59,56 @@ public class Utility {
 
         return hashed;
 
+    }
+
+    /* Checks if external storage is available for read and write */
+    public static boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public static boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void popupWindow(Activity activity, String message){
+
+        Button closeBn = (Button) activity.findViewById(R.id.btn_close_popup);
+        final PopupWindow popUpWindow = new PopupWindow(activity);
+
+        popUpWindow.showAtLocation(activity.findViewById(android.R.id.content), Gravity.BOTTOM, 10, 10);
+
+        //popUpWindow.update(50, 50, 320, 90);
+        closeBn.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                popUpWindow.dismiss();
+            }
+
+        });
+
+        TextView txtview = (TextView) activity.findViewById(R.id.txt_view_popup);
+        txtview.setText(message);
+
+    }
+
+    public static File getImageDirectory(String directoryName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), directoryName);
+        if (!file.mkdirs()) {
+            Log.e("Log Tag","Directory not created");
+        }
+        return file;
     }
 
 }

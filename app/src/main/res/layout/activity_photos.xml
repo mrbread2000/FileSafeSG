@@ -10,6 +10,23 @@
         android:id="@+id/deleteBtn"
         android:onClick="delete"
         />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text='encrypt'
+        android:id="@+id/encryptBtn"
+        android:onClick="encrypt"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text='decrypt'
+        android:id="@+id/decryptBtn"
+        android:onClick="decrypt"
+        />
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
