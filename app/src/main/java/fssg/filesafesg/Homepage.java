@@ -19,7 +19,7 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
         button1.setOnClickListener(this); // calling onClick() method
         button2 = (Button) findViewById(R.id.addVideoButton);
         button2.setOnClickListener(this); // calling onClick() method
-        button3 = (Button) findViewById(R.id.addIconButton);
+        button3 = (Button) findViewById(R.id.encryptedFile);
         button3.setOnClickListener(this); // calling onClick() method
         button4 = (Button) findViewById(R.id.addDocButton);
         button4.setOnClickListener(this); // calling onClick() method
@@ -38,8 +38,8 @@ public class Homepage extends AppCompatActivity implements View.OnClickListener 
                 Intent intent1 = new Intent(Homepage.this, videoFolder.class);
                 startActivity(intent1);
                 break;
-            case R.id.addIconButton:
-                Intent intent2 = new Intent(Homepage.this, iconFolder.class);
+            case R.id.encryptedFile:
+                Intent intent2 = new Intent(Homepage.this, encryptedFile.class);
                 startActivity(intent2);
                 break;
             case R.id.addDocButton:

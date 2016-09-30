@@ -39,7 +39,7 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Homepage"/>
         </activity>
-        <activity android:name=".iconFolder">
+        <activity android:name=".encryptedFile">
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Homepage"/>
         </activity>
@@ -47,6 +47,7 @@
         <!-- back button -->
         <meta-data android:name="android.support.PARENT_ACTIVITY"
             android:value=".Homepage"/>
+
 
     </application>
 

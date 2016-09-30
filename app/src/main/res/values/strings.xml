@@ -22,9 +22,11 @@
     <string name="Document">document button</string>
     <string name="title_activity_photo_folder">PhotoFolder</string>
     <string name="title_activity_video_folder">VideoFolder</string>
-    <string name="title_activity_icon_folder">IconFolder</string>
+    <string name="title_activity_encrypted_folder">Encrypted Folder</string>
     <string name="title_activity_doc_folder">DocFolder</string>
     <string name="Homepage">Homepage</string>
+    <string name="Delete">Delete</string>
+    <string name="Setting">Setting</string>
 
 
     <!-- Strings related to Question and Answer -->
