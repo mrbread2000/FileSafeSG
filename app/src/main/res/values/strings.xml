@@ -36,4 +36,11 @@
         <item>"What is your dream job?"</item>
     </string-array>
 
+    <!-- Strings related to menu-->
+    <string name="Delete">delete button</string>
+    <string name="Testing">testing button</string>
+    <string name="Homepage">home button</string>
+    <string name="Encrypt">encrypt button</string>
+
+
 </resources>

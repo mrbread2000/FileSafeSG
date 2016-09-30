@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Videos extends Activity {
+public class Videos extends AppCompatActivity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
@@ -40,6 +42,16 @@ public class Videos extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
+
+
+        //toolbar session
+        Toolbar my_toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(my_toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.app_name);
+
+
 
         final String[] columns = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID};
         final String orderBy = MediaStore.Video.Media._ID;
