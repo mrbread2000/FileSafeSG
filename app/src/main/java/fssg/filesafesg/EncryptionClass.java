@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,8 +99,9 @@ public class EncryptionClass extends Activity {
                 String path = arrPath.get(i);
                 File filein = new File(path);
                 if (filein != null && filein.exists()){
-                    String encryptionPathDir = Utility.getEncryptionDirectory();
-                    File fileout = new File(encryptionPathDir, "Y" + filein.getName());
+                    String decryptionPathDir = getFileFolderDirectory(path);
+                    File fileout = new File(decryptionPathDir, "Y" + filein.getName());
+                    Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);
                         //Utility.popupWindow(this, "Encryption Successful!");
@@ -109,6 +112,34 @@ public class EncryptionClass extends Activity {
                 scanMedia(path);
             }
         }
+    }
+
+    private String getFileFolderDirectory(String path){
+
+        String targetDirectory;
+
+        //Get file's respective folder
+        //Image go to image folder
+        if (path.contains(".gif")
+                || path.contains(".jpg")
+                || path.contains(".jpeg")
+                || path.contains(".png")
+                ) {
+            targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        //video go to video folder
+        } else if (path.contains(".3gp")
+                || path.contains(".mpg")
+                || path.contains(".mpeg")
+                || path.contains(".mpe")
+                || path.contains(".mp4")
+                || path.contains(".avi")
+                || path.contains(".flv")) {
+            targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
+        //everythig else go to document folder
+        } else {
+            targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+        }
+        return targetDirectory;
     }
 
     private void scanMedia(String path) {
@@ -176,72 +207,20 @@ public class EncryptionClass extends Activity {
                     }
                 }
             });
+            /*
             holder.textView.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
                     int id = v.getId();
-                    openFile(parent.getContext(), new File(arrPath.get(id)));
+                    decryptFile(parent.getContext(), new File(arrPath.get(id)));
                 }
             });
+            */
             holder.textView.setText(displayName.get(position));
 
             holder.checkbox.setChecked(thumbnailsselection.get(position));
             holder.id = position;
             return convertView;
-        }
-
-        public void openFile(Context context, File url) {
-            File file = url;
-            Uri uri = Uri.fromFile(file);
-
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            // Check what kind of file user trying to open, by comparing the url with extensions.
-            // When the if condition is matched, plugin sets the correct intent (mime) type,
-            // so Android knows what application to use to open the file
-
-            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
-                // Word document
-                intent.setDataAndType(uri, "application/msword");
-            } else if (url.toString().contains(".pdf")) {
-                // PDF file
-                intent.setDataAndType(uri, "application/pdf");
-            } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
-                // Powerpoint file
-                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-            } else if (url.toString().contains(".xls") || url.toString().contains(".xlsx")) {
-                // Excel file
-                intent.setDataAndType(uri, "application/vnd.ms-excel");
-            } else if (url.toString().contains(".zip") || url.toString().contains(".rar")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "application/x-wav");
-            } else if (url.toString().contains(".rtf")) {
-                // RTF file
-                intent.setDataAndType(uri, "application/rtf");
-            } else if (url.toString().contains(".wav") || url.toString().contains(".mp3")) {
-                // WAV audio file
-                intent.setDataAndType(uri, "audio/x-wav");
-            } else if (url.toString().contains(".gif")) {
-                // GIF file
-                intent.setDataAndType(uri, "image/gif");
-            } else if (url.toString().contains(".jpg") || url.toString().contains(".jpeg") || url.toString().contains(".png")) {
-                // JPG file
-                intent.setDataAndType(uri, "image/jpeg");
-            } else if (url.toString().contains(".txt")) {
-                // Text file
-                intent.setDataAndType(uri, "text/plain");
-            } else if (url.toString().contains(".3gp") || url.toString().contains(".mpg") || url.toString().contains(".mpeg") || url.toString().contains(".mpe") || url.toString().contains(".mp4") || url.toString().contains(".avi")) {
-                // Video files
-                intent.setDataAndType(uri, "video/*");
-            } else {
-                //Future intent type for any other file types
-
-                //Use this else clause below to manage other unknown extensions
-                //Android will show all applications installed on the device(let user choose)
-                intent.setDataAndType(uri, "*/*");
-            }
-
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
         }
     }
 
