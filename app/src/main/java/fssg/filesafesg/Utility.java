@@ -24,13 +24,19 @@ public class Utility {
     private static void initialization(){
 
         if (!init) {
+            init = true;
 
             //encryption path
             encryptionPath = Environment.getExternalStorageDirectory().getAbsolutePath();
             encryptionPath += "/FileSafeSGEncryption/";
             File file = new File(encryptionPath);
-            if (!file.mkdir()) {
-                Log.e("Directory","Directory not created");
+            if (!file.exists()) {
+                boolean success = file.mkdir();
+                if (success) {
+                    Log.e("Directory","Directory has been created");
+                } else {
+                    Log.e("Directory","Directory not created");
+                }
             }
 
             //create message digest

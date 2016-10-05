@@ -36,33 +36,24 @@ public class EncryptionClass extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encryption_class);
-        String selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?";
-        Uri uri = MediaStore.Files.getContentUri("external");
         // BaseColumns.DATA
-        String[] projection = {MediaStore.Files.FileColumns.TITLE, MediaStore.Files.FileColumns.DATA};
         arrPath = new ArrayList<>();
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
-        String mime[] = {"jpg", "pdf", "doc", "docx", "ppt", "txt"};
-        for (int j = 0; j < mime.length; j++) {
-            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mime[j]);
-            String[] selectionArgsPdf = new String[]{mimeType};
-            Cursor allPdfFiles = getContentResolver().query(uri, projection, selectionMimeType, selectionArgsPdf, null);
-            if (allPdfFiles != null && allPdfFiles.moveToFirst()) {
-                count += allPdfFiles.getCount();
-                int display_name_index = allPdfFiles.getColumnIndex(MediaStore.Files.FileColumns.TITLE);
-                int path_index = allPdfFiles.getColumnIndex(MediaStore.Files.FileColumns.DATA);
-                do {
-                    displayName.add(allPdfFiles.getString(display_name_index));
-                    arrPath.add(allPdfFiles.getString(path_index));
-                    thumbnailsselection.add(false);
-                } while (allPdfFiles.moveToNext());
-                allPdfFiles.close();
-            }
-        }
+
+        String path = Utility.getEncryptionDirectory();
+        File f = new File(path);
+        File[] files = f.listFiles();
 
         ListView docList = (ListView) findViewById(R.id.listView);
         imageAdapter = new ImageAdapter();
+
+        for (File inFile : files) {
+            if (inFile.isDirectory()) {
+                imageAdapter.addItem(inFile.getAbsolutePath());
+            }
+        }
+
         docList.setAdapter(imageAdapter);
 
 
@@ -152,6 +143,7 @@ public class EncryptionClass extends Activity {
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
+        private ArrayList<String> filePaths = new ArrayList<String>();
 
         public ImageAdapter() {
             mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -167,6 +159,10 @@ public class EncryptionClass extends Activity {
 
         public long getItemId(int position) {
             return position;
+        }
+
+        public void addItem(String path){
+            filePaths.add(path);
         }
 
         public void remove(int i) {
