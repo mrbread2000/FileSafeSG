@@ -11,61 +11,64 @@
     tools:context="fssg.filesafesg.MainActivity">
 
     <Button
-        android:id="@+id/encryptedfiles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_purple"
-        android:padding="40dp"
-        android:text="@string/Encrypted_Files"
-        android:textSize="13dp"
-        android:layout_below="@+id/documents"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
-
-    <Button
-        android:id="@+id/videos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/holo_green_light"
-        android:padding="40dp"
-        android:text="Videos"
-        android:textSize="13dp"
+        android:text="Button"
+        android:id="@+id/button9"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/photos"
-        android:layout_alignStart="@+id/photos"
-        android:layout_alignRight="@+id/encryptedfiles"
-        android:layout_alignEnd="@+id/encryptedfiles" />
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:id="@+id/photos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_dark"
-        android:padding="40dp"
-        android:text="Photos"
-        android:layout_marginTop="25dp"
-        android:textSize="13dp"
-        android:textStyle="bold"
+        android:text="Audio"
+        android:id="@+id/audio"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
         android:layout_below="@+id/videos"
+        android:layout_alignLeft="@+id/videos"
+        android:layout_alignStart="@+id/videos"
+        android:layout_marginTop="38dp"
+        android:background="@android:color/holo_orange_dark" />
+
+    <Button
+        android:text="Documents"
+        android:id="@+id/documents"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/audio"
+        android:layout_alignLeft="@+id/audio"
+        android:layout_alignStart="@+id/audio"
+        android:background="@android:color/holo_red_light" />
+
+    <Button
+        android:text="Photos"
+        android:id="@+id/photos"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/button9"
+        android:layout_alignStart="@+id/button9"
+        android:background="@android:color/holo_blue_bright" />
+
+    <Button
+        android:text="Videos"
+        android:id="@+id/videos"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/button9"
+        android:layout_alignLeft="@+id/button9"
+        android:layout_alignStart="@+id/button9"
+        android:background="@android:color/holo_green_light" />
+
+    <Button
+        android:text="Encrypted Files"
+        android:id="@+id/encryptedfiles"
+        android:layout_height="70dp"
+        android:layout_width="250dp"
+        android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/documents"
         android:layout_alignStart="@+id/documents"
-        android:layout_alignRight="@+id/documents"
-        android:layout_alignEnd="@+id/documents" />
-
-    <Button
-        android:id="@+id/documents"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:background="@android:color/holo_blue_bright"
-        android:padding="40dp"
-        android:text="Documents"
-        android:textSize="13dp"
-        android:layout_below="@+id/photos"
-        android:layout_alignLeft="@+id/encryptedfiles"
-        android:layout_alignStart="@+id/encryptedfiles"
-        android:layout_alignRight="@+id/encryptedfiles"
-        android:layout_alignEnd="@+id/encryptedfiles" />
-
+        android:layout_marginBottom="13dp"
+        android:background="@android:color/background_light" />
 </RelativeLayout>

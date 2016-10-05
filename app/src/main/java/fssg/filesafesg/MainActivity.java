@@ -12,13 +12,14 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-    Button photos, videos, docs, encryptfiles;
+    Button audio, photos, videos, docs, encryptfiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        audio = (Button) findViewById(R.id.audio);
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
@@ -35,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), VideoFolder.class);
+                startActivity(i);
+            }
+        });
+        audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), AudioFolder.class);
                 startActivity(i);
             }
         });

@@ -32,6 +32,7 @@
         <activity android:name=".DocumentFolder"></activity>
         <activity android:name=".PhotoFolder"></activity>
         <activity android:name=".VideoFolder"></activity>
+        <activity android:name=".AudioFolder"></activity>
     </application>
 
 </manifest>
