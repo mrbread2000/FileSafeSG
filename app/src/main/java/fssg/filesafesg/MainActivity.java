@@ -27,21 +27,21 @@ public class MainActivity extends AppCompatActivity {
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Photos.class);
+                Intent i = new Intent(getApplicationContext(), PhotoFolder.class);
                 startActivity(i);
             }
         });
         videos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Videos.class);
+                Intent i = new Intent(getApplicationContext(), VideoFolder.class);
                 startActivity(i);
             }
         });
         docs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), Documents.class);
+                Intent i = new Intent(getApplicationContext(), DocumentFolder.class);
                 startActivity(i);
             }
         });

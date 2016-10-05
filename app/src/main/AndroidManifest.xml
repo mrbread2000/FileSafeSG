@@ -27,14 +27,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".encryptionFolder"></activity>
+        <activity android:name=".EncryptionFolder"></activity>
         <activity android:name=".EncryptionClass"></activity>
-        <activity android:name=".Documents"></activity>
-        <activity android:name=".Photos"></activity>
-        <activity android:name=".Videos"></activity>
-
-
-
+        <activity android:name=".DocumentFolder"></activity>
+        <activity android:name=".PhotoFolder"></activity>
+        <activity android:name=".VideoFolder"></activity>
     </application>
 
 </manifest>

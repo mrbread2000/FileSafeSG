@@ -29,7 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class Documents extends AppCompatActivity {
+public class DocumentFolder extends AppCompatActivity {
     private int count = 0;
     private ArrayList<String> displayName;
     private ArrayList<Boolean> thumbnailsselection;
