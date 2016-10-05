@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,17 +27,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".UserAreaActivity"></activity>
-        <activity android:name=".filefolder"></activity>
-        <activity android:name=".encryptionFolder"></activity>
+        <activity android:name=".EncryptionFolder"></activity>
         <activity android:name=".EncryptionClass"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".Documents"></activity>
-        <activity android:name=".Photos"></activity>
-        <activity android:name=".Videos"></activity>
-
-
-
+        <activity android:name=".DocumentFolder"></activity>
+        <activity android:name=".PhotoFolder"></activity>
+        <activity android:name=".VideoFolder"></activity>
     </application>
 
 </manifest>

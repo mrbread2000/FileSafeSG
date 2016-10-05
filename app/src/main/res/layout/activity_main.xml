@@ -11,50 +11,61 @@
     tools:context="fssg.filesafesg.MainActivity">
 
     <Button
+        android:id="@+id/encryptedfiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_purple"
+        android:padding="40dp"
+        android:text="@string/Encrypted_Files"
+        android:textSize="13dp"
+        android:layout_below="@+id/documents"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/videos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/holo_green_light"
+        android:padding="40dp"
+        android:text="Videos"
+        android:textSize="13dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/photos"
+        android:layout_alignStart="@+id/photos"
+        android:layout_alignRight="@+id/encryptedfiles"
+        android:layout_alignEnd="@+id/encryptedfiles" />
+
+    <Button
         android:id="@+id/photos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_orange_dark"
         android:padding="40dp"
         android:text="Photos"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="25dp"
         android:textSize="13dp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/videos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="200dp"
-        android:background="@android:color/holo_green_light"
-        android:padding="40dp"
-        android:text="Videos"
-        android:textSize="13dp" />
+        android:textStyle="bold"
+        android:layout_below="@+id/videos"
+        android:layout_alignLeft="@+id/documents"
+        android:layout_alignStart="@+id/documents"
+        android:layout_alignRight="@+id/documents"
+        android:layout_alignEnd="@+id/documents" />
 
     <Button
         android:id="@+id/documents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/photos"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginTop="23dp"
         android:background="@android:color/holo_blue_bright"
         android:padding="40dp"
         android:text="Documents"
-        android:textSize="13dp" />
-
-    <Button
-        android:id="@+id/encryptedfiles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/videos"
-        android:layout_marginTop="70dp"
-        android:layout_marginLeft="200dp"
-        android:background="@android:color/holo_blue_bright"
-        android:padding="40dp"
-        android:text="@string/Encrypted_Files"
-        android:textSize="13dp" />
+        android:textSize="13dp"
+        android:layout_below="@+id/photos"
+        android:layout_alignLeft="@+id/encryptedfiles"
+        android:layout_alignStart="@+id/encryptedfiles"
+        android:layout_alignRight="@+id/encryptedfiles"
+        android:layout_alignEnd="@+id/encryptedfiles" />
 
 </RelativeLayout>

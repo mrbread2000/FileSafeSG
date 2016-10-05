@@ -1,7 +1,7 @@
 package fssg.filesafesg;
 
 /**
- * Created by Kevin on 9/27/2016.
+ * Created by Kevin on 9/26/2016.
  */
 
 
@@ -19,34 +19,34 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 
-public class Videos extends Activity {
+public class PhotoFolder extends Activity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
-    private GridView imagegrid;
 
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photos);
+        setContentView(R.layout.activity_photo);
 
-        final String[] columns = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID};
-        final String orderBy = MediaStore.Video.Media._ID;
+        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+        final String orderBy = MediaStore.Images.Media._ID;
         Cursor imagecursor = getContentResolver().query(
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI, columns, null,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
                 null, orderBy);
-        int image_column_index = imagecursor.getColumnIndex(MediaStore.Video.Media._ID);
+        int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
         this.count = imagecursor.getCount();
         thumbnails = new ArrayList<>();
         arrPath = new ArrayList<>();
@@ -54,19 +54,20 @@ public class Videos extends Activity {
         for (int i = 0; i < this.count; i++) {
             imagecursor.moveToPosition(i);
             int id = imagecursor.getInt(image_column_index);
-            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Video.Media.DATA);
-            thumbnails.add(MediaStore.Video.Thumbnails.getThumbnail(
+            int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            thumbnails.add(MediaStore.Images.Thumbnails.getThumbnail(
                     getApplicationContext().getContentResolver(), id,
-                    MediaStore.Video.Thumbnails.MICRO_KIND, null));
+                    MediaStore.Images.Thumbnails.MICRO_KIND, null));
             arrPath.add(imagecursor.getString(dataColumnIndex));
             thumbnailsselection.add(false);
         }
-        imagegrid = (GridView) findViewById(R.id.gridView);
+        GridView imagegrid = (GridView) findViewById(R.id.gridView);
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
 
     }
+
 
     public void delete(View view) {
         if (thumbnailsselection == null)
@@ -76,15 +77,42 @@ public class Videos extends Activity {
             if (selected) {
                 String path = arrPath.get(i);
                 File file = new File(path);
-                if (file != null && file.exists())
+                if (file != null && file.exists()) {
                     file.delete();
+                }
                 scanMedia(path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
+                i--;
             }
-            i--;
         }
 
+
+    }
+
+    public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    String encryptionPathDir = Utility.getEncryptionDirectory();
+                    File fileout = new File(encryptionPathDir, "X" + filein.getName());
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        Log.d("ENCRYP File Get: ", filein.getPath());
+                        Log.d("ENCRYP File Save: ", fileout.getPath());
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                scanMedia(path);
+            }
+        }
     }
 
     private void scanMedia(String path) {
@@ -120,6 +148,7 @@ public class Videos extends Activity {
             arrPath.remove(i);
             count = count - 1;
             notifyDataSetChanged();
+
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
