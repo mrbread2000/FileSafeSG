@@ -65,7 +65,6 @@ public class PhotoFolder extends Activity {
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
-
     }
 
 
@@ -79,6 +78,7 @@ public class PhotoFolder extends Activity {
                 File file = new File(path);
                 if (file != null && file.exists()) {
                     file.delete();
+
                 }
                 scanMedia(path);
                 if (imageAdapter != null)
@@ -86,8 +86,6 @@ public class PhotoFolder extends Activity {
                 i--;
             }
         }
-
-
     }
 
     public void encrypt(View view) {
@@ -133,11 +131,9 @@ public class PhotoFolder extends Activity {
         public int getCount() {
             return count;
         }
-
         public Object getItem(int position) {
             return position;
         }
-
         public long getItemId(int position) {
             return position;
         }
