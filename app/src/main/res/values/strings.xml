@@ -35,5 +35,7 @@
         <item>"What is your first crush's name?"</item>
         <item>"What is your dream job?"</item>
     </string-array>
+    <string name="title_activity_main_image">MainImage</string>
+    <string name="title_activity_view_image">ViewImage</string>
 
 </resources>
