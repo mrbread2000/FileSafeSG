@@ -7,16 +7,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import static java.lang.Math.toIntExact;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,50 +33,58 @@ public class EncryptionClass extends Activity {
     private int count = 0;
     private ArrayList<String> displayName;
     private ArrayList<Boolean> thumbnailsselection;
-    private ArrayList<String> arrPath;
-    private ImageAdapter imageAdapter;
+    private ArrayList<EncFile> arrEncFiles;
+    private EncryptionAdapter encryptionAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encryption_class);
-        // BaseColumns.DATA
-        arrPath = new ArrayList<>();
+
+        arrEncFiles = new ArrayList<EncFile>();
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
 
+        //Get files in designated encryption directory
         String path = Utility.getEncryptionDirectory();
         File f = new File(path);
         File[] files = f.listFiles();
 
-        ListView docList = (ListView) findViewById(R.id.listView);
-        imageAdapter = new ImageAdapter();
-
+        //populate files
         for (File inFile : files) {
-            if (inFile.isDirectory()) {
-                imageAdapter.addItem(inFile.getAbsolutePath());
+            if (inFile.exists()) {
+                EncFile ef = new EncFile(inFile.getName(), inFile.getAbsolutePath(), inFile.length(), false);
+                //ef.debug();
+                arrEncFiles.add(ef);
             }
         }
 
-        docList.setAdapter(imageAdapter);
+        //create adapter
+        encryptionAdapter = new EncryptionAdapter(this, arrEncFiles);
 
+        //Attach adapter to ListView
+        ListView encryptedList = (ListView) findViewById(R.id.listView);
+        encryptedList.setAdapter(encryptionAdapter);
+    }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
     }
 
     public void delete(View view) {
 
-        if (thumbnailsselection == null)
+        if (arrEncFiles == null)
             return;
-        for (int i = 0; i < thumbnailsselection.size(); i++) {
-            boolean selected = thumbnailsselection.get(i);
-            if (selected) {
-                String path = arrPath.get(i);
-                File file = new File(path);
+        for (int i = 0; i < arrEncFiles.size(); i++) {
+            EncFile ef = arrEncFiles.get(i);
+            if (ef.ticked) {
+                File file = new File(ef.path);
                 if (file != null && file.exists())
                     file.delete();
-                scanMedia(path);
-                if (imageAdapter != null)
-                    imageAdapter.remove(i);
+                scanMedia(ef.path);
+                encryptionAdapter.remove(i);
                 i--;
             }
         }
@@ -82,16 +94,17 @@ public class EncryptionClass extends Activity {
 
 
     public void decrypt(View view) {
-        if (thumbnailsselection == null)
+        if (arrEncFiles == null)
             return;
-        for (int i = 0; i < thumbnailsselection.size(); i++) {
-            boolean selected = thumbnailsselection.get(i);
-            if (selected) {
-                String path = arrPath.get(i);
-                File filein = new File(path);
+        //findViewById(R.id.encLoadingBar).setVisibility(View.VISIBLE);
+        for (int i = 0; i < arrEncFiles.size(); i++) {
+            EncFile ef = arrEncFiles.get(i);
+            if (ef.ticked) {
+                File filein = new File(ef.path);
                 if (filein != null && filein.exists()){
-                    String decryptionPathDir = getFileFolderDirectory(path);
-                    File fileout = new File(decryptionPathDir, "Y" + filein.getName());
+                    String decryptionPathDir = getFileFolderDirectory(ef.path);
+                    String outname = filein.getName().replace(".fsg","");
+                    File fileout = new File(decryptionPathDir, "Y" + outname);
                     Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);
@@ -100,9 +113,10 @@ public class EncryptionClass extends Activity {
                         System.out.println("Error encrypting file:\n" + e);
                     }
                 }
-                scanMedia(path);
+                scanMedia(ef.path);
             }
         }
+        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
     }
 
     private String getFileFolderDirectory(String path){
@@ -141,14 +155,23 @@ public class EncryptionClass extends Activity {
         sendBroadcast(scanFileIntent);
     }
 
-    public class ImageAdapter extends BaseAdapter {
+    public class EncryptionAdapter extends ArrayAdapter<EncFile> {
         private LayoutInflater mInflater;
         private ArrayList<String> filePaths = new ArrayList<String>();
 
-        public ImageAdapter() {
-            mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        private class ViewHolder {
+            TextView tvEncName;
+            TextView tvEncFileSize;
+            CheckBox checkbox;
+            int id;
+
         }
 
+        public EncryptionAdapter(Context context, ArrayList<EncFile> arr) {
+            super(context, R.layout.encrypted_file_list, arr);
+            //mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+/*
         public int getCount() {
             return count;
         }
@@ -159,71 +182,102 @@ public class EncryptionClass extends Activity {
 
         public long getItemId(int position) {
             return position;
-        }
+        }*/
 
-        public void addItem(String path){
-            filePaths.add(path);
-        }
-
-        public void remove(int i) {
-            displayName.remove(i);
-            thumbnailsselection.remove(i);
-            arrPath.remove(i);
-            count = count - 1;
+        public void addItem(EncFile ef){
+            arrEncFiles.add(ef);
             notifyDataSetChanged();
         }
 
-        public View getView(int position, View convertView, final ViewGroup parent) {
-            ViewHolder holder;
+        public void remove(int i) {
+            arrEncFiles.remove(i);
+            notifyDataSetChanged();
+        }
+
+        public View getView(final int position, View convertView, final ViewGroup parent) {
+            // Get the data item for this position
+            //final EncFile ef = getItem(position);
+            final EncFile ef = arrEncFiles.get(position);
+            // Check if an existing view is being reused, otherwise inflate the view
+            ViewHolder viewHolder; // view lookup cache stored in tag
             if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = mInflater.inflate(
-                        R.layout.docitem, null);
-                holder.textView = (TextView) convertView.findViewById(R.id.documents);
-                holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
+                viewHolder = new ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.encrypted_file_list, parent, false);
+                // Lookup view for data population
+                viewHolder.tvEncName = (TextView) convertView.findViewById(R.id.encName);
+                viewHolder.tvEncFileSize = (TextView) convertView.findViewById(R.id.encFileSize);
+                viewHolder.checkbox = (CheckBox) convertView.findViewById(R.id.encCheckBox);
+                viewHolder.checkbox.setTag(ef);
 
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            holder.checkbox.setId(position);
-            holder.textView.setId(position);
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+                //checkbox event listener
+                viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
 
-                //Checkbox
-                public void onClick(View v) {
-                    CheckBox cb = (CheckBox) v;
-                    int id = cb.getId();
-                    if (thumbnailsselection.get(id)) {
-                        cb.setChecked(false);
-                        thumbnailsselection.set(id, false);
-                    } else {
-                        cb.setChecked(true);
-                        thumbnailsselection.set(id, true);
+                    //Checkbox
+                    public void onClick(View v) {
+                        CheckBox cb = (CheckBox) v;
+                        EncFile soclef = (EncFile) v.getTag();
+                        if (!cb.isChecked()) {
+                            cb.setChecked(false);
+                            soclef.ticked = false;
+                        } else {
+                            cb.setChecked(true);
+                            soclef.ticked = true;
+                        }
                     }
-                }
-            });
-            /*
-            holder.textView.setOnClickListener(new View.OnClickListener() {
+                });
 
-                public void onClick(View v) {
-                    int id = v.getId();
-                    decryptFile(parent.getContext(), new File(arrPath.get(id)));
-                }
-            });
-            */
-            holder.textView.setText(displayName.get(position));
 
-            holder.checkbox.setChecked(thumbnailsselection.get(position));
-            holder.id = position;
+                //TEST TEST TEST
+                /*
+                viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        ef.ticked = isChecked;
+                        Log.d("Changed", ef.name + ": State now is " + Boolean.toString(ef.ticked));
+                    }
+                });*/
+
+                // Cache the viewHolder object inside the fresh view
+                convertView.setTag(viewHolder);
+            } else {
+                // View is being recycled, retrieve the viewHolder object from tag
+                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder.checkbox.setTag(ef);
+
+            }
+
+            // Populate the data into the template view using the data object
+            viewHolder.tvEncName.setText(ef.name);
+            //int fs = Ints.checkedCast(ef.fileSize);
+            viewHolder.tvEncFileSize.setText("placeholder");
+            //update checkbox
+            viewHolder.checkbox.setChecked(ef.ticked);
+
+            // Return the completed view to render on screen
             return convertView;
         }
     }
 
-    class ViewHolder {
-        TextView textView;
-        CheckBox checkbox;
-        int id;
+
+    //encrypted files
+    class EncFile{
+        public String name;
+        public String path;
+        public long fileSize;
+        public boolean ticked;
+
+        public EncFile(String name, String path, long fileSize, boolean ticked){
+            this.name = name;
+            this.path = path;
+            this.fileSize = fileSize;
+            this.ticked = ticked;
+        }
+
+        public void debug(){
+            Log.d("EncFile", "name: " + name + "\npath: " + path + "\nfilesize: " + (int)fileSize + "\nTicked: " + ticked + "\n");
+        }
     }
+
 
 }
