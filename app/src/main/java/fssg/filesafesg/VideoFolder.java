@@ -65,6 +65,12 @@ public class VideoFolder extends Activity {
 
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        findViewById(R.id.photoLoadingBar).setVisibility(View.GONE);
+    }
+
     public void delete(View view) {
         if (thumbnailsselection == null)
             return;
