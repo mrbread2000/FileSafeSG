@@ -72,6 +72,12 @@ public class DocumentFolder extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        findViewById(R.id.docLoadingBar).setVisibility(View.GONE);
+    }
+
     public void delete(View view) {
 
         if (thumbnailsselection == null)
