@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity  {
                 i.putExtra("EXIT", true);
 
 
+
                 if (getIntent().getBooleanExtra("EXIT", false)) {
                     finish();
                 }
