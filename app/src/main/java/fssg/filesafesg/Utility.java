@@ -119,11 +119,14 @@ public class Utility {
             Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
             if (c.moveToFirst()) {
                 // We found the ID. Deleting the item via the content provider will also remove the file
-                long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                //long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                //Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
+                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri(path), id);
                 contentResolver.delete(deleteUri, null, null);
             } else {
                 // File not found in media store DB
+                Log.d("Utility", "File not found.");
             }
             c.close();
 
