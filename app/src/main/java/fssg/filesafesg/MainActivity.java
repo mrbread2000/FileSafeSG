@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity  {
                 i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 i.putExtra("EXIT", true);
 
+
                 if (getIntent().getBooleanExtra("EXIT", false)) {
                     finish();
                 }
