@@ -28,7 +28,7 @@
         </activity>
 
         <activity android:name=".RegisterActivity"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -37,7 +37,7 @@
 
 
         <activity android:name=".EncryptionFolder"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -45,7 +45,6 @@
             ></activity>
 
         <activity android:name=".EncryptionClass"
-            android:launchMode="singleInstance"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -53,7 +52,7 @@
            ></activity>
 
         <activity android:name=".DocumentFolder"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -61,7 +60,7 @@
             ></activity>
 
         <activity android:name=".PhotoFolder"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -69,7 +68,7 @@
            ></activity>
 
         <activity android:name=".VideoFolder"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
@@ -77,7 +76,7 @@
            ></activity>
 
         <activity android:name=".AudioFolder"
-            android:launchMode="singleInstance"
+
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"

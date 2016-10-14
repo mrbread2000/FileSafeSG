@@ -36,8 +36,16 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), PhotoFolder.class);
+                startActivity(i);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                i.putExtra("EXIT", true);
+                if (getIntent().getBooleanExtra("EXIT", false)) {
+                    finish();
+                }
 
 
                 startActivity(i);
@@ -47,8 +55,18 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), VideoFolder.class);
+                startActivity(i);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                i.putExtra("EXIT", true);
+                if (getIntent().getBooleanExtra("EXIT", false)) {
+                    finish();
+                }
+
                 startActivity(i);
             }
         });
@@ -56,8 +74,18 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), AudioFolder.class);
+                startActivity(i);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                i.putExtra("EXIT", true);
+                if (getIntent().getBooleanExtra("EXIT", false)) {
+                    finish();
+                }
+
+
                 startActivity(i);
             }
         });
@@ -65,18 +93,36 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), DocumentFolder.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                i.putExtra("EXIT", true);
+                if (getIntent().getBooleanExtra("EXIT", false)) {
+                    finish();
+                }
+
+
+
             }
         });
         encryptfiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), EncryptionClass.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+                i.putExtra("EXIT", true);
+                if (getIntent().getBooleanExtra("EXIT", false)) {
+                    finish();
+                }
+
             }
         });
 
