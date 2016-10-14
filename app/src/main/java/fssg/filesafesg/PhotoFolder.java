@@ -85,7 +85,7 @@ public class PhotoFolder extends Activity {
                     file.delete();
 
                 }
-                scanMedia(path);
+                Utility.scanMedia(path, this);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
                 i--;
@@ -113,51 +113,9 @@ public class PhotoFolder extends Activity {
                         System.out.println("Error encrypting file:\n" + e);
                     }
                 }
-                scanMedia(path);
+                Utility.scanMedia(path, this);
             }
         }
-    }
-
-    private void scanMedia(String path) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-
-
-            File file = new File(path);
-            /*
-            Uri uri = Uri.fromFile(file);
-            Intent scanFileIntent = new Intent(
-                    Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-            scanFileIntent.setData(uri);
-            sendBroadcast(scanFileIntent);
-            */
-
-            // Set up the projection (we only need the ID)
-            String[] projection = { MediaStore.Images.Media._ID };
-
-            // Match on the file path
-            String selection = MediaStore.Images.Media.DATA + " = ?";
-            String[] selectionArgs = new String[] { file.getAbsolutePath() };
-
-            // Query for the ID of the media matching the file path
-            Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            ContentResolver contentResolver = getContentResolver();
-            Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
-            if (c.moveToFirst()) {
-                // We found the ID. Deleting the item via the content provider will also remove the file
-                long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                contentResolver.delete(deleteUri, null, null);
-            } else {
-                // File not found in media store DB
-            }
-            c.close();
-
-        } else {
-            Intent scanFileIntent = new Intent(
-                    Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()));
-            sendBroadcast(scanFileIntent);
-        }
-
     }
 
     public class ImageAdapter extends BaseAdapter {
