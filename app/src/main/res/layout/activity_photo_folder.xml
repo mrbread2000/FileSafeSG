@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="fssg.filesafesg.docFolder">
+    tools:context="fssg.filesafesg.photoFolder">
 
     <include layout="@layout/toolbar"
-        android:id="@+id/doc_folder_title"/>
+        android:id="@+id/photo_folder_title"/>
 
-
-    <!-- need change android:id= to correct file-->
     <ImageButton
         android:layout_width="119dp"
         android:layout_height="145dp"

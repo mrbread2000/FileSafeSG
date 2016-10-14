@@ -12,4 +12,5 @@
     tools:context="fssg.filesafesg.photoFolder"
     tools:showIn="@layout/activity_photo_folder">
 
+
 </RelativeLayout>
