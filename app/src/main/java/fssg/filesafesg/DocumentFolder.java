@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,7 @@ public class DocumentFolder extends AppCompatActivity {
                 if (file != null && file.exists())
                     file.delete();
                 Utility.scanMedia(path, this);
+                Log.d("DocFolder", path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
                 i--;
