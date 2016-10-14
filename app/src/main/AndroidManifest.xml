@@ -77,7 +77,6 @@
 
         <activity android:name=".AudioFolder"
 
-
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:noHistory="true"
