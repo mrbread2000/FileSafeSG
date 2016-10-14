@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,11 +116,19 @@ public class PhotoFolder extends Activity {
     }
 
     private void scanMedia(String path) {
-        File file = new File(path);
-        Uri uri = Uri.fromFile(file);
-        Intent scanFileIntent = new Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-        sendBroadcast(scanFileIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            File file = new File(path);
+            Uri uri = Uri.fromFile(file);
+            Intent scanFileIntent = new Intent(
+                    Intent.ACTION_MEDIA_MOUNTED, uri);
+            scanFileIntent.setData(uri);
+            sendBroadcast(scanFileIntent);
+        } else {
+            Intent scanFileIntent = new Intent(
+                    Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()));
+            sendBroadcast(scanFileIntent);
+        }
+
     }
 
     public class ImageAdapter extends BaseAdapter {
