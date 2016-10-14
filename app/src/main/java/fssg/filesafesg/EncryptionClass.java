@@ -83,7 +83,7 @@ public class EncryptionClass extends Activity {
                 File file = new File(ef.path);
                 if (file != null && file.exists())
                     file.delete();
-                scanMedia(ef.path);
+                Utility.scanMedia(ef.path, this);
                 encryptionAdapter.remove(i);
                 i--;
             }
@@ -113,7 +113,7 @@ public class EncryptionClass extends Activity {
                         System.out.println("Error encrypting file:\n" + e);
                     }
                 }
-                scanMedia(ef.path);
+                Utility.scanMedia(ef.path, this);
             }
         }
         //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
@@ -130,6 +130,7 @@ public class EncryptionClass extends Activity {
                 || path.contains(".jpeg")
                 || path.contains(".png")
                 ) {
+            Log.d("A",Environment.DIRECTORY_PICTURES);
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         //video go to video folder
         } else if (path.contains(".3gp")
@@ -145,14 +146,6 @@ public class EncryptionClass extends Activity {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
         return targetDirectory;
-    }
-
-    private void scanMedia(String path) {
-        File file = new File(path);
-        Uri uri = Uri.fromFile(file);
-        Intent scanFileIntent = new Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-        sendBroadcast(scanFileIntent);
     }
 
     public class EncryptionAdapter extends ArrayAdapter<EncFile> {

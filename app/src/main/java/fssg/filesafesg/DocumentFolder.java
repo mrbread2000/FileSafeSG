@@ -83,21 +83,13 @@ public class DocumentFolder extends AppCompatActivity {
                 File file = new File(path);
                 if (file != null && file.exists())
                     file.delete();
-                scanMedia(path);
+                Utility.scanMedia(path, this);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
                 i--;
             }
         }
 
-    }
-
-    private void scanMedia(String path) {
-        File file = new File(path);
-        Uri uri = Uri.fromFile(file);
-        Intent scanFileIntent = new Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-        sendBroadcast(scanFileIntent);
     }
 
     public class ImageAdapter extends BaseAdapter {
