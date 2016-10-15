@@ -2,8 +2,10 @@ package fssg.filesafesg;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -118,7 +120,7 @@ public class Utility {
 
             // Query for the ID of the media matching the file path
             //Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            Uri queryUri = MediaStore.Files.getContentUri("External");
+            Uri queryUri = MediaStore.Files.getContentUri("external");
             ContentResolver contentResolver = act.getContentResolver();
             Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
             if (c.moveToFirst()) {
@@ -126,7 +128,7 @@ public class Utility {
                 //long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
                 //Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                 long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
-                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("External"), id);
+                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id);
                 contentResolver.delete(deleteUri, null, null);
             } else {
                 // File not found in media store DB
