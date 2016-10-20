@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -88,6 +89,31 @@ public class VideoFolder extends Activity {
             i--;
         }
 
+    }
+    public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    String encryptionPathDir = Utility.getEncryptionDirectory();
+                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        Log.d("ENCRYP File Get: ", filein.getPath());
+                        Log.d("ENCRYP File Save: ", fileout.getPath());
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                delete(view);
+                MediaScanner.scanMedia(path, this);
+            }
+        }
     }
 
     public class ImageAdapter extends BaseAdapter {

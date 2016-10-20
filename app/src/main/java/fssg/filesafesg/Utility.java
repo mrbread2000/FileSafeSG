@@ -38,6 +38,7 @@ public class Utility {
             //encryption path
             encryptionPath = Environment.getExternalStorageDirectory().getAbsolutePath();
             encryptionPath += "/FileSafeSGEncryption/";
+            Log.d("EncryptPath", encryptionPath);
             File file = new File(encryptionPath);
             if (!file.exists()) {
                 boolean success = file.mkdir();

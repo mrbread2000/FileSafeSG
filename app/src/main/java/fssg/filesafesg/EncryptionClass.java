@@ -95,7 +95,7 @@ public class EncryptionClass extends Activity {
                 if (filein != null && filein.exists()){
                     String decryptionPathDir = getFileFolderDirectory(ef.path);
                     String outname = filein.getName().replace(".fsg","");
-                    File fileout = new File(decryptionPathDir, "Y" + outname);
+                    File fileout = new File(decryptionPathDir, outname);
                     Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);

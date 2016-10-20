@@ -21,9 +21,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text='delete'
-        android:id="@+id/deleteBtn"
-        android:onClick="delete"
+        android:text='Encrypt'
+        android:id="@+id/encryptBtn"
+        android:onClick="encrypt"
         />
     <ListView
         android:layout_width="match_parent"

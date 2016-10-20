@@ -108,7 +108,7 @@ public class PhotoFolder extends Activity {
                 File filein = new File(path);
                 if (filein != null && filein.exists()){
                     String encryptionPathDir = Utility.getEncryptionDirectory();
-                    File fileout = new File(encryptionPathDir, "X" + filein.getName());
+                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
                     try {
                         CryptoUtility.encrypt("password", "salt", filein, fileout);
                         Log.d("ENCRYP File Get: ", filein.getPath());
