@@ -106,43 +106,6 @@ public class Utility {
         return false;
     }
 
-    public static void scanMedia(String path, Activity act) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            File file = new File(path);
-            Uri testuri = Uri.fromFile(file);
-            //String[] projection = { MediaStore.Images.Media._ID };
-            String[] projection = { MediaStore.Files.FileColumns._ID };
-
-            // Match on the file path
-            //String selection = MediaStore.Images.Media.DATA + " = ?";
-            String selection = MediaStore.Files.FileColumns.DATA + " = ?";
-            String[] selectionArgs = new String[] { file.getAbsolutePath() };
-
-            // Query for the ID of the media matching the file path
-            //Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-            Uri queryUri = MediaStore.Files.getContentUri("external");
-            ContentResolver contentResolver = act.getContentResolver();
-            Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
-            if (c.moveToFirst()) {
-                // We found the ID. Deleting the item via the content provider will also remove the file
-                //long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                //Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
-                Uri deleteUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id);
-                contentResolver.delete(deleteUri, null, null);
-            } else {
-                // File not found in media store DB
-                Log.d("Utility", "File not found.");
-            }
-            c.close();
-
-        } else {
-            Intent scanFileIntent = new Intent(
-                    Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()));
-            act.sendBroadcast(scanFileIntent);
-        }
-
-    }
 
     public static void popupWindow(Activity activity, String message){
 

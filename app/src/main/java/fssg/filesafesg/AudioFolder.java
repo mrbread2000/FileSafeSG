@@ -83,7 +83,7 @@ public class AudioFolder extends AppCompatActivity {
                 File file = new File(path);
                 if (file != null && file.exists())
                     file.delete();
-                Utility.scanMedia(path, this);
+                MediaScanner.deleteMedia(path, this);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
                 i--;

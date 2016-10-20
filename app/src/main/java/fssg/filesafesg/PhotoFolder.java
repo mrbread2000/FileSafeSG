@@ -46,11 +46,11 @@ public class PhotoFolder extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+        final String[] columns = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
         final String orderBy = MediaStore.Images.Media._ID;
         Cursor imagecursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy);
+                null, orderBy, null);
         int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
         this.count = imagecursor.getCount();
         thumbnails = new ArrayList<>();
@@ -90,7 +90,7 @@ public class PhotoFolder extends Activity {
                     file.delete();
 
                 }
-                Utility.scanMedia(path, this);
+                MediaScanner.deleteMedia(path, this);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
                 i--;
@@ -118,7 +118,8 @@ public class PhotoFolder extends Activity {
                         System.out.println("Error encrypting file:\n" + e);
                     }
                 }
-                Utility.scanMedia(path, this);
+                delete(view);
+                MediaScanner.scanMedia(path, this);
             }
         }
     }

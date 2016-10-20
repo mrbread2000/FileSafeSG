@@ -83,7 +83,7 @@ public class EncryptionClass extends Activity {
                 File file = new File(ef.path);
                 if (file != null && file.exists())
                     file.delete();
-                Utility.scanMedia(ef.path, this);
+                MediaScanner.deleteMedia(ef.path, this);
                 encryptionAdapter.remove(i);
                 i--;
             }
@@ -112,8 +112,8 @@ public class EncryptionClass extends Activity {
                     } catch (Exception e){
                         System.out.println("Error encrypting file:\n" + e);
                     }
+                    MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
                 }
-                Utility.scanMedia(ef.path, this);
             }
         }
         //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
@@ -164,18 +164,6 @@ public class EncryptionClass extends Activity {
             super(context, R.layout.encrypted_file_list, arr);
             //mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
-/*
-        public int getCount() {
-            return count;
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }*/
 
         public void addItem(EncFile ef){
             arrEncFiles.add(ef);
