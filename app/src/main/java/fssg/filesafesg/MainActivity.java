@@ -1,5 +1,6 @@
 package fssg.filesafesg;
 
+
 /**
  * Created by Kevin on 9/26/2016.
  */
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity  {
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
         encryptfiles = (Button) findViewById(R.id.encryptedfiles);
+
+
 
         photos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,8 +117,14 @@ public class MainActivity extends AppCompatActivity  {
                 if (getIntent().getBooleanExtra("EXIT", false)) {
                     finish();
                 }
+
+
             }
         });
 
+
+
+
     }
+
 }

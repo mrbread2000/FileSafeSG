@@ -5,20 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Loading Progress -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/encLoadingBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" >
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
 
     <!-- Main -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Share it"
+
+
+        android:id="@+id/shareit"
+
+
+
+
+        android:layout_below="@+id/encryptedfiles"
+        android:layout_centerHorizontal="true"></Button>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
