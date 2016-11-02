@@ -11,7 +11,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class CryptoUtility {
-    public static final byte[] IV = { 65, 1, 2, 23, 4, 5, 6, 7, 32, 21, 10, 11, 12, 13, 84, 45 };
+    //public static final byte[] IV = { 65, 1, 2, 23, 4, 5, 6, 7, 32, 21, 10, 11, 12, 13, 84, 45 };
+    public static final byte[] IV = { 35, 7, 22, 26, 12, 22, 1, 4, 22, 55, 45, 63, 77, 32, 32, 23 };
 
     public static void encrypt(String password, String salt, File filein, File fileout) throws Exception{
         doCrypto(Cipher.ENCRYPT_MODE, password, salt, filein, fileout);

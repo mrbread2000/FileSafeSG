@@ -61,7 +61,7 @@ public class EncryptionClass extends Activity {
     @Override
     public void onStart(){
         super.onStart();
-        findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
+        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
     }
 
     public void delete(View view) {
@@ -121,7 +121,6 @@ public class EncryptionClass extends Activity {
                 || path.contains(".jpeg")
                 || path.contains(".png")
                 ) {
-            Log.d("A",Environment.DIRECTORY_PICTURES);
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         //video go to video folder
         } else if (path.contains(".3gp")
@@ -136,6 +135,18 @@ public class EncryptionClass extends Activity {
         } else {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
+
+        //create folder if it doesn't exist
+        File folder = new File(targetDirectory);
+        if (!folder.exists()) {
+            boolean success = folder.mkdir();
+            if (success) {
+                Log.d("Encrypte", "Folder created at " + targetDirectory);
+            } else {
+                Log.d("Encrypte", "Failed to create folder at " + targetDirectory);
+            }
+        }
+
         return targetDirectory;
     }
 
