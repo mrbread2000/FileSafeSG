@@ -103,6 +103,7 @@ public class EncryptionClass extends Activity {
                     } catch (Exception e){
                         System.out.println("Error encrypting file:\n" + e);
                     }
+                    delete(view);
                     MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
                 }
             }

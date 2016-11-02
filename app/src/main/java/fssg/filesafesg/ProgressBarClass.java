@@ -16,8 +16,8 @@ public class ProgressBarClass extends Activity {
 
     private Handler mHandler = new Handler();
 
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
 
         setContentView(R.layout.activity_progress_bar);
 
@@ -28,7 +28,7 @@ public class ProgressBarClass extends Activity {
             public void run() {
                 while (mProgressStatus < 100) {
                     //mProgressStatus = doWork();
-//testtest
+
                     // Update the progress bar
                     mHandler.post(new Runnable() {
                         public void run() {
