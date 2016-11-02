@@ -28,7 +28,7 @@ public class ProgressBarClass extends Activity {
             public void run() {
                 while (mProgressStatus < 100) {
                     //mProgressStatus = doWork();
-
+//testtest
                     // Update the progress bar
                     mHandler.post(new Runnable() {
                         public void run() {
