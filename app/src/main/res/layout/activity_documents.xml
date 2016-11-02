@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <!-- Loading Progress -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/docLoadingBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,13 +18,15 @@
     </RelativeLayout>
 
     <!-- Main -->
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text='delete'
-        android:id="@+id/deleteBtn"
-        android:onClick="delete"
+        android:text='encrypt'
+        android:id="@+id/encryptBtn"
+        android:onClick="encrypt"
         />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

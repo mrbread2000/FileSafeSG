@@ -5,7 +5,9 @@
     android:orientation="vertical">
 
     <!-- Loading Progress -->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <!-- Main -->
+    <RelativeLayout
         android:id="@+id/photoLoadingBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +19,6 @@
             android:indeterminate="true" />
     </RelativeLayout>
 
-    <!-- Main -->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
