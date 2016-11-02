@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <!-- Loading Progress -->
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/docLoadingBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,15 +18,13 @@
     </RelativeLayout>
 
     <!-- Main -->
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text='encrypt'
+        android:text='Encrypt'
         android:id="@+id/encryptBtn"
         android:onClick="encrypt"
         />
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

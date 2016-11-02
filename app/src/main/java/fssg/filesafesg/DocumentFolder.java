@@ -90,7 +90,7 @@ public class DocumentFolder extends AppCompatActivity {
                 File file = new File(path);
                 if (file != null && file.exists())
                     file.delete();
-                Utility.scanMedia(path, this);
+                MediaScanner.deleteMedia(path, this);
                 Log.d("DocFolder", path);
                 if (imageAdapter != null)
                     imageAdapter.remove(i);
@@ -98,6 +98,32 @@ public class DocumentFolder extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
+        for (int i = 0; i < thumbnailsselection.size(); i++) {
+            boolean selected = thumbnailsselection.get(i);
+            if (selected) {
+                String path = arrPath.get(i);
+                File filein = new File(path);
+                if (filein != null && filein.exists()){
+                    String encryptionPathDir = Utility.getEncryptionDirectory();
+                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        Log.d("ENCRYP File Get: ", filein.getPath());
+                        Log.d("ENCRYP File Save: ", fileout.getPath());
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
+                }
+                delete(view);
+                MediaScanner.scanMedia(path, this);
+            }
+        }
     }
 
     public class ImageAdapter extends BaseAdapter {

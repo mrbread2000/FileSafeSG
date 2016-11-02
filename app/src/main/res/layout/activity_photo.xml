@@ -5,9 +5,7 @@
     android:orientation="vertical">
 
     <!-- Loading Progress -->
-
-    <!-- Main -->
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/photoLoadingBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,13 +17,7 @@
             android:indeterminate="true" />
     </RelativeLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text='delete'
-        android:id="@+id/deleteBtn"
-        android:onClick="delete"
-        />
+    <!-- Main -->
 
     <Button
         android:layout_width="match_parent"
