@@ -2,6 +2,8 @@ package fssg.filesafesg;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -11,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.crypto.Cipher;
 
 /**
  * Created by MrBread2000 on 30/09/16.
@@ -87,15 +92,25 @@ public class EncryptionClass extends Activity {
     public void decrypt(View view) {
         if (arrEncFiles == null)
             return;
-        //findViewById(R.id.encLoadingBar).setVisibility(View.VISIBLE);
+
+        //parse through files
+        ArrayList<String> innames = new ArrayList<String>();
+        ArrayList<String> targetPathDirs = new ArrayList<String>();
+        ArrayList<String> outnames = new ArrayList<String>();
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
                 File filein = new File(ef.path);
                 if (filein != null && filein.exists()){
-                    String decryptionPathDir = getFileFolderDirectory(ef.path);
+
+                    innames.add(ef.path);
+                    targetPathDirs.add(getFileFolderDirectory(ef.path));
+                    outnames.add(filein.getName().replace(".fsg",""));
+
+                    /*
+                    String targetPathDirs = getFileFolderDirectory(ef.path);
                     String outname = filein.getName().replace(".fsg","");
-                    File fileout = new File(decryptionPathDir, outname);
+                    File fileout = new File(targetPathDirs, outname);
                     Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);
@@ -105,10 +120,21 @@ public class EncryptionClass extends Activity {
                     }
                     delete(view);
                     MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
+                    */
                 }
             }
         }
-        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
+
+        //Do encryptions
+        if (innames.size() > 0) {
+            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, false);
+            intent.putExtra(CryptoUtility.IN_NAMES, innames);
+            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            startActivity(intent);
+        }
     }
 
     private String getFileFolderDirectory(String path){

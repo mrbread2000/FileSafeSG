@@ -35,6 +35,13 @@
             android:noHistory="true"
             ></activity>
 
+        <activity android:name=".CryptoUtility"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:noHistory="true"
+            ></activity>
+
 
         <activity android:name=".EncryptionClass"
 

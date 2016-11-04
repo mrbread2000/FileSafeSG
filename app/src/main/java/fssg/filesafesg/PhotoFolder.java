@@ -31,6 +31,8 @@ import android.widget.ImageView;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.crypto.Cipher;
+
 public class PhotoFolder extends Activity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
@@ -101,12 +103,27 @@ public class PhotoFolder extends Activity {
     public void encrypt(View view) {
         if (thumbnailsselection == null)
             return;
+
+        //parse through files
+        ArrayList<String> innames = new ArrayList<String>();
+        ArrayList<String> targetPathDirs = new ArrayList<String>();
+        ArrayList<String> outnames = new ArrayList<String>();
         for (int i = 0; i < thumbnailsselection.size(); i++) {
             boolean selected = thumbnailsselection.get(i);
             if (selected) {
                 String path = arrPath.get(i);
                 File filein = new File(path);
                 if (filein != null && filein.exists()){
+
+                    innames.add(path);
+                    targetPathDirs.add(Utility.getEncryptionDirectory());
+                    outnames.add(filein.getName() + ".fsg");
+
+                    //taken from delete function
+                    //imageAdapter.remove(i);
+                    //i--;
+
+                    /*
                     String encryptionPathDir = Utility.getEncryptionDirectory();
                     File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
                     try {
@@ -117,10 +134,23 @@ public class PhotoFolder extends Activity {
                     } catch (Exception e){
                         System.out.println("Error encrypting file:\n" + e);
                     }
+                    */
                 }
+                /*
                 delete(view);
                 MediaScanner.scanMedia(path, this);
+                */
             }
+        }
+
+        if (innames.size() > 0) {
+            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+            intent.putExtra(CryptoUtility.IN_NAMES, innames);
+            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            startActivity(intent);
         }
     }
 
