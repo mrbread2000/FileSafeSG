@@ -3,7 +3,7 @@ package fssg.filesafesg;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -18,10 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.crypto.Cipher;
 
 /**
  * Created by MrBread2000 on 30/09/16.
@@ -107,9 +110,9 @@ public class EncryptionClass extends AppCompatActivity {
 //-------------------------------------------//
 
     @Override
-    public void onStart() {
+    public void onStart(){
         super.onStart();
-
+        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
     }
 
     public void delete(View view) {
@@ -131,33 +134,56 @@ public class EncryptionClass extends AppCompatActivity {
     }
 
 
+
     public void decrypt(View view) {
         if (arrEncFiles == null)
             return;
-        //findViewById(R.id.encLoadingBar).setVisibility(View.VISIBLE);
+
+        //parse through files
+        ArrayList<String> innames = new ArrayList<String>();
+        ArrayList<String> targetPathDirs = new ArrayList<String>();
+        ArrayList<String> outnames = new ArrayList<String>();
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
                 File filein = new File(ef.path);
-                if (filein != null && filein.exists()) {
-                    String decryptionPathDir = getFileFolderDirectory(ef.path);
-                    String outname = filein.getName().replace(".fsg", "");
-                    File fileout = new File(decryptionPathDir, outname);
+                if (filein != null && filein.exists()){
+
+                    innames.add(ef.path);
+                    targetPathDirs.add(getFileFolderDirectory(ef.path));
+                    outnames.add(filein.getName().replace(".fsg",""));
+
+                    /*
+                    String targetPathDirs = getFileFolderDirectory(ef.path);
+                    String outname = filein.getName().replace(".fsg","");
+                    File fileout = new File(targetPathDirs, outname);
                     Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);
                         //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e) {
+                    } catch (Exception e){
                         System.out.println("Error encrypting file:\n" + e);
                     }
+                    delete(view);
                     MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
+                    */
                 }
             }
         }
-        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
+
+        //Do encryptions
+        if (innames.size() > 0) {
+            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, false);
+            intent.putExtra(CryptoUtility.IN_NAMES, innames);
+            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            startActivity(intent);
+        }
     }
 
-    private String getFileFolderDirectory(String path) {
+    private String getFileFolderDirectory(String path){
 
         String targetDirectory;
 
@@ -168,9 +194,8 @@ public class EncryptionClass extends AppCompatActivity {
                 || path.contains(".jpeg")
                 || path.contains(".png")
                 ) {
-            Log.d("A", Environment.DIRECTORY_PICTURES);
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-            //video go to video folder
+        //video go to video folder
         } else if (path.contains(".3gp")
                 || path.contains(".mpg")
                 || path.contains(".mpeg")
@@ -179,10 +204,22 @@ public class EncryptionClass extends AppCompatActivity {
                 || path.contains(".avi")
                 || path.contains(".flv")) {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
-            //everythig else go to document folder
+        //everythig else go to document folder
         } else {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
+
+        //create folder if it doesn't exist
+        File folder = new File(targetDirectory);
+        if (!folder.exists()) {
+            boolean success = folder.mkdir();
+            if (success) {
+                Log.d("Encrypte", "Folder created at " + targetDirectory);
+            } else {
+                Log.d("Encrypte", "Failed to create folder at " + targetDirectory);
+            }
+        }
+
         return targetDirectory;
     }
 
@@ -203,7 +240,7 @@ public class EncryptionClass extends AppCompatActivity {
             //mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public void addItem(EncFile ef) {
+        public void addItem(EncFile ef){
             arrEncFiles.add(ef);
             notifyDataSetChanged();
         }
@@ -280,21 +317,21 @@ public class EncryptionClass extends AppCompatActivity {
 
 
     //encrypted files
-    class EncFile {
+    class EncFile{
         public String name;
         public String path;
         public long fileSize;
         public boolean ticked;
 
-        public EncFile(String name, String path, long fileSize, boolean ticked) {
+        public EncFile(String name, String path, long fileSize, boolean ticked){
             this.name = name;
             this.path = path;
             this.fileSize = fileSize;
             this.ticked = ticked;
         }
 
-        public void debug() {
-            Log.d("EncFile", "name: " + name + "\npath: " + path + "\nfilesize: " + (int) fileSize + "\nTicked: " + ticked + "\n");
+        public void debug(){
+            Log.d("EncFile", "name: " + name + "\npath: " + path + "\nfilesize: " + (int)fileSize + "\nTicked: " + ticked + "\n");
         }
     }
 

@@ -38,6 +38,19 @@
         <activity
             android:name=".EncryptionFolder"
             android:clearTaskOnLaunch="true"
+            android:noHistory="true"
+            ></activity>
+
+        <activity android:name=".CryptoUtility"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:noHistory="true"
+            ></activity>
+
+
+        <activity android:name=".EncryptionClass"
+
             android:finishOnTaskLaunch="true"
             android:noHistory="true" />
         <activity

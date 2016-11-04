@@ -6,12 +6,17 @@ package fssg.filesafesg;
 
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,11 +31,14 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
+import javax.crypto.Cipher;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class PhotoFolder extends AppCompatActivity {
+
+public class PhotoFolder extends Activity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
@@ -107,12 +115,27 @@ public class PhotoFolder extends AppCompatActivity {
     public void encrypt(View view) {
         if (thumbnailsselection == null)
             return;
+
+        //parse through files
+        ArrayList<String> innames = new ArrayList<String>();
+        ArrayList<String> targetPathDirs = new ArrayList<String>();
+        ArrayList<String> outnames = new ArrayList<String>();
         for (int i = 0; i < thumbnailsselection.size(); i++) {
             boolean selected = thumbnailsselection.get(i);
             if (selected) {
                 String path = arrPath.get(i);
                 File filein = new File(path);
                 if (filein != null && filein.exists()){
+
+                    innames.add(path);
+                    targetPathDirs.add(Utility.getEncryptionDirectory());
+                    outnames.add(filein.getName() + ".fsg");
+
+                    //taken from delete function
+                    //imageAdapter.remove(i);
+                    //i--;
+
+                    /*
                     String encryptionPathDir = Utility.getEncryptionDirectory();
                     File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
                     try {
@@ -123,10 +146,23 @@ public class PhotoFolder extends AppCompatActivity {
                     } catch (Exception e){
                         System.out.println("Error encrypting file:\n" + e);
                     }
+                    */
                 }
+                /*
                 delete(view);
                 MediaScanner.scanMedia(path, this);
+                */
             }
+        }
+
+        if (innames.size() > 0) {
+            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+            intent.putExtra(CryptoUtility.IN_NAMES, innames);
+            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            startActivity(intent);
         }
     }
 
