@@ -6,20 +6,19 @@ package fssg.filesafesg;
 
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -31,12 +30,14 @@ import android.widget.ImageView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PhotoFolder extends Activity {
+public class PhotoFolder extends AppCompatActivity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
+
+    private Toolbar toolbar;
 
     /**
      * Called when the activity is first created.
@@ -45,6 +46,11 @@ public class PhotoFolder extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        setTitle(R.string.photo);
+
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
         final String[] columns = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
         final String orderBy = MediaStore.Images.Media._ID;
@@ -200,5 +206,24 @@ public class PhotoFolder extends Activity {
         ImageView imageview;
         CheckBox checkbox;
         int id;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.aud_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

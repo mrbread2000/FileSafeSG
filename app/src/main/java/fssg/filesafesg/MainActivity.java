@@ -10,31 +10,37 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     Button audio, photos, videos, docs, encryptfiles;
 
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.homepage);
 
         super.onPause();
 
 
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+
+
         audio = (Button) findViewById(R.id.audio);
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
         encryptfiles = (Button) findViewById(R.id.encryptedfiles);
-
 
 
         photos.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +119,6 @@ public class MainActivity extends AppCompatActivity  {
                 i.putExtra("EXIT", true);
 
 
-
                 if (getIntent().getBooleanExtra("EXIT", false)) {
                     finish();
                 }
@@ -121,8 +126,6 @@ public class MainActivity extends AppCompatActivity  {
 
             }
         });
-
-
 
 
     }

@@ -13,8 +13,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -36,11 +39,16 @@ public class DocumentFolder extends AppCompatActivity {
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_documents);
+        setTitle(R.string.document);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
         String selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?";
         Uri uri = MediaStore.Files.getContentUri("external");
         // BaseColumns.DATA
@@ -72,6 +80,40 @@ public class DocumentFolder extends AppCompatActivity {
 
 
     }
+/*
+    public boolean onCreateOptionMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+*/
+
+
+
+
+
+
+
+
+
 
     @Override
     public void onStart(){
@@ -100,31 +142,7 @@ public class DocumentFolder extends AppCompatActivity {
 
     }
 
-    public void encrypt(View view) {
-        if (thumbnailsselection == null)
-            return;
-        for (int i = 0; i < thumbnailsselection.size(); i++) {
-            boolean selected = thumbnailsselection.get(i);
-            if (selected) {
-                String path = arrPath.get(i);
-                File filein = new File(path);
-                if (filein != null && filein.exists()){
-                    String encryptionPathDir = Utility.getEncryptionDirectory();
-                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
-                    try {
-                        CryptoUtility.encrypt("password", "salt", filein, fileout);
-                        Log.d("ENCRYP File Get: ", filein.getPath());
-                        Log.d("ENCRYP File Save: ", fileout.getPath());
-                        //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
-                        System.out.println("Error encrypting file:\n" + e);
-                    }
-                }
-                delete(view);
-                MediaScanner.scanMedia(path, this);
-            }
-        }
-    }
+
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -257,6 +275,26 @@ public class DocumentFolder extends AppCompatActivity {
         CheckBox checkbox;
         int id;
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.aud_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
 }
 
 
