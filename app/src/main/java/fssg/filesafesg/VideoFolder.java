@@ -47,6 +47,7 @@ public class VideoFolder extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+
         final String[] columns = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID};
         final String orderBy = MediaStore.Video.Media._ID;
         Cursor imagecursor = getContentResolver().query(

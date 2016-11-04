@@ -37,8 +37,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class PhotoFolder extends AppCompatActivity {
-
-public class PhotoFolder extends Activity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
