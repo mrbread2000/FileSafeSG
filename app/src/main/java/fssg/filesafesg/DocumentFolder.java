@@ -120,6 +120,10 @@ public class DocumentFolder extends AppCompatActivity {
                     innames.add(path);
                     targetPathDirs.add(Utility.getEncryptionDirectory());
                     outnames.add(filein.getName() + ".fsg");
+
+                    if (imageAdapter != null)
+                        imageAdapter.remove(i);
+                    i--;
                 }
             }
         }
@@ -127,7 +131,7 @@ public class DocumentFolder extends AppCompatActivity {
         //Do encryptions
         if (innames.size() > 0) {
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
-            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);

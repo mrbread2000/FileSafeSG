@@ -96,6 +96,8 @@ public class AudioFolder extends AppCompatActivity {
     }
 
     public void encrypt(View view) {
+        if (thumbnailsselection == null)
+            return;
         //parse through files
         ArrayList<String> innames = new ArrayList<String>();
         ArrayList<String> targetPathDirs = new ArrayList<String>();
@@ -110,14 +112,20 @@ public class AudioFolder extends AppCompatActivity {
                     innames.add(path);
                     targetPathDirs.add(Utility.getEncryptionDirectory());
                     outnames.add(filein.getName() + ".fsg");
+
+                    if (imageAdapter != null)
+                        imageAdapter.remove(i);
+                    i--;
                 }
+
+
             }
         }
 
         //Do encryptions
         if (innames.size() > 0) {
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
-            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);

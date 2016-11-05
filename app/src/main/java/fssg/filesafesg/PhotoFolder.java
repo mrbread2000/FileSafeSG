@@ -119,27 +119,10 @@ public class PhotoFolder extends Activity {
                     targetPathDirs.add(Utility.getEncryptionDirectory());
                     outnames.add(filein.getName() + ".fsg");
 
-                    //taken from delete function
-                    //imageAdapter.remove(i);
-                    //i--;
-
-                    /*
-                    String encryptionPathDir = Utility.getEncryptionDirectory();
-                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
-                    try {
-                        CryptoUtility.encrypt("password", "salt", filein, fileout);
-                        Log.d("ENCRYP File Get: ", filein.getPath());
-                        Log.d("ENCRYP File Save: ", fileout.getPath());
-                        //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
-                        System.out.println("Error encrypting file:\n" + e);
-                    }
-                    */
+                    if (imageAdapter != null)
+                        imageAdapter.remove(i);
+                    i--;
                 }
-                /*
-                delete(view);
-                MediaScanner.scanMedia(path, this);
-                */
             }
         }
 
