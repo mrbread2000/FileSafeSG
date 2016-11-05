@@ -3,14 +3,19 @@ package fssg.filesafesg;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -61,7 +66,57 @@ public class EncryptionClass extends Activity {
         //Attach adapter to ListView
         ListView encryptedList = (ListView) findViewById(R.id.listView);
         encryptedList.setAdapter(encryptionAdapter);
+
+//------------------------------//
+        Button btn_share = (Button) findViewById(R.id.shareit);
+        btn_share.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                shareIt();
+            }
+        });
     }
+    private void shareIt(){
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        if (arrEncFiles == null)
+            return;
+        for (int i = 0; i < arrEncFiles.size(); i++) {
+            EncFile ef = arrEncFiles.get(i);
+            if (ef.ticked) {
+                File file = new File(ef.path);
+                if (file != null && file.exists())
+
+
+                //email-sharing
+                sharingIntent.setType("*/*");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {""});
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "sending encrypted file ");
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        }
+
+
+
+
+
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+//-------------------------------------------//
 
     @Override
     public void onStart(){

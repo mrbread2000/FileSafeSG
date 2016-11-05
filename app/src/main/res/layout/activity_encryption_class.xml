@@ -5,7 +5,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+
     <!-- Main -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Share it"
+
+
+        android:id="@+id/shareit"
+
+
+
+
+        android:layout_below="@+id/encryptedfiles"
+        android:layout_centerHorizontal="true"></Button>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
