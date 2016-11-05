@@ -129,7 +129,7 @@ public class EncryptionClass extends Activity {
         if (innames.size() > 0) {
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
-            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, false);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
