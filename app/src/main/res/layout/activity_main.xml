@@ -44,7 +44,7 @@
 
     <Button
         android:text="Audio"
-        android:id="@+id/audio"
+        android:id="@+id/audios"
         android:layout_height="70dp"
         android:layout_width="250dp"
         android:background="@android:color/holo_orange_dark"
@@ -57,7 +57,7 @@
         android:layout_height="70dp"
         android:layout_width="250dp"
         android:background="@android:color/holo_red_light"
-        android:layout_below="@+id/audio"
+        android:layout_below="@+id/audios"
         android:layout_centerHorizontal="true" />
 
     <Button

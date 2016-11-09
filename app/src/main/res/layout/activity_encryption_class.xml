@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
 
     <!-- Main -->
     <Button

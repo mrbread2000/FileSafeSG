@@ -50,13 +50,16 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
-           ></activity>
+            android:parentActivityName=".MainActivity"
+
+            ></activity>
 
         <activity android:name=".DocumentFolder"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:parentActivityName=".MainActivity"
             ></activity>
 
         <activity android:name=".PhotoFolder"
@@ -64,7 +67,7 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
-
+            android:parentActivityName=".MainActivity"
            ></activity>
 
         <activity android:name=".VideoFolder"
@@ -72,14 +75,17 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
-           ></activity>
+            android:parentActivityName=".MainActivity"
+            ></activity>
 
         <activity android:name=".AudioFolder"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
-           ></activity>
+            android:parentActivityName=".MainActivity"
+
+            ></activity>
     </application>
 
 </manifest>
