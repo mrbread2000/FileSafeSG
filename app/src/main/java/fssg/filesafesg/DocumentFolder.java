@@ -75,6 +75,21 @@ public class DocumentFolder extends AppCompatActivity {
 
     }
 
+    //test code=============================
+    private boolean wentToBackground = false;
+    @Override
+    public void onStop(){
+        super.onStop();
+        wentToBackground = true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (wentToBackground)
+            this.finish();
+    }
+
     @Override
     public void onBackPressed(){
 
@@ -83,6 +98,7 @@ public class DocumentFolder extends AppCompatActivity {
         startActivity(intent);
 
     }
+    //======================================
 
     @Override
     public void onStart(){
