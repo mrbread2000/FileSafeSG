@@ -6,21 +6,21 @@
     <item
         android:title="Decrypt"
         android:id="@+id/decryptBtn"
-        android:icon="@drawable/decrypt_icon"
+        android:icon="@drawable/decrypt_icon1"
         app:showAsAction="always"
         />
 
     <item
         android:title="Delete"
         android:id="@+id/deleteBtn"
-        android:icon="@drawable/delete_icon"
+        android:icon="@drawable/delete_icon1"
         app:showAsAction="always"
         />
 
     <item
         android:title="Share"
         android:id="@+id/shareit"
-        android:icon="@drawable/share_icon"
+        android:icon="@drawable/share_icon1"
         app:showAsAction="always"
         />
 </menu>
