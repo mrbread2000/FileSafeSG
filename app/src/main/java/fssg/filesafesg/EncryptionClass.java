@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -116,7 +117,31 @@ public class EncryptionClass extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-//-------------------------------------------//
+
+    //test code=============================
+    private boolean wentToBackground = false;
+    @Override
+    public void onStop(){
+        super.onStop();
+        wentToBackground = true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (wentToBackground)
+            this.finish();
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+    }
+    //======================================
 
     @Override
     public void onStart(){
@@ -162,6 +187,8 @@ public class EncryptionClass extends Activity {
                     targetPathDirs.add(getFileFolderDirectory(ef.path));
                     outnames.add(filein.getName().replace(".fsg",""));
 
+                    encryptionAdapter.remove(i);
+                    i--;
                     /*
                     String targetPathDirs = getFileFolderDirectory(ef.path);
                     String outname = filein.getName().replace(".fsg","");
@@ -291,17 +318,6 @@ public class EncryptionClass extends Activity {
                         }
                     }
                 });
-
-
-                //TEST TEST TEST
-                /*
-                viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        ef.ticked = isChecked;
-                        Log.d("Changed", ef.name + ": State now is " + Boolean.toString(ef.ticked));
-                    }
-                });*/
 
                 // Cache the viewHolder object inside the fresh view
                 convertView.setTag(viewHolder);

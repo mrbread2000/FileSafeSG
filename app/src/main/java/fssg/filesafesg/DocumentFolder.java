@@ -76,6 +76,15 @@ public class DocumentFolder extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed(){
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+    }
+
+    @Override
     public void onStart(){
         super.onStart();
         findViewById(R.id.docLoadingBar).setVisibility(View.GONE);

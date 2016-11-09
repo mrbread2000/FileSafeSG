@@ -32,14 +32,16 @@
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
             ></activity>
 
         <activity android:name=".CryptoUtility"
 
+            android:theme="@android:style/Theme.Dialog"
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
             ></activity>
 
 
@@ -47,21 +49,21 @@
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
            ></activity>
 
         <activity android:name=".DocumentFolder"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
             ></activity>
 
         <activity android:name=".PhotoFolder"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
 
            ></activity>
 
@@ -69,14 +71,14 @@
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
            ></activity>
 
         <activity android:name=".AudioFolder"
 
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
+            android:launchMode="singleTask"
            ></activity>
     </application>
 
