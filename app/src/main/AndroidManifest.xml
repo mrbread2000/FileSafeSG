@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fssg.filesafesg">
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="24" />
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="24" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -12,10 +9,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -27,52 +23,63 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true" />
-        <activity
-            android:name=".EncryptionClass"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true" />
-        <activity
-            android:name=".DocumentFolder"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".PhotoFolder"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".VideoFolder"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".AudioFolder"
-            android:clearTaskOnLaunch="true"
-            android:finishOnTaskLaunch="true"
-            android:noHistory="true"
-            android:parentActivityName=".MainActivity"/>
-
-        <activity android:name=".Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
 
+        <activity android:name=".RegisterActivity"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+            ></activity>
+
+        <activity android:name=".CryptoUtility"
+
+            android:theme="@android:style/Theme.Dialog"
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            ></activity>
+
+
+        <activity android:name=".EncryptionClass"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+           ></activity>
+
+        <activity android:name=".DocumentFolder"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+            ></activity>
+
+        <activity android:name=".PhotoFolder"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+
+           ></activity>
+
+        <activity android:name=".VideoFolder"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+           ></activity>
+
+        <activity android:name=".AudioFolder"
+
+            android:finishOnTaskLaunch="true"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask"
+           ></activity>
     </application>
 
 </manifest>
