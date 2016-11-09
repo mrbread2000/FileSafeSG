@@ -45,6 +45,7 @@ public class VideoFolder extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        setTitle(R.string.title_activity_video_folder);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,21 +80,22 @@ public class VideoFolder extends AppCompatActivity {
 
     //test code=============================
     private boolean wentToBackground = false;
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         wentToBackground = true;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (wentToBackground)
             this.finish();
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -103,7 +105,7 @@ public class VideoFolder extends AppCompatActivity {
     //======================================
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         findViewById(R.id.photoLoadingBar).setVisibility(View.GONE);
     }
@@ -126,6 +128,7 @@ public class VideoFolder extends AppCompatActivity {
         }
 
     }
+
     public void encrypt(View view) {
 
         if (thumbnailsselection == null)
@@ -242,6 +245,7 @@ public class VideoFolder extends AppCompatActivity {
         CheckBox checkbox;
         int id;
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.aud_menu, menu);
@@ -252,7 +256,45 @@ public class VideoFolder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
+//parse through files
+                ArrayList<String> innames = new ArrayList<String>();
+                ArrayList<String> targetPathDirs = new ArrayList<String>();
+                ArrayList<String> outnames = new ArrayList<String>();
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File filein = new File(path);
+                        if (filein != null && filein.exists()) {
 
+                            innames.add(path);
+                            targetPathDirs.add(Utility.getEncryptionDirectory());
+                            outnames.add(filein.getName() + ".fsg");
+
+                            if (imageAdapter != null)
+                                imageAdapter.remove(i);
+                            i--;
+                        }
+                    }
+                }
+
+                return true;
+
+            case R.id.deleteBtn:
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                    }
+                    i--
+                    ;
+                }
                 return true;
 
             default:

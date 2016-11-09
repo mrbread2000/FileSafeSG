@@ -1,5 +1,6 @@
 package fssg.filesafesg;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-public class Splash extends AppCompatActivity {
+public class Splash extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState ) {
@@ -29,7 +30,7 @@ public class Splash extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 iv.startAnimation(an2);
                 finish();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(Splash.this, MainActivity.class);
                 startActivity(i);
 
             }

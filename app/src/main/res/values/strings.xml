@@ -21,10 +21,14 @@
     <string name="Change_Icon">icon button</string>
     <string name="Document">document button</string>
     <string name="Encrypted_Files">Encrypted Files</string>
-    <string name="title_activity_photo_folder">photoFolder</string>
-    <string name="title_activity_video_folder">videoFolder</string>
-    <string name="title_activity_icon_folder">iconFolder</string>
-    <string name="title_activity_doc_folder">docFolder</string>
+    <string name="title_activity_photo_folder">Photo Folder</string>
+    <string name="title_activity_video_folder">Video Folder</string>
+    <string name="title_activity_doc_folder">Document Folder</string>
+    <string name="title_activity_audio_folder">Audio Folder</string>
+    <string name="title_activity_homepage">Homepage</string>
+    <string name="title_activity_decrypt_folder">Decrypted Folder</string>
+
+
 
     <!-- Strings related to Question and Answer -->
     <string name="secret_question_prompt">Choose a secret question</string>

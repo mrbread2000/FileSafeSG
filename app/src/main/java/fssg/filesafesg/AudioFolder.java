@@ -48,6 +48,7 @@ public class AudioFolder extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
+        setTitle(R.string.title_activity_audio_folder);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -284,6 +285,22 @@ public class AudioFolder extends AppCompatActivity {
 
                 return true;
 
+            case R.id.deleteBtn:
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                    }
+                    i--
+                    ;
+                }
+                return true;
             default:
 
                 return super.onOptionsItemSelected(item);

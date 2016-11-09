@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+
     android:weightSum="1">
 
     <!-- Loading Progress -->

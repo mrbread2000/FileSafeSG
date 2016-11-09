@@ -46,6 +46,8 @@ public class DocumentFolder extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_documents);
+        setTitle(R.string.title_activity_doc_folder);
+
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -313,6 +315,58 @@ public class DocumentFolder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
+
+                //parse through files
+                ArrayList<String> innames = new ArrayList<String>();
+                ArrayList<String> targetPathDirs = new ArrayList<String>();
+                ArrayList<String> outnames = new ArrayList<String>();
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File filein = new File(path);
+                        if (filein != null && filein.exists()) {
+
+                            innames.add(path);
+                            targetPathDirs.add(Utility.getEncryptionDirectory());
+                            outnames.add(filein.getName() + ".fsg");
+
+                            if (imageAdapter != null)
+                                imageAdapter.remove(i);
+                            i--;
+                        }
+                    }
+                }
+
+                //Do encryptions
+                if (innames.size() > 0) {
+                    Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+                    intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+                    intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+                    intent.putExtra(CryptoUtility.IN_NAMES, innames);
+                    intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+                    intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+                    startActivity(intent);
+                }
+
+                return true;
+
+            case R.id.deleteBtn:
+
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        Log.d("DocFolder", path);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
                 return true;
 
             default:

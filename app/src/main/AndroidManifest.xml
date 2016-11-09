@@ -18,16 +18,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcherfinal"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -47,7 +47,6 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Dialog" />
 
-
         <activity
             android:name=".EncryptionClass"
 
@@ -55,6 +54,7 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".DocumentFolder"
 
@@ -62,6 +62,7 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".PhotoFolder"
 
@@ -69,6 +70,7 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".VideoFolder"
 
@@ -76,15 +78,22 @@
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".AudioFolder"
 
             android:clearTaskOnLaunch="true"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleTask"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MainActivity"            />
 
-            />
+        <activity android:name=".Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
