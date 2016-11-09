@@ -13,8 +13,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,21 +30,25 @@ import android.widget.ImageView;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.crypto.Cipher;
-
-public class VideoFolder extends Activity {
+public class VideoFolder extends AppCompatActivity {
     private int count;
     private ArrayList<Bitmap> thumbnails;
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
     private GridView imagegrid;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        setTitle(R.string.video);
 
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         final String[] columns = {MediaStore.Video.Media.DATA, MediaStore.Video.Media._ID};
         final String orderBy = MediaStore.Video.Media._ID;
         Cursor imagecursor = getContentResolver().query(
@@ -93,40 +101,28 @@ public class VideoFolder extends Activity {
 
     }
     public void encrypt(View view) {
-
         if (thumbnailsselection == null)
             return;
-        //parse through files
-        ArrayList<String> innames = new ArrayList<String>();
-        ArrayList<String> targetPathDirs = new ArrayList<String>();
-        ArrayList<String> outnames = new ArrayList<String>();
         for (int i = 0; i < thumbnailsselection.size(); i++) {
             boolean selected = thumbnailsselection.get(i);
             if (selected) {
                 String path = arrPath.get(i);
                 File filein = new File(path);
-                if (filein != null && filein.exists()) {
-
-                    innames.add(path);
-                    targetPathDirs.add(Utility.getEncryptionDirectory());
-                    outnames.add(filein.getName() + ".fsg");
-
-                    if (imageAdapter != null)
-                        imageAdapter.remove(i);
-                    i--;
+                if (filein != null && filein.exists()){
+                    String encryptionPathDir = Utility.getEncryptionDirectory();
+                    File fileout = new File(encryptionPathDir, filein.getName() + ".fsg");
+                    try {
+                        CryptoUtility.encrypt("password", "salt", filein, fileout);
+                        Log.d("ENCRYP File Get: ", filein.getPath());
+                        Log.d("ENCRYP File Save: ", fileout.getPath());
+                        //Utility.popupWindow(this, "Encryption Successful!");
+                    } catch (Exception e){
+                        System.out.println("Error encrypting file:\n" + e);
+                    }
                 }
+                delete(view);
+                MediaScanner.scanMedia(path, this);
             }
-        }
-
-        //Do encryptions
-        if (innames.size() > 0) {
-            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
-            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
-            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
-            intent.putExtra(CryptoUtility.IN_NAMES, innames);
-            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
-            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-            startActivity(intent);
         }
     }
 
@@ -207,5 +203,24 @@ public class VideoFolder extends Activity {
         ImageView imageview;
         CheckBox checkbox;
         int id;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.aud_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

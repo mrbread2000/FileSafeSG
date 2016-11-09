@@ -3,24 +3,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgcolor"
     android:orientation="vertical">
 
 
 
     <!-- Main -->
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="Share it"
-
-
         android:id="@+id/shareit"
-
-
-
-
-        android:layout_below="@+id/encryptedfiles"
-        android:layout_centerHorizontal="true"></Button>
+        android:layout_above="@+id/deleteBtn"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="match_parent"

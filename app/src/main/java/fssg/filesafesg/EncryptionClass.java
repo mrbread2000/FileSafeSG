@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,29 +18,33 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.crypto.Cipher;
-
 /**
  * Created by MrBread2000 on 30/09/16.
  */
-public class EncryptionClass extends Activity {
+public class EncryptionClass extends AppCompatActivity {
 
     private int count = 0;
     private ArrayList<String> displayName;
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<EncFile> arrEncFiles;
     private EncryptionAdapter encryptionAdapter;
+    private Toolbar toolbar;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encryption_class);
+
+        setTitle(R.string.encrypted_Files);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
 
         arrEncFiles = new ArrayList<EncFile>();
         thumbnailsselection = new ArrayList<>();
@@ -75,7 +79,8 @@ public class EncryptionClass extends Activity {
             }
         });
     }
-    private void shareIt(){
+
+    private void shareIt() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         if (arrEncFiles == null)
             return;
@@ -86,9 +91,9 @@ public class EncryptionClass extends Activity {
                 if (file != null && file.exists())
 
 
-                //email-sharing
-                sharingIntent.setType("*/*");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {""});
+                    //email-sharing
+                    sharingIntent.setType("*/*");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{""});
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "sending encrypted file ");
                 sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
@@ -96,32 +101,15 @@ public class EncryptionClass extends Activity {
         }
 
 
-
-
-
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
 
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 //-------------------------------------------//
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
+
     }
 
     public void delete(View view) {
@@ -143,56 +131,33 @@ public class EncryptionClass extends Activity {
     }
 
 
-
     public void decrypt(View view) {
         if (arrEncFiles == null)
             return;
-
-        //parse through files
-        ArrayList<String> innames = new ArrayList<String>();
-        ArrayList<String> targetPathDirs = new ArrayList<String>();
-        ArrayList<String> outnames = new ArrayList<String>();
+        //findViewById(R.id.encLoadingBar).setVisibility(View.VISIBLE);
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
                 File filein = new File(ef.path);
-                if (filein != null && filein.exists()){
-
-                    innames.add(ef.path);
-                    targetPathDirs.add(getFileFolderDirectory(ef.path));
-                    outnames.add(filein.getName().replace(".fsg",""));
-
-                    /*
-                    String targetPathDirs = getFileFolderDirectory(ef.path);
-                    String outname = filein.getName().replace(".fsg","");
-                    File fileout = new File(targetPathDirs, outname);
+                if (filein != null && filein.exists()) {
+                    String decryptionPathDir = getFileFolderDirectory(ef.path);
+                    String outname = filein.getName().replace(".fsg", "");
+                    File fileout = new File(decryptionPathDir, outname);
                     Log.d("Decrypte", fileout.getAbsolutePath());
                     try {
                         CryptoUtility.decrypt("password", "salt", filein, fileout);
                         //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("Error encrypting file:\n" + e);
                     }
-                    delete(view);
                     MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
-                    */
                 }
             }
         }
-
-        //Do encryptions
-        if (innames.size() > 0) {
-            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
-            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
-            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
-            intent.putExtra(CryptoUtility.IN_NAMES, innames);
-            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
-            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-            startActivity(intent);
-        }
+        //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
     }
 
-    private String getFileFolderDirectory(String path){
+    private String getFileFolderDirectory(String path) {
 
         String targetDirectory;
 
@@ -203,8 +168,9 @@ public class EncryptionClass extends Activity {
                 || path.contains(".jpeg")
                 || path.contains(".png")
                 ) {
+            Log.d("A", Environment.DIRECTORY_PICTURES);
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        //video go to video folder
+            //video go to video folder
         } else if (path.contains(".3gp")
                 || path.contains(".mpg")
                 || path.contains(".mpeg")
@@ -213,22 +179,10 @@ public class EncryptionClass extends Activity {
                 || path.contains(".avi")
                 || path.contains(".flv")) {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
-        //everythig else go to document folder
+            //everythig else go to document folder
         } else {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
-
-        //create folder if it doesn't exist
-        File folder = new File(targetDirectory);
-        if (!folder.exists()) {
-            boolean success = folder.mkdir();
-            if (success) {
-                Log.d("Encrypte", "Folder created at " + targetDirectory);
-            } else {
-                Log.d("Encrypte", "Failed to create folder at " + targetDirectory);
-            }
-        }
-
         return targetDirectory;
     }
 
@@ -249,7 +203,7 @@ public class EncryptionClass extends Activity {
             //mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
-        public void addItem(EncFile ef){
+        public void addItem(EncFile ef) {
             arrEncFiles.add(ef);
             notifyDataSetChanged();
         }
@@ -326,23 +280,49 @@ public class EncryptionClass extends Activity {
 
 
     //encrypted files
-    class EncFile{
+    class EncFile {
         public String name;
         public String path;
         public long fileSize;
         public boolean ticked;
 
-        public EncFile(String name, String path, long fileSize, boolean ticked){
+        public EncFile(String name, String path, long fileSize, boolean ticked) {
             this.name = name;
             this.path = path;
             this.fileSize = fileSize;
             this.ticked = ticked;
         }
 
-        public void debug(){
-            Log.d("EncFile", "name: " + name + "\npath: " + path + "\nfilesize: " + (int)fileSize + "\nTicked: " + ticked + "\n");
+        public void debug() {
+            Log.d("EncFile", "name: " + name + "\npath: " + path + "\nfilesize: " + (int) fileSize + "\nTicked: " + ticked + "\n");
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.decrypt_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.decryptBtn:
+
+                return true;
+
+            case R.id.deleteBtn:
+
+                return true;
+
+            case R.id.shareit:
+                shareIt();
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 }

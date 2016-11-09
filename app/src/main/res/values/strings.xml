@@ -16,15 +16,16 @@
     <string name="title_activity_go_to_photo">goToPhoto</string>
 
     <!-- Strings related to login -->
-    <string name="Photo">photo button</string>
-    <string name="Video">video button</string>
-    <string name="Change_Icon">icon button</string>
-    <string name="Document">document button</string>
-    <string name="Encrypted_Files">Encrypted Files</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
+    <string name="audio">Audio</string>
+    <string name="document">Document</string>
+    <string name="encrypted_Files">Encrypted Files</string>
     <string name="title_activity_photo_folder">photoFolder</string>
     <string name="title_activity_video_folder">videoFolder</string>
     <string name="title_activity_icon_folder">iconFolder</string>
     <string name="title_activity_doc_folder">docFolder</string>
+    <string name="homepage">Homepage</string>
 
     <!-- Strings related to Question and Answer -->
     <string name="secret_question_prompt">Choose a secret question</string>
