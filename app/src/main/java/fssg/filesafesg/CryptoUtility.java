@@ -183,7 +183,6 @@ public class CryptoUtility extends Activity {
                     if (deleteAfterCipher){
                         if (fileIn != null && fileIn.exists())
                             fileIn.delete();
-                        Log.d("A","YEAHYEAH");
                         MediaScanner.deleteMedia(fileIn.getAbsolutePath(), thisActivity);
                     }
                 }
@@ -200,6 +199,12 @@ public class CryptoUtility extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
+            //read file after decrypting
+            //if (outNames.size() == 1){
+            //    Utility.openFile(getApplicationContext(), fileOut);
+            //}
+
+            //close this dialog
             thisActivity.finish();
             thisActivity = null;
 
