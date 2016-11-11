@@ -256,7 +256,8 @@ public class VideoFolder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
-//parse through files
+
+                //parse through files
                 ArrayList<String> innames = new ArrayList<String>();
                 ArrayList<String> targetPathDirs = new ArrayList<String>();
                 ArrayList<String> outnames = new ArrayList<String>();
@@ -278,9 +279,21 @@ public class VideoFolder extends AppCompatActivity {
                     }
                 }
 
+                //Do encryptions
+                if (innames.size() > 0) {
+                    Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+                    intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+                    intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+                    intent.putExtra(CryptoUtility.IN_NAMES, innames);
+                    intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+                    intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+                    startActivity(intent);
+                }
+
                 return true;
 
             case R.id.deleteBtn:
+
                 for (int i = 0; i < thumbnailsselection.size(); i++) {
                     boolean selected = thumbnailsselection.get(i);
                     if (selected) {
@@ -289,11 +302,11 @@ public class VideoFolder extends AppCompatActivity {
                         if (file != null && file.exists())
                             file.delete();
                         MediaScanner.deleteMedia(path, this);
+                        Log.d("VideoFolder", path);
                         if (imageAdapter != null)
                             imageAdapter.remove(i);
+                        i--;
                     }
-                    i--
-                    ;
                 }
                 return true;
 

@@ -185,66 +185,7 @@ public class PhotoFolder extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.encryptBtn:
-//parse through files
-                ArrayList<String> innames = new ArrayList<String>();
-                ArrayList<String> targetPathDirs = new ArrayList<String>();
-                ArrayList<String> outnames = new ArrayList<String>();
-                for (int i = 0; i < thumbnailsselection.size(); i++) {
-                    boolean selected = thumbnailsselection.get(i);
-                    if (selected) {
-                        String path = arrPath.get(i);
-                        File filein = new File(path);
-                        if (filein != null && filein.exists()){
 
-                            innames.add(path);
-                            targetPathDirs.add(Utility.getEncryptionDirectory());
-                            outnames.add(filein.getName() + ".fsg");
-
-                            if (imageAdapter != null)
-                                imageAdapter.remove(i);
-                            i--;
-                        }
-                    }
-                }
-
-                if (innames.size() > 0) {
-                    Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
-                    intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
-                    intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
-                    intent.putExtra(CryptoUtility.IN_NAMES, innames);
-                    intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
-                    intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-                    startActivity(intent);
-                }
-                return true;
-
-            case R.id.deleteBtn:
-                for (int i = 0; i < thumbnailsselection.size(); i++) {
-                    boolean selected = thumbnailsselection.get(i);
-                    if (selected) {
-                        String path = arrPath.get(i);
-                        File file = new File(path);
-                        if (file != null && file.exists())
-                            file.delete();
-                        MediaScanner.deleteMedia(path, this);
-                        if (imageAdapter != null)
-                            imageAdapter.remove(i);
-                    }
-                    i--
-                    ;
-                }
-                return true;
-
-            default:
-
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -315,6 +256,68 @@ public class PhotoFolder extends AppCompatActivity {
             holder.checkbox.setChecked(thumbnailsselection.get(position));
             holder.id = position;
             return convertView;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+//parse through files
+                ArrayList<String> innames = new ArrayList<String>();
+                ArrayList<String> targetPathDirs = new ArrayList<String>();
+                ArrayList<String> outnames = new ArrayList<String>();
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File filein = new File(path);
+                        if (filein != null && filein.exists()){
+
+                            innames.add(path);
+                            targetPathDirs.add(Utility.getEncryptionDirectory());
+                            outnames.add(filein.getName() + ".fsg");
+
+                            if (imageAdapter != null)
+                                imageAdapter.remove(i);
+                            i--;
+                        }
+                    }
+                }
+
+                if (innames.size() > 0) {
+                    Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+                    intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+                    intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+                    intent.putExtra(CryptoUtility.IN_NAMES, innames);
+                    intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+                    intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+                    startActivity(intent);
+                }
+                return true;
+
+            case R.id.deleteBtn:
+
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        Log.d("PhotoFolder", path);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }
