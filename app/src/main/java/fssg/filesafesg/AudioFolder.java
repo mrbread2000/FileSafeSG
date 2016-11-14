@@ -60,7 +60,7 @@ public class AudioFolder extends AppCompatActivity {
         arrPath = new ArrayList<>();
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
-        String mime[] = {"wav"};
+        String mime[] = {"mp3"};
         for (int j = 0; j < mime.length; j++) {
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mime[j]);
             String[] selectionArgsPdf = new String[]{mimeType};
