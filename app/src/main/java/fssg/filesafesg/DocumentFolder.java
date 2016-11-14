@@ -60,7 +60,7 @@ public class DocumentFolder extends AppCompatActivity {
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
 
-      String mime[] = {"pptx","ppt", "doc", "pdf", "txt", "xls"};
+      String mime[] = {"pdf", "txt", "xls", "doc", "ppt"};
         for (int j = 0; j < mime.length; j++) {
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mime[j]);
             String[] selectionArgsPdf = new String[]{mimeType};
