@@ -20,8 +20,8 @@
 
     <Button
         android:id="@+id/photos"
-        android:layout_height="115dp"
-        android:layout_width="115dp"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:layout_marginTop="15dp"
         android:background="@mipmap/pic_icon"
         android:layout_centerHorizontal="true"
@@ -29,8 +29,8 @@
 
     <Button
         android:id="@+id/videos"
-        android:layout_height="115dp"
-        android:layout_width="115dp"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:layout_marginTop="7dp"
         android:background="@mipmap/vid_icon"
         android:layout_below="@+id/photos"
@@ -38,8 +38,8 @@
 
     <Button
         android:id="@+id/audios"
-        android:layout_height="115dp"
-        android:layout_width="115dp"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:layout_marginTop="7dp"
         android:background="@mipmap/aud_icon"
         android:layout_below="@+id/videos"
@@ -47,22 +47,23 @@
 
     <Button
         android:id="@+id/documents"
-        android:layout_height="115dp"
-        android:layout_width="115dp"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:layout_marginTop="7dp"
         android:background="@mipmap/doc_icon"
         android:layout_below="@+id/audios"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Encrypted Files"
         android:id="@+id/encryptedfiles"
-        android:layout_height="70dp"
-        android:layout_width="250dp"
-        android:background="@android:color/background_light"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="56dp"
-        android:layout_marginEnd="56dp" />
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:layout_marginTop="40dp"
+
+        android:background="@mipmap/enc_icon"
+        android:layout_below="@+id/documents"
+        android:layout_centerHorizontal="true" />
+
+
+
 </RelativeLayout>
