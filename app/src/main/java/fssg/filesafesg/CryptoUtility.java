@@ -43,6 +43,7 @@ public class CryptoUtility extends Activity {
     public static final String IN_NAMES = "innames";
     public static final String OUT_NAMES = "outnames";
     public static final String TARGET_DIR_PATHS = "dirpaths";
+    public static final String PENDING_DELETION_INT = "pendingdeletionint";
 
     public static final int CRYPTO_FAILED = -77;
 
@@ -90,6 +91,7 @@ public class CryptoUtility extends Activity {
     private ArrayList<String> targetPathDirs;
     private ArrayList<String> inNames;
     private ArrayList<String> outNames;
+    private ArrayList<Integer> pendingDeletionArr;
     private String password = "defaultpasswordbad";
 
     private boolean isCrypting = false;
@@ -111,6 +113,7 @@ public class CryptoUtility extends Activity {
         inNames = extras.getStringArrayList(CryptoUtility.IN_NAMES);
         targetPathDirs = extras.getStringArrayList(CryptoUtility.TARGET_DIR_PATHS);
         outNames = extras.getStringArrayList(CryptoUtility.OUT_NAMES);
+        pendingDeletionArr = extras.getIntegerArrayList(CryptoUtility.PENDING_DELETION_INT);
 
         //user interaction with outside touch
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
@@ -127,6 +130,7 @@ public class CryptoUtility extends Activity {
         thisActivity = this;
         isCrypting = false;
         stopPrompted = false;
+        SharedPreference.pendingDeletionIntArray.clear();
 
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
@@ -204,71 +208,80 @@ public class CryptoUtility extends Activity {
                     String targetPathDir = targetPathDirs.get(i);
 
 
-                    fileIn = new File(inName);
-                    fileOut = new File(targetPathDir, outName);
+                    try {
+                        fileIn = new File(inName);
+                        fileOut = new File(targetPathDir, outName);
 
-                    FileInputStream stream_in = new FileInputStream(fileIn);
-                    byte[] byte_in = new byte[(int) fileIn.length()];
-                    stream_in.read(byte_in);
+                        FileInputStream stream_in = new FileInputStream(fileIn);
+                        byte[] byte_in = new byte[(int) fileIn.length()];
+                        stream_in.read(byte_in);
 
-                    //create directory
-                    File dr = new File(targetPathDir);
-                    if (!dr.exists()) {
-                        dr.mkdirs();
-                    }
+                        //create directory
+                        File dr = new File(targetPathDir);
+                        if (!dr.exists()) {
+                            dr.mkdirs();
+                        }
 
-                    //here, we will loop so that we can show progress
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(cipher.getOutputSize(byte_in.length));
-                    int offset = 0;
-                    while (offset + 1024 < byte_in.length) {
-                        final byte[] cipherout = cipher.update(byte_in, offset, 1024);
-                        //byte_out = Arrays.copyOf( byte_out, byte_out.length + 1024);
-                        //System.arraycopy(cipherout, 0, byte_out, offset, 1024);
-                        outputStream.write(cipherout);
-                        offset += 1024;
+                        //here, we will loop so that we can show progress
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(cipher.getOutputSize(byte_in.length));
+                        int offset = 0;
+                        while (offset + 1024 < byte_in.length) {
+                            final byte[] cipherout = cipher.update(byte_in, offset, 1024);
+                            //byte_out = Arrays.copyOf( byte_out, byte_out.length + 1024);
+                            //System.arraycopy(cipherout, 0, byte_out, offset, 1024);
+                            outputStream.write(cipherout);
+                            offset += 1024;
+
+                            //update progress bar
+                            totalProgress += 1024;
+                            publishProgress(totalProgress * 100 / totalFileSize);
+
+                            //If stop prompted, stop crypting
+                            if (stopPrompted) {
+                                success = false;
+                                break;
+                            }
+                        }
 
                         //update progress bar
-                        totalProgress += 1024;
+                        totalProgress = oldProgress + byte_in.length;
                         publishProgress(totalProgress * 100 / totalFileSize);
 
-                        //If stop prompted, stop crypting
-                        if (stopPrompted) {
-                            success = false;
-                            throw new Exception("Stop Prompted");
+                        //Write out
+                        outputStream.write(cipher.doFinal(byte_in, offset, byte_in.length - offset));
+                        byte[] byte_out = outputStream.toByteArray();
+                        outputStream.flush();
+
+                        //Once done, wrap up everything
+                        FileOutputStream stream_out = new FileOutputStream(fileOut);
+                        stream_out.write(byte_out);
+
+                        stream_in.close();
+                        stream_out.close();
+
+                        //Update the android cache
+                        if (!readAfterCipher)
+                            MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
+
+                        //Delete file afterward
+                        if (deleteAfterCipher) {
+                            //delete file physically
+                            if (fileIn != null && fileIn.exists())
+                                fileIn.delete();
+
+                            //delete cache file
+                            MediaScanner.deleteMedia(fileIn.getAbsolutePath(), thisActivity);
+
+                            //add to pending deletion list for other activity
+                            SharedPreference.pendingDeletionIntArray.add(pendingDeletionArr.get(i));
                         }
+                    } catch (BadPaddingException e){
+                        success = false;
+                    } catch (Exception e){
+                        success = false;
                     }
-
-                    //update progress bar
-                    totalProgress = oldProgress + byte_in.length;
-                    publishProgress(totalProgress * 100 / totalFileSize);
-
-                    //Write out
-                    outputStream.write(cipher.doFinal(byte_in, offset, byte_in.length - offset));
-                    byte[] byte_out = outputStream.toByteArray();
-                    outputStream.flush();
-
-                    //Once done, wrap up everything
-                    FileOutputStream stream_out = new FileOutputStream(fileOut);
-                    stream_out.write(byte_out);
-
-                    stream_in.close();
-                    stream_out.close();
-
-                    //Update the android cache
-                    if (!readAfterCipher)
-                        MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
-
-                    //Delete file afterward
-                    if (deleteAfterCipher) {
-                        if (fileIn != null && fileIn.exists())
-                            fileIn.delete();
-                        MediaScanner.deleteMedia(fileIn.getAbsolutePath(), thisActivity);
-                    }
-                    Log.d("Crypto", fileOut.getAbsolutePath());
                 }
 
-            } catch (BadPaddingException e){
-                success = false;
             } catch (Exception e){
                 success = false;
                 System.out.println("Error encrypting file:\n" + e);

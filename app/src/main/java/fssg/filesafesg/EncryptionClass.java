@@ -40,7 +40,8 @@ public class EncryptionClass extends Activity {
     private ArrayList<EncFile> arrEncFiles;
     private EncryptionAdapter encryptionAdapter;
 
-    private ArrayList<Integer> pendingDeletionArr;
+    private boolean singleDecryptionOnly = false;
+    private int pendingDelExpectedCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -162,20 +163,42 @@ public class EncryptionClass extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
             if(resultCode == CryptoUtility.CRYPTO_FAILED){
-                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
-                        "Decryption failed. Password input possibly wrong.",
-                        Snackbar.LENGTH_SHORT);
-                View view = snack.getView();
-                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextColor(Color.WHITE);
-                snack.show();
-            } else if (resultCode == RESULT_OK){
-                if (pendingDeletionArr != null) {
-                    while (pendingDeletionArr.size() > 0) {
-                        encryptionAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
-                    }
+                //snack the message
+                Snackbar snack = null;
+                if (SharedPreference.pendingDeletionIntArray.size() == 0 || singleDecryptionOnly){
+                    snack = Snackbar.make(findViewById(android.R.id.content),
+                            "Decryption failed. Password input possibly wrong.",
+                            Snackbar.LENGTH_SHORT);
+                } else {
+                    snack = Snackbar.make(findViewById(android.R.id.content),
+                            "Some of files are not decrypted. Password input possibly wrong.",
+                            Snackbar.LENGTH_SHORT);
                 }
+                if (snack != null) {
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
+                }
+
+            } else if (resultCode == RESULT_OK){
+                //snack the message
+                Snackbar snack = null;
+                if (pendingDelExpectedCount == SharedPreference.pendingDeletionIntArray.size()){
+                } else {
+                    snack = Snackbar.make(findViewById(android.R.id.content),
+                            "Some of files are not decrypted. Password input possibly wrong.",
+                            Snackbar.LENGTH_SHORT);
+                }
+                if (snack != null) {
+                    View view = snack.getView();
+                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
+                }
+
             } else if (resultCode == RESULT_CANCELED){
+                //snack the message
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Decryption has been interrupted.",
                         Snackbar.LENGTH_SHORT);
@@ -183,6 +206,15 @@ public class EncryptionClass extends Activity {
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextColor(Color.WHITE);
                 snack.show();
+
+            }
+
+            //clear from list
+            if (SharedPreference.pendingDeletionIntArray != null) {
+                while (SharedPreference.pendingDeletionIntArray.size() > 0) {
+                    encryptionAdapter.remove(SharedPreference.pendingDeletionIntArray.remove(SharedPreference.pendingDeletionIntArray.size() - 1));
+                }
+                SharedPreference.pendingDeletionIntArray.clear();
             }
         }
     }
@@ -215,7 +247,7 @@ public class EncryptionClass extends Activity {
         ArrayList<String> innames = new ArrayList<String>();
         ArrayList<String> targetPathDirs = new ArrayList<String>();
         ArrayList<String> outnames = new ArrayList<String>();
-        pendingDeletionArr = new ArrayList<Integer>();
+        ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
@@ -234,8 +266,11 @@ public class EncryptionClass extends Activity {
 
 
 
-        //Do encryptions
+        //Do decryptions
         if (innames.size() > 0) {
+            singleDecryptionOnly = false;
+            pendingDelExpectedCount = pendingDeletionArr.size();
+
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
@@ -243,6 +278,7 @@ public class EncryptionClass extends Activity {
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
             //startActivity(intent);
             startActivityForResult(intent, 77);
         }
@@ -259,7 +295,7 @@ public class EncryptionClass extends Activity {
         ArrayList<String> innames = new ArrayList<String>();
         ArrayList<String> targetPathDirs = new ArrayList<String>();
         ArrayList<String> outnames = new ArrayList<String>();
-        pendingDeletionArr = new ArrayList<Integer>(); //clear pending deletion
+        SharedPreference.pendingDeletionIntArray.clear();
 
         File filein = new File(ef.path);
         if (filein != null && filein.exists()) {
@@ -270,6 +306,9 @@ public class EncryptionClass extends Activity {
 
         //Do encryptions
         if (innames.size() > 0) {
+            singleDecryptionOnly = true;
+            pendingDelExpectedCount = -1;
+
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, false);

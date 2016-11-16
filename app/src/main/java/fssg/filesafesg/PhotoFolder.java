@@ -117,11 +117,23 @@ public class PhotoFolder extends Activity {
                 tv.setTextColor(Color.WHITE);
                 snack.show();
             } else if (resultCode == RESULT_OK){
-                if (pendingDeletionArr != null) {
-                    while (pendingDeletionArr.size() > 0) {
-                        imageAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
-                    }
+            } else if (resultCode == RESULT_CANCELED) {
+                //message interruption
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "Encryption has been interrupted.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
+            }
+
+            //remove from list
+            if (SharedPreference.pendingDeletionIntArray != null) {
+                while (SharedPreference.pendingDeletionIntArray.size() > 0) {
+                    imageAdapter.remove(SharedPreference.pendingDeletionIntArray.remove(SharedPreference.pendingDeletionIntArray.size() - 1));
                 }
+                SharedPreference.pendingDeletionIntArray.clear();
             }
         }
     }
@@ -186,6 +198,7 @@ public class PhotoFolder extends Activity {
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
             //startActivity(intent);
             startActivityForResult(intent,77);
         }

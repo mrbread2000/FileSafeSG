@@ -54,7 +54,7 @@ public class AudioFolder extends AppCompatActivity {
         arrPath = new ArrayList<>();
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
-        String mime[] = {"wav"};
+        String mime[] = {"mp3"};
         for (int j = 0; j < mime.length; j++) {
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mime[j]);
             String[] selectionArgsPdf = new String[]{mimeType};
@@ -109,6 +109,7 @@ public class AudioFolder extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
             if(resultCode == CryptoUtility.CRYPTO_FAILED){
+                //snack the message
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Encryption failed. There may be an issue with the file you are trying to encrypt.",
                         Snackbar.LENGTH_SHORT);
@@ -117,11 +118,23 @@ public class AudioFolder extends AppCompatActivity {
                 tv.setTextColor(Color.WHITE);
                 snack.show();
             } else if (resultCode == RESULT_OK){
-                if (pendingDeletionArr != null) {
-                    while (pendingDeletionArr.size() > 0) {
-                        imageAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
-                    }
+            } else if (resultCode == RESULT_CANCELED) {
+                //message interruption
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "Encryption has been interrupted.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
+
+            }
+            //remove from list
+            if (SharedPreference.pendingDeletionIntArray != null) {
+                while (SharedPreference.pendingDeletionIntArray.size() > 0) {
+                    imageAdapter.remove(SharedPreference.pendingDeletionIntArray.remove(SharedPreference.pendingDeletionIntArray.size() - 1));
                 }
+                SharedPreference.pendingDeletionIntArray.clear();
             }
         }
     }
@@ -168,7 +181,6 @@ public class AudioFolder extends AppCompatActivity {
                     pendingDeletionArr.add(i);
                 }
 
-
             }
         }
 
@@ -180,6 +192,7 @@ public class AudioFolder extends AppCompatActivity {
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
             startActivityForResult(intent,77);
         }
     }
