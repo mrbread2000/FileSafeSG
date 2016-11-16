@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -90,6 +92,8 @@ public class CryptoUtility extends Activity {
     private ArrayList<String> outNames;
     private String password = "defaultpasswordbad";
 
+    private boolean isCrypting = false;
+    private boolean stopPrompted = false;
     private int totalFileSize;
 
     private Activity thisActivity;
@@ -108,6 +112,10 @@ public class CryptoUtility extends Activity {
         targetPathDirs = extras.getStringArrayList(CryptoUtility.TARGET_DIR_PATHS);
         outNames = extras.getStringArrayList(CryptoUtility.OUT_NAMES);
 
+        //user interaction with outside touch
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+
+
         //Get total file size
         totalFileSize = 0;
         for (String str:inNames){
@@ -117,24 +125,50 @@ public class CryptoUtility extends Activity {
 
         //Misc
         thisActivity = this;
+        isCrypting = false;
+        stopPrompted = false;
 
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
-        Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
+        final Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
 
         btOkBtn.setOnClickListener(new View.OnClickListener() {
 
             //OK Button
             public void onClick(View v) {
 
-                //do encrypt/decrypt and show progress
-                password = etPassword.getText().toString();
-                new ProgressUIOperation().execute("");
+                if (isCrypting) {
+                    stopPrompted = true;
+                } else {
+                    //Flag as encrypting
+                    isCrypting = true;
+
+                    //hide UI
+                    etPassword.setVisibility(View.GONE);
+
+                    //change to cancel
+                    btOkBtn.setText("Stop");
+
+                    //do encrypt/decrypt and show progress
+                    password = etPassword.getText().toString();
+                    new ProgressUIOperation().execute("");
+                }
 
             }
         });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (!isCrypting) {
+            finish();
+            return true;
+        }
+
+        //return super.onTouchEvent(event);
+        return true;
+    }
 
     // Progress Bar Class =========================================================================
 
@@ -196,6 +230,12 @@ public class CryptoUtility extends Activity {
                         //update progress bar
                         totalProgress += 1024;
                         publishProgress(totalProgress * 100 / totalFileSize);
+
+                        //If stop prompted, stop crypting
+                        if (stopPrompted) {
+                            success = false;
+                            throw new Exception("Stop Prompted");
+                        }
                     }
 
                     //update progress bar
@@ -250,7 +290,10 @@ public class CryptoUtility extends Activity {
                 }
                 setResult(RESULT_OK, intent);
             } else {
-                setResult(CRYPTO_FAILED, intent);
+                if (stopPrompted)
+                    setResult(RESULT_CANCELED, intent);
+                else
+                    setResult(CRYPTO_FAILED, intent);
             }
 
             thisActivity.finish();

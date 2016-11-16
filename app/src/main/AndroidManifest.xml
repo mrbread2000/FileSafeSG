@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,6 +37,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             ></activity>
 
         <activity android:name=".CryptoUtility"
@@ -52,6 +56,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
            ></activity>
 
         <activity android:name=".DocumentFolder"
@@ -59,6 +65,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             ></activity>
 
         <activity android:name=".PhotoFolder"
@@ -66,6 +74,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
 
            ></activity>
 
@@ -74,6 +84,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
            ></activity>
 
         <activity android:name=".AudioFolder"
@@ -81,6 +93,8 @@
             android:finishOnTaskLaunch="true"
             android:clearTaskOnLaunch="true"
             android:launchMode="singleTask"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
            ></activity>
     </application>
 

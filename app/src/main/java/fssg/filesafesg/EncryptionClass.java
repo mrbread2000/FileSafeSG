@@ -175,6 +175,14 @@ public class EncryptionClass extends Activity {
                         encryptionAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
                     }
                 }
+            } else if (resultCode == RESULT_CANCELED){
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "Decryption has been cancelled.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
             }
         }
     }
