@@ -122,8 +122,14 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
 
+        //clear cache
+        Utility.trimCache(this);
 
     }
 

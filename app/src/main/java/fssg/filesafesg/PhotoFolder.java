@@ -12,12 +12,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ public class PhotoFolder extends Activity {
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
+
+    private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
     /**
      * Called when the activity is first created.
@@ -100,6 +105,26 @@ public class PhotoFolder extends Activity {
     }
     //======================================
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 77) {
+            if(resultCode == CryptoUtility.CRYPTO_FAILED){
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "Encryption failed. There may be an issue with the file you are trying to encrypt.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
+            } else if (resultCode == RESULT_OK){
+                if (pendingDeletionArr != null) {
+                    while (pendingDeletionArr.size() > 0) {
+                        imageAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
+                    }
+                }
+            }
+        }
+    }
     @Override
     public void onStart(){
         super.onStart();
@@ -134,6 +159,7 @@ public class PhotoFolder extends Activity {
         ArrayList<String> innames = new ArrayList<String>();
         ArrayList<String> targetPathDirs = new ArrayList<String>();
         ArrayList<String> outnames = new ArrayList<String>();
+        pendingDeletionArr.clear();
         for (int i = 0; i < thumbnailsselection.size(); i++) {
             boolean selected = thumbnailsselection.get(i);
             if (selected) {
@@ -145,9 +171,10 @@ public class PhotoFolder extends Activity {
                     targetPathDirs.add(Utility.getEncryptionDirectory());
                     outnames.add(filein.getName() + ".fsg");
 
-                    if (imageAdapter != null)
-                        imageAdapter.remove(i);
-                    i--;
+                    pendingDeletionArr.add(i);
+                    //if (imageAdapter != null)
+                    //    imageAdapter.remove(i);
+                    //i--;
                 }
             }
         }
@@ -159,7 +186,8 @@ public class PhotoFolder extends Activity {
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent,77);
         }
     }
 

@@ -3,11 +3,13 @@ package fssg.filesafesg;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +39,8 @@ public class EncryptionClass extends Activity {
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<EncFile> arrEncFiles;
     private EncryptionAdapter encryptionAdapter;
+
+    private ArrayList<Integer> pendingDeletionArr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -129,6 +133,11 @@ public class EncryptionClass extends Activity {
     @Override
     public void onResume(){
         super.onResume();
+
+        //clear cache
+        Utility.trimCache(this);
+
+        //back to main page
         if (wentToBackground)
             this.finish();
     }
@@ -147,6 +156,27 @@ public class EncryptionClass extends Activity {
     public void onStart(){
         super.onStart();
         //findViewById(R.id.encLoadingBar).setVisibility(View.GONE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 77) {
+            if(resultCode == CryptoUtility.CRYPTO_FAILED){
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "Decryption failed. Password input possibly wrong.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
+            } else if (resultCode == RESULT_OK){
+                if (pendingDeletionArr != null) {
+                    while (pendingDeletionArr.size() > 0) {
+                        encryptionAdapter.remove(pendingDeletionArr.remove(pendingDeletionArr.size() - 1));
+                    }
+                }
+            }
+        }
     }
 
     public void delete(View view) {
@@ -177,6 +207,7 @@ public class EncryptionClass extends Activity {
         ArrayList<String> innames = new ArrayList<String>();
         ArrayList<String> targetPathDirs = new ArrayList<String>();
         ArrayList<String> outnames = new ArrayList<String>();
+        pendingDeletionArr = new ArrayList<Integer>();
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
@@ -187,35 +218,59 @@ public class EncryptionClass extends Activity {
                     targetPathDirs.add(getFileFolderDirectory(ef.path));
                     outnames.add(filein.getName().replace(".fsg",""));
 
-                    encryptionAdapter.remove(i);
-                    i--;
-                    /*
-                    String targetPathDirs = getFileFolderDirectory(ef.path);
-                    String outname = filein.getName().replace(".fsg","");
-                    File fileout = new File(targetPathDirs, outname);
-                    Log.d("Decrypte", fileout.getAbsolutePath());
-                    try {
-                        CryptoUtility.decrypt("password", "salt", filein, fileout);
-                        //Utility.popupWindow(this, "Encryption Successful!");
-                    } catch (Exception e){
-                        System.out.println("Error encrypting file:\n" + e);
-                    }
-                    delete(view);
-                    MediaScanner.scanMedia(fileout.getAbsolutePath(), this);
-                    */
+                    //Add value to be deleted later after encryption is success
+                    pendingDeletionArr.add(i);
                 }
             }
         }
+
+
 
         //Do encryptions
         if (innames.size() > 0) {
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+            intent.putExtra(CryptoUtility.READ_AFTER_CIPHER, false);
             intent.putExtra(CryptoUtility.IN_NAMES, innames);
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 77);
+        }
+    }
+
+
+    public void decrypt(EncFile ef) {
+        if (ef == null) {
+            Log.d("Error", "Null value passed");
+            return;
+        }
+
+        //parse through files
+        ArrayList<String> innames = new ArrayList<String>();
+        ArrayList<String> targetPathDirs = new ArrayList<String>();
+        ArrayList<String> outnames = new ArrayList<String>();
+        pendingDeletionArr = new ArrayList<Integer>(); //clear pending deletion
+
+        File filein = new File(ef.path);
+        if (filein != null && filein.exists()) {
+            innames.add(ef.path);
+            targetPathDirs.add(getApplicationContext().getExternalCacheDir().getAbsolutePath());
+            outnames.add(filein.getName().replace(".fsg", ""));
+        }
+
+        //Do encryptions
+        if (innames.size() > 0) {
+            Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+            intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
+            intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, false);
+            intent.putExtra(CryptoUtility.READ_AFTER_CIPHER, true);
+            intent.putExtra(CryptoUtility.IN_NAMES, innames);
+            intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+            intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+            //startActivity(intent);
+            startActivityForResult(intent, 77);
         }
     }
 
@@ -267,6 +322,7 @@ public class EncryptionClass extends Activity {
             TextView tvEncName;
             TextView tvEncFileSize;
             CheckBox checkbox;
+            Button btnView;
             int id;
 
         }
@@ -301,6 +357,8 @@ public class EncryptionClass extends Activity {
                 viewHolder.tvEncFileSize = (TextView) convertView.findViewById(R.id.encFileSize);
                 viewHolder.checkbox = (CheckBox) convertView.findViewById(R.id.encCheckBox);
                 viewHolder.checkbox.setTag(ef);
+                viewHolder.btnView = (Button) convertView.findViewById(R.id.encViewBtn);
+                viewHolder.btnView.setTag(ef);
 
                 //checkbox event listener
                 viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
@@ -319,6 +377,17 @@ public class EncryptionClass extends Activity {
                     }
                 });
 
+                //View Button listener
+                viewHolder.btnView.setOnClickListener(new View.OnClickListener() {
+
+                    //Checkbox
+                    public void onClick(View v) {
+                        Button cb = (Button) v;
+                        EncFile soclef = (EncFile) v.getTag();
+                        decrypt(soclef);
+                    }
+                });
+
                 // Cache the viewHolder object inside the fresh view
                 convertView.setTag(viewHolder);
             } else {
@@ -331,7 +400,7 @@ public class EncryptionClass extends Activity {
             // Populate the data into the template view using the data object
             viewHolder.tvEncName.setText(ef.name);
             //int fs = Ints.checkedCast(ef.fileSize);
-            viewHolder.tvEncFileSize.setText("placeholder");
+            viewHolder.tvEncFileSize.setText("");
             //update checkbox
             viewHolder.checkbox.setChecked(ef.ticked);
 

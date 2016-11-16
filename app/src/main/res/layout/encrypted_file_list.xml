@@ -3,21 +3,33 @@
 
 <!-- Main -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/encName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name" />
-        <TextView
-            android:id="@+id/encFileSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Size" />
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1">
         <CheckBox
             android:id="@+id/encCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/encName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:layout_weight="0.90" />
+
+        <TextView
+            android:id="@+id/encFileSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.10"
+            android:gravity="right"
+            android:text="Size" />
+        <Button
+            android:id="@+id/encViewBtn"
+            android:text="View"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
             />
 </LinearLayout>
