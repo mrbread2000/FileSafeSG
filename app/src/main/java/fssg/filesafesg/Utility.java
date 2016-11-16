@@ -191,4 +191,33 @@ public class Utility {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public static void trimCache(Context context) {
+        Log.d("Utility", "Trimming cache...");
+
+        try {
+            File dir = context.getExternalCacheDir();
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+            }
+        } catch (Exception e) {
+            Log.d("Utility", e.toString());
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                File f = new File(dir, children[i]);
+                boolean success = deleteDir(f);
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
 }

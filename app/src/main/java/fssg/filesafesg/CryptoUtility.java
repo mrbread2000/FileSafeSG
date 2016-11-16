@@ -5,8 +5,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,13 +32,17 @@ import javax.crypto.spec.SecretKeySpec;
 public class CryptoUtility extends Activity {
     //public static final byte[] IV = { 65, 1, 2, 23, 4, 5, 6, 7, 32, 21, 10, 11, 12, 13, 84, 45 };
     public static final byte[] IV = { 35, 7, 22, 26, 12, 22, 1, 4, 22, 55, 45, 63, 77, 32, 32, 23 };
+    public static final String SALTY = "WHbIOOewmz0MRm4V";
 
     //used to pass value via intent/bundle's Extras
     public static final String CIPHER_MODE = "ciphermode";
-    public static final String DELETE_AFTER_CIPHER = "deleteafterencrypt";
+    public static final String DELETE_AFTER_CIPHER = "deleteaftercipher";
+    public static final String READ_AFTER_CIPHER = "readaftercipher";
     public static final String IN_NAMES = "innames";
     public static final String OUT_NAMES = "outnames";
     public static final String TARGET_DIR_PATHS = "dirpaths";
+
+    public static final int CRYPTO_FAILED = -77;
 
 
     public static void encrypt(String password, String salt, File filein, File fileout) throws Exception{
@@ -72,9 +84,11 @@ public class CryptoUtility extends Activity {
     private File fileIn;
     private File fileOut;
     private boolean deleteAfterCipher;
+    private boolean readAfterCipher;
     private ArrayList<String> targetPathDirs;
     private ArrayList<String> inNames;
     private ArrayList<String> outNames;
+    private String password = "defaultpasswordbad";
 
     private int totalFileSize;
 
@@ -88,6 +102,7 @@ public class CryptoUtility extends Activity {
         //get data
         Bundle extras = getIntent().getExtras();
         cipherMode = extras.getInt(CryptoUtility.CIPHER_MODE);
+        readAfterCipher = extras.getBoolean(CryptoUtility.READ_AFTER_CIPHER);
         deleteAfterCipher = extras.getBoolean(CryptoUtility.DELETE_AFTER_CIPHER);
         inNames = extras.getStringArrayList(CryptoUtility.IN_NAMES);
         targetPathDirs = extras.getStringArrayList(CryptoUtility.TARGET_DIR_PATHS);
@@ -103,8 +118,21 @@ public class CryptoUtility extends Activity {
         //Misc
         thisActivity = this;
 
-        //do encrypt/decrypt and show progress
-        new ProgressUIOperation().execute("");
+        //Layout Functions
+        final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
+        Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
+
+        btOkBtn.setOnClickListener(new View.OnClickListener() {
+
+            //OK Button
+            public void onClick(View v) {
+
+                //do encrypt/decrypt and show progress
+                password = etPassword.getText().toString();
+                new ProgressUIOperation().execute("");
+
+            }
+        });
     }
 
 
@@ -112,23 +140,26 @@ public class CryptoUtility extends Activity {
 
     private class ProgressUIOperation extends AsyncTask<String, Integer, String> {
 
+        private boolean success = false;
+
         @Override
         protected String doInBackground(String... params) {
 
+            success = true;
             try {
                 //initialize secret key and cipher method
                 SecretKeyFactory skfactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-                KeySpec spec = new PBEKeySpec("password".toCharArray(), "salt".getBytes("UTF-8"), 5000, 256);
+                KeySpec spec = new PBEKeySpec(password.toCharArray(), SALTY.getBytes("UTF-8"), 5000, 256);
                 SecretKey tmp = skfactory.generateSecret(spec);
-                SecretKey secretkey = new SecretKeySpec(tmp.getEncoded(),"AES");
+                SecretKey secretkey = new SecretKeySpec(tmp.getEncoded(), "AES");
                 Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-                cipher.init(cipherMode,secretkey, new IvParameterSpec(IV));
+                cipher.init(cipherMode, secretkey, new IvParameterSpec(IV));
 
                 //Also initialize total bytes to be processed for Progress Bar UI
                 int totalProgress = 0;
 
                 //encrypt/decrypt file
-                for (int i = 0; i < inNames.size(); i++){
+                for (int i = 0; i < inNames.size(); i++) {
 
                     //for progress bar accuracy
                     int oldProgress = totalProgress;
@@ -138,6 +169,7 @@ public class CryptoUtility extends Activity {
                     String outName = outNames.get(i);
                     String targetPathDir = targetPathDirs.get(i);
 
+
                     fileIn = new File(inName);
                     fileOut = new File(targetPathDir, outName);
 
@@ -145,10 +177,16 @@ public class CryptoUtility extends Activity {
                     byte[] byte_in = new byte[(int) fileIn.length()];
                     stream_in.read(byte_in);
 
+                    //create directory
+                    File dr = new File(targetPathDir);
+                    if (!dr.exists()) {
+                        dr.mkdirs();
+                    }
+
                     //here, we will loop so that we can show progress
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream(cipher.getOutputSize(byte_in.length));
                     int offset = 0;
-                    while(offset + 1024 < byte_in.length) {
+                    while (offset + 1024 < byte_in.length) {
                         final byte[] cipherout = cipher.update(byte_in, offset, 1024);
                         //byte_out = Arrays.copyOf( byte_out, byte_out.length + 1024);
                         //System.arraycopy(cipherout, 0, byte_out, offset, 1024);
@@ -177,20 +215,24 @@ public class CryptoUtility extends Activity {
                     stream_out.close();
 
                     //Update the android cache
-                    MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
+                    if (!readAfterCipher)
+                        MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
 
                     //Delete file afterward
-                    if (deleteAfterCipher){
+                    if (deleteAfterCipher) {
                         if (fileIn != null && fileIn.exists())
                             fileIn.delete();
                         MediaScanner.deleteMedia(fileIn.getAbsolutePath(), thisActivity);
                     }
+                    Log.d("Crypto", fileOut.getAbsolutePath());
                 }
 
+            } catch (BadPaddingException e){
+                success = false;
             } catch (Exception e){
+                success = false;
                 System.out.println("Error encrypting file:\n" + e);
             }
-
 
             return "Completed";
         }
@@ -199,27 +241,33 @@ public class CryptoUtility extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
-            //read file after decrypting
-            //if (outNames.size() == 1){
-            //    Utility.openFile(getApplicationContext(), fileOut);
-            //}
+            Intent intent = new Intent();
 
-            //close this dialog
+            if (success){
+                //read file after decrypting
+                if (readAfterCipher){
+                    Utility.openFile(getApplicationContext(), fileOut);
+                }
+                setResult(RESULT_OK, intent);
+            } else {
+                setResult(CRYPTO_FAILED, intent);
+            }
+
             thisActivity.finish();
             thisActivity = null;
-
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected void onPreExecute() { super.onPreExecute();}
 
+        private ProgressBar pb;
         @Override
         protected void onProgressUpdate(Integer... values) {
-            ProgressBar pb = (ProgressBar) findViewById(R.id.crypto_progressUI);
+            if (pb == null)
+                pb = (ProgressBar) findViewById(R.id.crypto_progressUI);
             pb.setProgress(values[0]);
         }
+
     }
 
 
