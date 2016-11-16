@@ -177,7 +177,7 @@ public class EncryptionClass extends Activity {
                 }
             } else if (resultCode == RESULT_CANCELED){
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
-                        "Decryption has been cancelled.",
+                        "Decryption has been interrupted.",
                         Snackbar.LENGTH_SHORT);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
