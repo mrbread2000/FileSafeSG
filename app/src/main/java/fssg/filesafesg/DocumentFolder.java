@@ -15,8 +15,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -40,6 +43,7 @@ public class DocumentFolder extends AppCompatActivity {
     private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
+    private Toolbar toolbar;
 
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
@@ -47,6 +51,12 @@ public class DocumentFolder extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_documents);
+        setTitle(R.string.title_activity_doc_folder);
+
+        toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         String selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?";
         Uri uri = MediaStore.Files.getContentUri("external");
         // BaseColumns.DATA
@@ -333,6 +343,76 @@ public class DocumentFolder extends AppCompatActivity {
         TextView textView;
         CheckBox checkbox;
         int id;
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.aud_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.encryptBtn:
+
+                //parse through files
+                ArrayList<String> innames = new ArrayList<String>();
+                ArrayList<String> targetPathDirs = new ArrayList<String>();
+                ArrayList<String> outnames = new ArrayList<String>();
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File filein = new File(path);
+                        if (filein != null && filein.exists()) {
+
+                            innames.add(path);
+                            targetPathDirs.add(Utility.getEncryptionDirectory());
+                            outnames.add(filein.getName() + ".fsg");
+
+                            if (imageAdapter != null)
+                                imageAdapter.remove(i);
+                            i--;
+                        }
+                    }
+                }
+
+                //Do encryptions
+                if (innames.size() > 0) {
+                    Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
+                    intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.ENCRYPT_MODE);
+                    intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+                    intent.putExtra(CryptoUtility.IN_NAMES, innames);
+                    intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
+                    intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
+                    startActivity(intent);
+                }
+
+                return true;
+
+            case R.id.deleteBtn:
+
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        Log.d("DocFolder", path);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
 
