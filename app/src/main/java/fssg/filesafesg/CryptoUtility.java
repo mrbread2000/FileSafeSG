@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -213,7 +214,11 @@ public class CryptoUtility extends Activity {
                         fileOut = new File(targetPathDir, outName);
 
                         FileInputStream stream_in = new FileInputStream(fileIn);
-                        byte[] byte_in = new byte[(int) fileIn.length()];
+                        FileOutputStream stream_out = new FileOutputStream(fileOut);
+                        int blockSize = cipher.getBlockSize();
+                        int outputSize = cipher.getOutputSize(blockSize);
+                        byte[] byte_in = new byte[blockSize * 1024];
+                        byte[] byte_out = new byte[outputSize * 1024];
                         stream_in.read(byte_in);
 
                         //create directory
@@ -223,17 +228,22 @@ public class CryptoUtility extends Activity {
                         }
 
                         //here, we will loop so that we can show progress
-                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(cipher.getOutputSize(byte_in.length));
-                        int offset = 0;
-                        while (offset + 1024 < byte_in.length) {
-                            final byte[] cipherout = cipher.update(byte_in, offset, 1024);
-                            //byte_out = Arrays.copyOf( byte_out, byte_out.length + 1024);
-                            //System.arraycopy(cipherout, 0, byte_out, offset, 1024);
-                            outputStream.write(cipherout);
-                            offset += 1024;
+                        BufferedInputStream inStream = new BufferedInputStream(stream_in);
+                        int inLength = 0;
+                        boolean more = true;
+                        while (more) {
+                            inLength = inStream.read(byte_in);
+                            if (inLength/1024 == blockSize)
+                            {
+                                int outLength
+                                        = cipher.update(byte_in, 0, blockSize*1024, byte_out);
+                                stream_out.write(byte_out, 0, outLength);
+
+                            }
+                            else more = false;
 
                             //update progress bar
-                            totalProgress += 1024;
+                            totalProgress += blockSize*1024;
                             publishProgress(totalProgress * 100 / totalFileSize);
 
                             //If stop prompted, stop crypting
@@ -243,19 +253,23 @@ public class CryptoUtility extends Activity {
                             }
                         }
 
+                        //Write out
+                        if (success){
+                            if (inLength > 0)
+                                byte_out = cipher.doFinal(byte_in, 0, inLength);
+                            else
+                                byte_out = cipher.doFinal();
+                            stream_out.write(byte_out);
+                        } else {
+                            fileOut.delete();
+                            return "failed";
+                        }
+
                         //update progress bar
                         totalProgress = oldProgress + byte_in.length;
                         publishProgress(totalProgress * 100 / totalFileSize);
 
-                        //Write out
-                        outputStream.write(cipher.doFinal(byte_in, offset, byte_in.length - offset));
-                        byte[] byte_out = outputStream.toByteArray();
-                        outputStream.flush();
-
                         //Once done, wrap up everything
-                        FileOutputStream stream_out = new FileOutputStream(fileOut);
-                        stream_out.write(byte_out);
-
                         stream_in.close();
                         stream_out.close();
 
