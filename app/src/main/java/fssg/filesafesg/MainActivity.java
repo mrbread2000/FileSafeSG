@@ -28,12 +28,14 @@ public class MainActivity extends AppCompatActivity  {
 
 
         setContentView(R.layout.activity_main);
-        setTitle(R.string.title_activity_homepage);
+        setTitle(R.string.app_name);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setSubtitle("You Provide, We Protect");
 
-        audios = (Button) findViewById(R.id.audios);
+
+                audios = (Button) findViewById(R.id.audios);
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);

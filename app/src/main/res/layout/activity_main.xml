@@ -3,29 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@color/bgcolor"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
 
     tools:context="fssg.filesafesg.MainActivity">
-
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar"
         />
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    >
 
     <Button
         android:id="@+id/photos"
         android:layout_height="100dp"
         android:layout_width="100dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="60dp"
         android:background="@mipmap/pic_icon"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/app_bar"/>
+
+        />
 
     <Button
         android:id="@+id/videos"
@@ -33,8 +32,7 @@
         android:layout_width="100dp"
         android:layout_marginTop="7dp"
         android:background="@mipmap/vid_icon"
-        android:layout_below="@+id/photos"
-        android:layout_centerHorizontal="true" />
+       />
 
     <Button
         android:id="@+id/audios"
@@ -65,5 +63,5 @@
         android:layout_centerHorizontal="true" />
 
 
-
+</LinearLayout>
 </RelativeLayout>

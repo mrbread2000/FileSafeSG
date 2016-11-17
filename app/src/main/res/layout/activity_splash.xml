@@ -5,16 +5,15 @@
     android:id="@+id/activity_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Splash">
 
     <ImageView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:src="@mipmap/s_image"
+        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:src="@mipmap/ic_launcherfinal"
         android:id="@+id/imageView"
-        android:scaleType="fitCenter"
-        android:contentDescription="intro"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+       />
 </RelativeLayout>
