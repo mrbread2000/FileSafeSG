@@ -124,7 +124,7 @@ public class CryptoUtility extends Activity {
         totalFileSize = 0;
         for (String str:inNames){
             File f = new File(str);
-            totalFileSize += f.length();
+            totalFileSize += f.length() / 1024;
         }
 
         //Misc
@@ -219,7 +219,7 @@ public class CryptoUtility extends Activity {
                         int outputSize = cipher.getOutputSize(blockSize);
                         byte[] byte_in = new byte[blockSize * 1024];
                         byte[] byte_out = new byte[outputSize * 1024];
-                        stream_in.read(byte_in);
+                        //stream_in.read(byte_in);
 
                         //create directory
                         File dr = new File(targetPathDir);
@@ -243,7 +243,7 @@ public class CryptoUtility extends Activity {
                             else more = false;
 
                             //update progress bar
-                            totalProgress += blockSize*1024;
+                            totalProgress += inLength / 1024;
                             publishProgress(totalProgress * 100 / totalFileSize);
 
                             //If stop prompted, stop crypting
@@ -254,24 +254,23 @@ public class CryptoUtility extends Activity {
                         }
 
                         //Write out
+                        stream_in.close();
                         if (success){
                             if (inLength > 0)
                                 byte_out = cipher.doFinal(byte_in, 0, inLength);
                             else
                                 byte_out = cipher.doFinal();
                             stream_out.write(byte_out);
+                            stream_out.close();
                         } else {
                             fileOut.delete();
+                            stream_out.close();
                             return "failed";
                         }
 
                         //update progress bar
-                        totalProgress = oldProgress + byte_in.length;
-                        publishProgress(totalProgress * 100 / totalFileSize);
-
-                        //Once done, wrap up everything
-                        stream_in.close();
-                        stream_out.close();
+                        //totalProgress = oldProgress + byte_in.length;
+                        //publishProgress(totalProgress * 100 / totalFileSize);
 
                         //Update the android cache
                         if (!readAfterCipher)
