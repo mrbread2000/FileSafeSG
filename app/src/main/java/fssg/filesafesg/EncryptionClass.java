@@ -401,6 +401,7 @@ public class EncryptionClass extends AppCompatActivity {
                 ArrayList<String> innames = new ArrayList<String>();
                 ArrayList<String> targetPathDirs = new ArrayList<String>();
                 ArrayList<String> outnames = new ArrayList<String>();
+                ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
                 for (int i = 0; i < arrEncFiles.size(); i++) {
                     EncFile ef = arrEncFiles.get(i);
                     if (ef.ticked) {
@@ -411,47 +412,56 @@ public class EncryptionClass extends AppCompatActivity {
                             targetPathDirs.add(getFileFolderDirectory(ef.path));
                             outnames.add(filein.getName().replace(".fsg", ""));
 
-                            encryptionAdapter.remove(i);
-                            i--;
+                            //Add value to be deleted later after encryption is success
+                            pendingDeletionArr.add(i);
                         }
                     }
                 }
 
-                //Do encryptions
+
+
+                //Do decryptions
                 if (innames.size() > 0) {
+                    singleDecryptionOnly = false;
+                    pendingDelExpectedCount = pendingDeletionArr.size();
+
                     Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
                     intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
                     intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
+                    intent.putExtra(CryptoUtility.READ_AFTER_CIPHER, false);
                     intent.putExtra(CryptoUtility.IN_NAMES, innames);
                     intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-                    startActivity(intent);
+                    intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
+                    //startActivity(intent);
+                    startActivityForResult(intent, 77);
+
+
+                    return true;
                 }
+                    case R.id.deleteBtn:
+                        for (int i = 0; i < arrEncFiles.size(); i++) {
+                            EncFile ef = arrEncFiles.get(i);
+                            if (ef.ticked) {
+                                File file = new File(ef.path);
+                                if (file != null && file.exists())
+                                    file.delete();
+                                MediaScanner.deleteMedia(ef.path, this);
+                                encryptionAdapter.remove(i);
+                                i--;
+                            }
+                        }
+                        return true;
+                    case R.id.shareit:
+                        shareIt();
+                        return true;
+                    default:
 
+                        return super.onOptionsItemSelected(item);
 
-                return true;
-
-            case R.id.deleteBtn:
-                for (int i = 0; i < arrEncFiles.size(); i++) {
-                    EncFile ef = arrEncFiles.get(i);
-                    if (ef.ticked) {
-                        File file = new File(ef.path);
-                        if (file != null && file.exists())
-                            file.delete();
-                        MediaScanner.deleteMedia(ef.path, this);
-                        encryptionAdapter.remove(i);
-                        i--;
-                    }
-                }
-                return true;
-            case R.id.shareit:
-                shareIt();
-                return true;
-            default:
-
-                return super.onOptionsItemSelected(item);
 
         }
+
     }
 
     public class EncryptionAdapter extends ArrayAdapter<EncFile> {

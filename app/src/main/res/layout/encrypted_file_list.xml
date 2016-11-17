@@ -10,6 +10,7 @@
             android:id="@+id/encCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/checkBoxStyle"
             />
         <TextView
             android:id="@+id/encName"
@@ -27,9 +28,10 @@
             android:text="Size" />
         <Button
             android:id="@+id/encViewBtn"
-            android:text="View"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="@drawable/view_icon"
+            android:layout_width="55dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="15dp"
             android:gravity="right"
             />
 </LinearLayout>

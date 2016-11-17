@@ -310,24 +310,26 @@ public class PhotoFolder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
-//parse through files
-                ArrayList<String> innames = new ArrayList<String>();
-                ArrayList<String> targetPathDirs = new ArrayList<String>();
-                ArrayList<String> outnames = new ArrayList<String>();
-                for (int i = 0; i < thumbnailsselection.size(); i++) {
-                    boolean selected = thumbnailsselection.get(i);
-                    if (selected) {
-                        String path = arrPath.get(i);
-                        File filein = new File(path);
-                        if (filein != null && filein.exists()){
+                                    //parse through files
+                                    ArrayList<String> innames = new ArrayList<String>();
+                            ArrayList<String> targetPathDirs = new ArrayList<String>();
+                            ArrayList<String> outnames = new ArrayList<String>();
+                            pendingDeletionArr.clear();
+                            for (int i = 0; i < thumbnailsselection.size(); i++) {
+                                boolean selected = thumbnailsselection.get(i);
+                                if (selected) {
+                                    String path = arrPath.get(i);
+                                    File filein = new File(path);
+                                    if (filein != null && filein.exists()){
 
-                            innames.add(path);
-                            targetPathDirs.add(Utility.getEncryptionDirectory());
+                                        innames.add(path);
+                                        targetPathDirs.add(Utility.getEncryptionDirectory());
                             outnames.add(filein.getName() + ".fsg");
 
-                            if (imageAdapter != null)
-                                imageAdapter.remove(i);
-                            i--;
+                            pendingDeletionArr.add(i);
+                            //if (imageAdapter != null)
+                            //    imageAdapter.remove(i);
+                            //i--;
                         }
                     }
                 }
@@ -339,7 +341,9 @@ public class PhotoFolder extends AppCompatActivity {
                     intent.putExtra(CryptoUtility.IN_NAMES, innames);
                     intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-                    startActivity(intent);
+                    intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
+                    //startActivity(intent);
+                    startActivityForResult(intent,77);
                 }
                 return true;
 

@@ -6,10 +6,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemCheckBox"
+        android:theme="@style/checkBoxStyle"
         />
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="12dp"
         android:layout_marginLeft="6dp"
         android:layout_marginStart="6dp"
         android:id="@+id/documents"/>
