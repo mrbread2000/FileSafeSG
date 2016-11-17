@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -86,6 +87,10 @@ public class DocumentFolder extends AppCompatActivity {
         imageAdapter = new ImageAdapter();
         docList.setAdapter(imageAdapter);
 
+
+        //hide button lazy way
+        Button b = (Button) findViewById(R.id.encryptBtn);
+        b.setVisibility(View.GONE);
 
     }
 

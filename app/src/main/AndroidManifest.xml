@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcherfinal"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -27,7 +27,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
 
             </intent-filter>
         </activity>
@@ -58,6 +58,7 @@
             android:launchMode="singleTask"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
            ></activity>
 
         <activity android:name=".DocumentFolder"
@@ -67,6 +68,7 @@
             android:launchMode="singleTask"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
             ></activity>
 
         <activity android:name=".PhotoFolder"
@@ -76,6 +78,7 @@
             android:launchMode="singleTask"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
 
            ></activity>
 
@@ -86,6 +89,7 @@
             android:launchMode="singleTask"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
            ></activity>
 
         <activity android:name=".AudioFolder"
@@ -95,7 +99,17 @@
             android:launchMode="singleTask"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"
            ></activity>
+
+        <activity android:name=".Splash"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

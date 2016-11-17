@@ -27,6 +27,7 @@
     <string name="title_activity_audio_folder">Audio Folder</string>
     <string name="title_activity_homepage">Homepage</string>
     <string name="title_activity_decrypt_folder">Decrypted Folder</string>
+    <string name="title_dialog_crypto">Input Password</string>
 
 
 

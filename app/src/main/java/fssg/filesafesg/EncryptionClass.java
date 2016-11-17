@@ -91,6 +91,14 @@ public class EncryptionClass extends AppCompatActivity {
                 shareIt();
             }
         });
+
+
+        //hide button lazy way
+        btn_share.setVisibility(View.GONE);
+        Button b = (Button) findViewById(R.id.decryptBtn);
+        b.setVisibility(View.GONE);
+        b = (Button) findViewById(R.id.deleteBtn);
+        b.setVisibility(View.GONE);
     }
 
     private void shareIt() {

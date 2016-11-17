@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -87,6 +88,10 @@ public class PhotoFolder extends AppCompatActivity {
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
+
+        //hide button lazy way
+        Button b = (Button) findViewById(R.id.encryptBtn);
+        b.setVisibility(View.GONE);
     }
 
 

@@ -104,6 +104,7 @@ public class CryptoUtility extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto);
+        setTitle(R.string.title_dialog_crypto);
 
         //get data
         Bundle extras = getIntent().getExtras();
