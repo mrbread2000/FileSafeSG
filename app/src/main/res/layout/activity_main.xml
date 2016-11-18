@@ -123,13 +123,13 @@
 
 
         <Button
-            android:id="@+id/encryptedfiles"
-            android:layout_width="206dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:layout_gravity="center"
+        android:id="@+id/encryptedfiles"
+        android:layout_width="@dimen/icon_w"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
 
-            android:background="@mipmap/enc_icon" />
+        android:background="@mipmap/enc_icon" />
 
 
     </LinearLayout>
