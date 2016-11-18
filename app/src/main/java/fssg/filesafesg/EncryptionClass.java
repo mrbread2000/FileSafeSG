@@ -102,25 +102,27 @@ public class EncryptionClass extends AppCompatActivity {
     }
 
     private void shareIt() {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         if (arrEncFiles == null)
             return;
+
+        ArrayList<Uri> files = new ArrayList<Uri>();
         for (int i = 0; i < arrEncFiles.size(); i++) {
             EncFile ef = arrEncFiles.get(i);
             if (ef.ticked) {
                 File file = new File(ef.path);
-                if (file != null && file.exists())
-
-
-                    //email-sharing
-                    sharingIntent.setType("*/*");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{""});
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "sending encrypted file ");
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                if (file != null && file.exists()) {
+                    files.add(Uri.fromFile(file));
+                }
             }
         }
 
+        //email-sharing
+        sharingIntent.setType("*/*");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{""});
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "sending encrypted file ");
+        sharingIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
 
     }
 
