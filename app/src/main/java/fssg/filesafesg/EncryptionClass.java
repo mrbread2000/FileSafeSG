@@ -53,7 +53,7 @@ public class EncryptionClass extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encryption_class);
-        setTitle(R.string.title_activity_decrypt_folder);
+        setTitle(R.string.title_activity_encrypt_folder);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
