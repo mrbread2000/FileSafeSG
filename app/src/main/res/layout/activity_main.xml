@@ -6,62 +6,139 @@
     android:background="@color/bgcolor"
 
     tools:context="fssg.filesafesg.MainActivity">
+
     <include
         android:id="@+id/app_bar"
-        layout="@layout/app_bar"
-        />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_centerHorizontal="true"
-    >
+        layout="@layout/app_bar" />
 
     <Button
         android:id="@+id/photos"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/app_bar"
+
+
         android:background="@mipmap/pic_icon"
 
         />
 
-    <Button
-        android:id="@+id/videos"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        android:layout_marginTop="7dp"
-        android:background="@mipmap/vid_icon"
-       />
+
 
     <Button
-        android:id="@+id/audios"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        android:layout_marginTop="7dp"
-        android:background="@mipmap/aud_icon"
-        android:layout_below="@+id/videos"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/videos"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/app_bar"
+
+        android:background="@mipmap/vid_icon"
+
+        />
+
 
     <Button
         android:id="@+id/documents"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        android:layout_marginTop="7dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/encryptedfiles"
+
         android:background="@mipmap/doc_icon"
-        android:layout_below="@+id/audios"
-        android:layout_centerHorizontal="true" />
+
+        />
+
+    <Button
+        android:id="@+id/audios"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/encryptedfiles"
+
+        android:background="@mipmap/aud_icon" />
 
     <Button
         android:id="@+id/encryptedfiles"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
-        android:layout_marginTop="40dp"
-
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_below="@+id/photos"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="21dp"
         android:background="@mipmap/enc_icon"
+
+        />
+
+
+    <TextView
+        android:text="@string/title_activity_photo_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/photos"
+        android:gravity="center"
+        android:layout_alignRight="@id/photos"
+        android:layout_alignLeft="@id/photos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:text="@string/title_activity_video_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/videos"
+        android:gravity="center"
+        android:layout_alignRight="@id/videos"
+        android:layout_alignLeft="@id/videos"
+
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textView2" />
+
+
+    <TextView
+        android:text="@string/title_activity_audio_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/audios"
+        android:gravity="center"
+        android:layout_alignRight="@id/audios"
+        android:layout_alignLeft="@id/audios"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textView3" />
+
+
+    <TextView
+        android:text="@string/title_activity_encrypt_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_below="@id/encryptedfiles"
+        android:gravity="center"
+        android:layout_alignRight="@id/encryptedfiles"
+        android:layout_alignLeft="@id/encryptedfiles"
+        android:id="@+id/textView5" />
+
+    <TextView
+        android:text="@string/title_activity_doc_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignRight="@id/documents"
+        android:layout_alignLeft="@id/documents"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textView4"
         android:layout_below="@+id/documents"
-        android:layout_centerHorizontal="true" />
 
 
-</LinearLayout>
+
+        android:layout_toRightOf="@+id/encryptedfiles"
+        android:layout_toEndOf="@+id/encryptedfiles"
+
+        />
+
+
 </RelativeLayout>
