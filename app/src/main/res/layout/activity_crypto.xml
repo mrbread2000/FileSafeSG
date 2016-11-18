@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete original file afterward"
+            android:text="Delete original file"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/cryCheckBox"
