@@ -1,144 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgcolor"
+    android:orientation="vertical"
+    android:weightSum="3">
 
-    tools:context="fssg.filesafesg.MainActivity">
 
     <include
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <Button
-        android:id="@+id/photos"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/app_bar"
-
-
-        android:background="@mipmap/pic_icon"
-
-        />
-
-
-
-    <Button
-        android:id="@+id/videos"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/app_bar"
-
-        android:background="@mipmap/vid_icon"
-
-        />
-
-
-    <Button
-        android:id="@+id/documents"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/encryptedfiles"
-
-        android:background="@mipmap/doc_icon"
-
-        />
-
-    <Button
-        android:id="@+id/audios"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@id/encryptedfiles"
-
-        android:background="@mipmap/aud_icon" />
-
-    <Button
-        android:id="@+id/encryptedfiles"
-        android:layout_width="155dp"
-        android:layout_height="155dp"
-        android:layout_below="@+id/photos"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="21dp"
-        android:background="@mipmap/enc_icon"
-
-        />
-
-
-    <TextView
-        android:text="@string/title_activity_photo_folder"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/photos"
-        android:gravity="center"
-        android:layout_alignRight="@id/photos"
-        android:layout_alignLeft="@id/photos"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/textView" />
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <TextView
-        android:text="@string/title_activity_video_folder"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/videos"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/vid_icon" />
+
+
+        <Button
+            android:id="@+id/photos"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/pic_icon" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/videos"
-        android:gravity="center"
-        android:layout_alignRight="@id/videos"
-        android:layout_alignLeft="@id/videos"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            style="@style/CodeFont"
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_video_folder" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            style="@style/CodeFont"
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_photo_folder" />
 
 
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/textView2" />
+    </LinearLayout>
 
 
-    <TextView
-        android:text="@string/title_activity_audio_folder"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/audios"
-        android:gravity="center"
-        android:layout_alignRight="@id/audios"
-        android:layout_alignLeft="@id/audios"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/textView3" />
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
+        <Button
+            android:id="@+id/audios"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/aud_icon" />
 
-    <TextView
-        android:text="@string/title_activity_encrypt_folder"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/documents"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/doc_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_below="@id/encryptedfiles"
-        android:gravity="center"
-        android:layout_alignRight="@id/encryptedfiles"
-        android:layout_alignLeft="@id/encryptedfiles"
-        android:id="@+id/textView5" />
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <TextView
-        android:text="@string/title_activity_doc_folder"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            style="@style/CodeFont"
+
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="@string/title_activity_audio_folder" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            style="@style/CodeFont"
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/title_activity_doc_folder" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_alignRight="@id/documents"
-        android:layout_alignLeft="@id/documents"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/documents"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <Button
+            android:id="@+id/encryptedfiles"
+            android:layout_width="206dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+
+            android:background="@mipmap/enc_icon" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="0">
 
 
 
-        android:layout_toRightOf="@+id/encryptedfiles"
-        android:layout_toEndOf="@+id/encryptedfiles"
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CodeFont"
+            android:layout_gravity="center"
 
-        />
+            android:layout_weight="1.1"
+            android:gravity="center"
+            android:text="@string/title_activity_encrypt_folder" />
 
 
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
