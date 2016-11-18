@@ -203,7 +203,7 @@ public class EncryptionClass extends AppCompatActivity {
                 //snack the message
                 String s1 = Integer.toString(SharedPreference.successfulFileCount);
                 String s2 = Integer.toString(SharedPreference.expectedFileCount);
-                String s3 = SharedPreference.successfulFileCount > 1? " files are":" file is";
+                String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Decryption has been interrupted. " + s1 + " of " + s2 + s3 + " decrypted.",
                         Snackbar.LENGTH_SHORT);
