@@ -360,6 +360,9 @@ public class DocumentFolder extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
 
+                if (thumbnailsselection == null)
+                    return false;
+
                 //parse through files
                 ArrayList<String> innames = new ArrayList<String>();
                 ArrayList<String> targetPathDirs = new ArrayList<String>();

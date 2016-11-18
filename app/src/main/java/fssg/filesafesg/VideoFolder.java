@@ -304,10 +304,14 @@ public class VideoFolder extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
 
+                if (thumbnailsselection == null)
+                    return true;
                 //parse through files
                 ArrayList<String> innames = new ArrayList<String>();
                 ArrayList<String> targetPathDirs = new ArrayList<String>();
                 ArrayList<String> outnames = new ArrayList<String>();
+
+                pendingDeletionArr.clear();
                 for (int i = 0; i < thumbnailsselection.size(); i++) {
                     boolean selected = thumbnailsselection.get(i);
                     if (selected) {
@@ -319,9 +323,10 @@ public class VideoFolder extends AppCompatActivity {
                             targetPathDirs.add(Utility.getEncryptionDirectory());
                             outnames.add(filein.getName() + ".fsg");
 
-                            if (imageAdapter != null)
-                                imageAdapter.remove(i);
-                            i--;
+                            pendingDeletionArr.add(i);
+                            //if (imageAdapter != null)
+                            //    imageAdapter.remove(i);
+                            //i--;
                         }
                     }
                 }
@@ -334,7 +339,8 @@ public class VideoFolder extends AppCompatActivity {
                     intent.putExtra(CryptoUtility.IN_NAMES, innames);
                     intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
-                    startActivity(intent);
+                    intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
+                    startActivityForResult(intent,77);
                 }
 
                 return true;

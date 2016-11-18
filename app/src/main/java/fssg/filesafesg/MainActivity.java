@@ -14,9 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity  {
-    Button audios, photos, videos, docs, encryptfiles;
+    Button audios, photos, videos, docs;
+    ImageButton encryptfiles;
     private Toolbar toolbar;
 
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity  {
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
-        encryptfiles = (Button) findViewById(R.id.encryptedfiles);
+        encryptfiles = (ImageButton) findViewById(R.id.encryptedfiles);
 
 
 

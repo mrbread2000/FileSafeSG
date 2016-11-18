@@ -229,8 +229,36 @@ public class CryptoUtility extends Activity {
 
 
                     try {
+                        //get file in
                         fileIn = new File(inName);
-                        fileOut = new File(targetPathDir, outName);
+
+                        //get file out, but check if it's already exist
+                        String tempName = outName;
+                        boolean doneChecking = false;
+                        int tempi = 1;
+                        while (!doneChecking) {
+                            fileOut = new File(targetPathDir, tempName);
+                            if(fileOut.exists()) {
+                                //seperate both then append with number in between
+                                String extension = "";
+                                if (outName.indexOf(".fsg") > 0) {
+                                    String nofsgName = outName.replace(".fsg", "");
+                                    extension = outName.substring(nofsgName.lastIndexOf("."));
+                                    tempName = outName.substring(0, nofsgName.lastIndexOf("."));
+                                    tempName = tempName + " (" + tempi + ")" + extension;
+                                } else if (outName.indexOf(".") > 0){
+                                    extension = outName.substring(outName.lastIndexOf("."));
+                                    tempName = outName.substring(0, outName.lastIndexOf("."));
+                                    tempName = tempName + " (" + tempi + ")" + extension;
+                                }
+
+
+                                //add counter
+                                tempi++;
+                            }else{
+                                doneChecking = true;
+                            }
+                        }
 
                         FileInputStream stream_in = new FileInputStream(fileIn);
                         FileOutputStream stream_out = new FileOutputStream(fileOut);

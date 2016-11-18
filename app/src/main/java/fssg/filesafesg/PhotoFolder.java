@@ -310,20 +310,23 @@ public class PhotoFolder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.encryptBtn:
-                                    //parse through files
-                                    ArrayList<String> innames = new ArrayList<String>();
-                            ArrayList<String> targetPathDirs = new ArrayList<String>();
-                            ArrayList<String> outnames = new ArrayList<String>();
-                            pendingDeletionArr.clear();
-                            for (int i = 0; i < thumbnailsselection.size(); i++) {
-                                boolean selected = thumbnailsselection.get(i);
-                                if (selected) {
-                                    String path = arrPath.get(i);
-                                    File filein = new File(path);
-                                    if (filein != null && filein.exists()){
+                if (thumbnailsselection == null)
+                    return false;
 
-                                        innames.add(path);
-                                        targetPathDirs.add(Utility.getEncryptionDirectory());
+                //parse through files
+                ArrayList<String> innames = new ArrayList<String>();
+                ArrayList<String> targetPathDirs = new ArrayList<String>();
+                ArrayList<String> outnames = new ArrayList<String>();
+                pendingDeletionArr.clear();
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File filein = new File(path);
+                        if (filein != null && filein.exists()){
+
+                            innames.add(path);
+                            targetPathDirs.add(Utility.getEncryptionDirectory());
                             outnames.add(filein.getName() + ".fsg");
 
                             pendingDeletionArr.add(i);
