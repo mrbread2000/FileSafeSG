@@ -339,8 +339,10 @@ public class CryptoUtility extends Activity {
                         }
                     } catch (BadPaddingException e){
                         success = false;
+                        Log.e("CryptoError", "Bad Padding: " + e.toString());
                     } catch (Exception e){
                         success = false;
+                        Log.e("CryptoError", "Unknown Exception: " + e.toString());
                     }
                 }
 
