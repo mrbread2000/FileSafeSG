@@ -15,6 +15,28 @@
         android:layout_height="20dp"
         style="@android:style/Widget.ProgressBar.Horizontal"
         />
+
+    <RelativeLayout
+        android:id="@+id/cryDeleteLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/cryCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/checkBoxStyle" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete file afterward"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@+id/cryCheckBox"
+            android:layout_toEndOf="@+id/cryCheckBox" />
+
+    </RelativeLayout>
+
     <EditText
         android:id="@+id/crypto_password"
         android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -137,6 +138,16 @@ public class CryptoUtility extends Activity {
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
         final Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
+        final CheckBox cryCheckbox = (CheckBox) findViewById(R.id.cryCheckBox);
+        final RelativeLayout relLayout = (RelativeLayout) findViewById(R.id.cryDeleteLayout);
+
+        //hide if "deleteAfterCipher" is false originally
+        if (deleteAfterCipher == false){
+            cryCheckbox.setChecked(false);
+            relLayout.setVisibility(View.GONE);
+        } else {
+            cryCheckbox.setChecked(true);
+        }
 
         btOkBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -151,6 +162,10 @@ public class CryptoUtility extends Activity {
 
                     //hide UI
                     etPassword.setVisibility(View.GONE);
+                    relLayout.setVisibility(View.GONE);
+
+                    //Flag delete
+                    deleteAfterCipher = cryCheckbox.isChecked();
 
                     //change to cancel
                     btOkBtn.setText("Stop");
