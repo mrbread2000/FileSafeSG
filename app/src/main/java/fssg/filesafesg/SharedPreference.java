@@ -8,5 +8,7 @@ import java.util.ArrayList;
 public class SharedPreference {
 
     public static ArrayList<Integer> pendingDeletionIntArray = new ArrayList<Integer>();
+    public static int successfulFileCount = 0;
+    public static int expectedFileCount = 0;
 
 }

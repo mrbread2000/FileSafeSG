@@ -170,15 +170,12 @@ public class EncryptionClass extends AppCompatActivity {
             if(resultCode == CryptoUtility.CRYPTO_FAILED){
                 //snack the message
                 Snackbar snack = null;
-                if (SharedPreference.pendingDeletionIntArray.size() == 0 || singleDecryptionOnly){
-                    snack = Snackbar.make(findViewById(android.R.id.content),
-                            "Decryption may have failed. Password input possibly wrong.",
-                            Snackbar.LENGTH_SHORT);
-                } else {
-                    snack = Snackbar.make(findViewById(android.R.id.content),
-                            "Some of files are not decrypted. Password input possibly wrong.",
-                            Snackbar.LENGTH_SHORT);
-                }
+                String s1 = Integer.toString(SharedPreference.successfulFileCount);
+                String s2 = Integer.toString(SharedPreference.expectedFileCount);
+                String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                snack = Snackbar.make(findViewById(android.R.id.content),
+                        s1 + " of " + s2 + s3 + " decrypted.",
+                        Snackbar.LENGTH_SHORT);
                 if (snack != null) {
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -189,12 +186,12 @@ public class EncryptionClass extends AppCompatActivity {
             } else if (resultCode == RESULT_OK){
                 //snack the message
                 Snackbar snack = null;
-                if (pendingDelExpectedCount == SharedPreference.pendingDeletionIntArray.size()){
-                } else {
-                    snack = Snackbar.make(findViewById(android.R.id.content),
-                            "Some of files are not decrypted. Password input possibly wrong.",
-                            Snackbar.LENGTH_SHORT);
-                }
+                String s1 = Integer.toString(SharedPreference.successfulFileCount);
+                String s2 = Integer.toString(SharedPreference.expectedFileCount);
+                String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                snack = Snackbar.make(findViewById(android.R.id.content),
+                        s1 + " of " + s2 + s3 + " decrypted.",
+                        Snackbar.LENGTH_SHORT);
                 if (snack != null) {
                     View view = snack.getView();
                     TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -204,8 +201,11 @@ public class EncryptionClass extends AppCompatActivity {
 
             } else if (resultCode == RESULT_CANCELED){
                 //snack the message
+                String s1 = Integer.toString(SharedPreference.successfulFileCount);
+                String s2 = Integer.toString(SharedPreference.expectedFileCount);
+                String s3 = SharedPreference.successfulFileCount > 1? " files are":" file is";
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
-                        "Decryption has been interrupted.",
+                        "Decryption has been interrupted. " + s1 + " of " + s2 + s3 + " decrypted.",
                         Snackbar.LENGTH_SHORT);
                 View view = snack.getView();
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -276,6 +276,8 @@ public class EncryptionClass extends AppCompatActivity {
             singleDecryptionOnly = false;
             pendingDelExpectedCount = pendingDeletionArr.size();
 
+            SharedPreference.expectedFileCount = innames.size();
+
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
             intent.putExtra(CryptoUtility.DELETE_AFTER_CIPHER, true);
@@ -313,6 +315,8 @@ public class EncryptionClass extends AppCompatActivity {
         if (innames.size() > 0) {
             singleDecryptionOnly = true;
             pendingDelExpectedCount = -1;
+
+            SharedPreference.expectedFileCount = innames.size();
 
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);
@@ -426,6 +430,8 @@ public class EncryptionClass extends AppCompatActivity {
                 if (innames.size() > 0) {
                     singleDecryptionOnly = false;
                     pendingDelExpectedCount = pendingDeletionArr.size();
+
+                    SharedPreference.expectedFileCount = innames.size();
 
                     Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
                     intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);

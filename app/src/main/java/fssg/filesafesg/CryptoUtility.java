@@ -213,6 +213,9 @@ public class CryptoUtility extends Activity {
                 //Also initialize total bytes to be processed for Progress Bar UI
                 int totalProgress = 0;
 
+                //reset successful file count
+                SharedPreference.successfulFileCount = 0;
+
                 //encrypt/decrypt file
                 for (int i = 0; i < inNames.size(); i++) {
 
@@ -284,9 +287,7 @@ public class CryptoUtility extends Activity {
                             return "failed";
                         }
 
-                        //update progress bar
-                        //totalProgress = oldProgress + byte_in.length;
-                        //publishProgress(totalProgress * 100 / totalFileSize);
+                        SharedPreference.successfulFileCount++;
 
                         //Update the android cache
                         if (!readAfterCipher)
