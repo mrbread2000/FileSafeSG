@@ -228,7 +228,6 @@ public class CryptoUtility extends Activity {
                     String outName = outNames.get(i);
                     String targetPathDir = targetPathDirs.get(i);
 
-
                     try {
                         //get file in
                         fileIn = new File(inName);
@@ -320,8 +319,11 @@ public class CryptoUtility extends Activity {
                         SharedPreference.successfulFileCount++;
 
                         //Update the android cache
-                        if (!readAfterCipher)
+                        if (!readAfterCipher) {
                             MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
+                        } else {
+                            SharedPreference.targetCacheToClearDir = fileOut.getAbsolutePath();
+                        }
 
                         //Delete file afterward
                         if (deleteAfterCipher) {

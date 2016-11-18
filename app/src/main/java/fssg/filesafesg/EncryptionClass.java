@@ -140,8 +140,14 @@ public class EncryptionClass extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        //clear cache
-        Utility.trimCache(this);
+        //delete cached file
+        File file = new File(SharedPreference.targetCacheToClearDir);
+        if (file != null && file.exists()) {
+            file.delete();
+            //delete cache file
+            MediaScanner.deleteMedia(file.getAbsolutePath(), this);
+            SharedPreference.targetCacheToClearDir = "";
+        }
 
         //back to main page
         if (wentToBackground)
@@ -287,6 +293,7 @@ public class EncryptionClass extends AppCompatActivity {
             pendingDelExpectedCount = pendingDeletionArr.size();
 
             SharedPreference.expectedFileCount = innames.size();
+            SharedPreference.targetCacheToClearDir = targetPathDirs.get(0) + outnames.get(0);
 
             Intent intent = new Intent(getApplicationContext(), CryptoUtility.class);
             intent.putExtra(CryptoUtility.CIPHER_MODE, Cipher.DECRYPT_MODE);

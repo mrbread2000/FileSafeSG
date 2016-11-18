@@ -108,28 +108,6 @@ public class Utility {
         return false;
     }
 
-
-    public static void popupWindow(Activity activity, String message){
-
-        Button closeBn = (Button) activity.findViewById(R.id.btn_close_popup);
-        final PopupWindow popUpWindow = new PopupWindow(activity);
-
-        popUpWindow.showAtLocation(activity.findViewById(android.R.id.content), Gravity.BOTTOM, 10, 10);
-
-        //popUpWindow.update(50, 50, 320, 90);
-        closeBn.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                popUpWindow.dismiss();
-            }
-
-        });
-
-        TextView txtview = (TextView) activity.findViewById(R.id.txt_view_popup);
-        txtview.setText(message);
-
-    }
-
     public static String getEncryptionDirectory() {
 
         initialization();

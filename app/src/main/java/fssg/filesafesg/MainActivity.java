@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity  {
     Button audios, photos, videos, docs;
     ImageButton encryptfiles;
@@ -136,8 +138,14 @@ public class MainActivity extends AppCompatActivity  {
     public void onResume(){
         super.onResume();
 
-        //clear cache
-        Utility.trimCache(this);
+        //delete cached file
+        File file = new File(SharedPreference.targetCacheToClearDir);
+        if (file != null && file.exists()) {
+            file.delete();
+            //delete cache file
+            MediaScanner.deleteMedia(file.getAbsolutePath(), this);
+            SharedPreference.targetCacheToClearDir = "";
+        }
 
     }
 

@@ -53,6 +53,7 @@ public class MediaScanner {
                 long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
                 Uri deleteUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), id);
                 contentResolver.delete(deleteUri, null, null);
+                Log.d("MedisScanner", deleteUri + " has been deleted.");
             } else {
                 // File not found in media store DB
                 Log.d("MedisScanner", "File not found.");
