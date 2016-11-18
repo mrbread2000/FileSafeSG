@@ -218,17 +218,21 @@ public class CryptoUtility extends Activity {
                 SharedPreference.successfulFileCount = 0;
 
                 //encrypt/decrypt file
+                FileInputStream stream_in = null;
+                FileOutputStream stream_out = null;
                 for (int i = 0; i < inNames.size(); i++) {
 
-                    //for progress bar accuracy
-                    int oldProgress = totalProgress;
-
-                    //constructs variable
-                    String inName = inNames.get(i);
-                    String outName = outNames.get(i);
-                    String targetPathDir = targetPathDirs.get(i);
-
+                    stream_in = null;
+                    stream_out = null;
                     try {
+                        //for progress bar accuracy
+                        int oldProgress = totalProgress;
+
+                        //constructs variable
+                        String inName = inNames.get(i);
+                        String outName = outNames.get(i);
+                        String targetPathDir = targetPathDirs.get(i);
+
                         //get file in
                         fileIn = new File(inName);
 
@@ -261,10 +265,10 @@ public class CryptoUtility extends Activity {
                         }
                         Log.d("FinalOut", tempName);
 
-                        FileInputStream stream_in = new FileInputStream(fileIn);
-                        FileOutputStream stream_out = new FileOutputStream(fileOut);
+                        stream_in = new FileInputStream(fileIn);
+                        stream_out = new FileOutputStream(fileOut);
                         int blockSize = cipher.getBlockSize();
-                        int outputSize = cipher.getOutputSize(blockSize);
+                        int outputSize = cipher.getOutputSize(blockSize) + 1;
                         byte[] byte_in = new byte[blockSize * 1024];
                         byte[] byte_out = new byte[outputSize * 1024];
                         //stream_in.read(byte_in);
@@ -311,13 +315,11 @@ public class CryptoUtility extends Activity {
                             stream_out.write(byte_out);
                             stream_out.close();
                         } else {
-                            fileOut.delete();
                             stream_out.close();
                             return "failed";
                         }
 
                         SharedPreference.successfulFileCount++;
-
                         //Update the android cache
                         if (!readAfterCipher) {
                             MediaScanner.scanMedia(fileOut.getAbsolutePath(), thisActivity);
@@ -337,17 +339,31 @@ public class CryptoUtility extends Activity {
                             //add to pending deletion list for other activity
                             SharedPreference.pendingDeletionIntArray.add(pendingDeletionArr.get(i));
                         }
+
                     } catch (BadPaddingException e){
-                        success = false;
+                        //wrong password, close stream and delete failed decrypted file
+                        if (stream_in != null)
+                            stream_in.close();
+                        if (stream_out != null)
+                            stream_out.close();
+                        if (fileOut != null)
+                            fileOut.delete();
                         Log.e("CryptoError", "Bad Padding: " + e.toString());
                     } catch (Exception e){
-                        success = false;
+                        if (stream_in != null)
+                            stream_in.close();
+                        if (stream_out != null)
+                            stream_out.close();
+                        if (fileOut != null)
+                            fileOut.delete();
                         Log.e("CryptoError", "Unknown Exception: " + e.toString());
                     }
                 }
 
             } catch (Exception e){
                 success = false;
+                if (fileOut != null)
+                    fileOut.delete();
                 System.out.println("Error encrypting file:\n" + e);
             }
 
