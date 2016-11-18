@@ -25,13 +25,14 @@
             android:id="@+id/cryCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:theme="@style/checkBoxStyle" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete file afterward"
+            android:text="Delete original file afterward"
             android:gravity="center_vertical"
-            android:layout_marginTop="12dp"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/cryCheckBox"
             android:layout_toEndOf="@+id/cryCheckBox" />
 

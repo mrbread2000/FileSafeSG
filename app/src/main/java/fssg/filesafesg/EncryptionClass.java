@@ -172,7 +172,7 @@ public class EncryptionClass extends AppCompatActivity {
                 Snackbar snack = null;
                 if (SharedPreference.pendingDeletionIntArray.size() == 0 || singleDecryptionOnly){
                     snack = Snackbar.make(findViewById(android.R.id.content),
-                            "Decryption failed. Password input possibly wrong.",
+                            "Decryption may have failed. Password input possibly wrong.",
                             Snackbar.LENGTH_SHORT);
                 } else {
                     snack = Snackbar.make(findViewById(android.R.id.content),
