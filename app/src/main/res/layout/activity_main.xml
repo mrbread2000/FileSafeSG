@@ -118,19 +118,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="1">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight= "0.35"/>
 
         <Button
-        android:id="@+id/encryptedfiles"
-        android:layout_width="@dimen/icon_w"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_gravity="center"
+            android:id="@+id/encryptedfiles"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.3"
+            android:background="@mipmap/enc_icon" />
 
-        android:background="@mipmap/enc_icon" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight= "0.35"/>
 
     </LinearLayout>
 
