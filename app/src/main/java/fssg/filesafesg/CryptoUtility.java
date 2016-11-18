@@ -134,6 +134,7 @@ public class CryptoUtility extends Activity {
         isCrypting = false;
         stopPrompted = false;
         SharedPreference.pendingDeletionIntArray.clear();
+        SharedPreference.successfulFileCount = 0;
 
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
@@ -259,6 +260,7 @@ public class CryptoUtility extends Activity {
                                 doneChecking = true;
                             }
                         }
+                        Log.d("FinalOut", tempName);
 
                         FileInputStream stream_in = new FileInputStream(fileIn);
                         FileOutputStream stream_out = new FileOutputStream(fileOut);
