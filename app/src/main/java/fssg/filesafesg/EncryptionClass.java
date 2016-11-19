@@ -140,18 +140,20 @@ public class EncryptionClass extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        //delete cached file
-        File file = new File(SharedPreference.targetCacheToClearDir);
-        if (file != null && file.exists()) {
-            file.delete();
-            //delete cache file
-            MediaScanner.deleteMedia(file.getAbsolutePath(), this);
-            SharedPreference.targetCacheToClearDir = "";
-        }
 
         //back to main page
-        if (wentToBackground)
+        if (wentToBackground) {
+            //delete cached file
+            File file = new File(SharedPreference.targetCacheToClearDir);
+            if (file != null && file.exists()) {
+                file.delete();
+                //delete cache file
+                MediaScanner.deleteMedia(file.getAbsolutePath(), this);
+                SharedPreference.targetCacheToClearDir = "";
+            }
+
             this.finish();
+        }
     }
 
     @Override
