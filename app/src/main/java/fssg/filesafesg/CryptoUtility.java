@@ -139,7 +139,7 @@ public class CryptoUtility extends Activity {
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
         final Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
-        final TextView txtView = (TextView) findViewById(R.id.@+id/cryTextView);
+        final TextView txtView = (TextView) findViewById(R.id.cryTextView);
         final CheckBox cryCheckbox = (CheckBox) findViewById(R.id.cryCheckBox);
         final RelativeLayout relLayout = (RelativeLayout) findViewById(R.id.cryDeleteLayout);
 
