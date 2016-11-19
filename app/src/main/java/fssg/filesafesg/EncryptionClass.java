@@ -200,19 +200,26 @@ public class EncryptionClass extends AppCompatActivity {
                 }
 
             } else if (resultCode == RESULT_OK){
-                //snack the message
-                Snackbar snack = null;
-                String s1 = Integer.toString(SharedPreference.successfulFileCount);
-                String s2 = Integer.toString(SharedPreference.expectedFileCount);
-                String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
-                snack = Snackbar.make(findViewById(android.R.id.content),
-                        s1 + " of " + s2 + s3 + " decrypted.",
-                        Snackbar.LENGTH_SHORT);
-                if (snack != null) {
-                    View view = snack.getView();
-                    TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextColor(Color.WHITE);
-                    snack.show();
+
+                if (singleDecryptionOnly == true){
+                    File ff = new File(SharedPreference.targetCacheToClearDir);
+                    if (ff != null && ff.exists())
+                        Utility.openFile(this, ff);
+                } else {
+                    //snack the message
+                    Snackbar snack = null;
+                    String s1 = Integer.toString(SharedPreference.successfulFileCount);
+                    String s2 = Integer.toString(SharedPreference.expectedFileCount);
+                    String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                    snack = Snackbar.make(findViewById(android.R.id.content),
+                            s1 + " of " + s2 + s3 + " decrypted.",
+                            Snackbar.LENGTH_SHORT);
+                    if (snack != null) {
+                        View view = snack.getView();
+                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
+                        snack.show();
+                    }
                 }
 
             } else if (resultCode == RESULT_CANCELED){

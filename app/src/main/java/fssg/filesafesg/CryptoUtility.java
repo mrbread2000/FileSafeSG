@@ -388,9 +388,9 @@ public class CryptoUtility extends Activity {
 
             if (success){
                 //read file after decrypting
-                if (readAfterCipher){
-                    Utility.openFile(getApplicationContext(), fileOut);
-                }
+                //if (readAfterCipher){
+                //    Utility.openFile(getApplicationContext(), fileOut);
+                //}
                 setResult(RESULT_OK, intent);
             } else {
                 if (stopPrompted)

@@ -9,10 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -116,7 +118,7 @@ public class Utility {
     }
 
     //test function
-    public static void openFile(Context context, File url) {
+    public static void openFile(Activity activity, File url) {
         File file = url;
         Uri uri = Uri.fromFile(file);
 
@@ -167,7 +169,18 @@ public class Utility {
         }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+
+        try{
+            activity.startActivity(intent);
+        } catch (Exception e){
+            Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content),
+                    "This phone does not support this File type.",
+                    Snackbar.LENGTH_SHORT);
+            View view = snack.getView();
+            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
+            snack.show();
+        }
     }
 
     public static void trimCache(Context context) {
