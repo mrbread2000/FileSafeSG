@@ -303,7 +303,19 @@ public class AudioFolder extends AppCompatActivity {
             }
 
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            
+            //check if viewing is supported
+            try{
+                context.startActivity(intent);
+            } catch (Exception e){
+                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                        "This phone does not support this File type.",
+                        Snackbar.LENGTH_SHORT);
+                View view = snack.getView();
+                TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                tv.setTextColor(Color.WHITE);
+                snack.show();
+            }
         }
     }
 

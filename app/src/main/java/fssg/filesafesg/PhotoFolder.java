@@ -296,7 +296,19 @@ public class PhotoFolder extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + arrPath.get(id)), "image/*");
-                    startActivity(intent);
+
+                    //check if viewing is supported
+                    try{
+                        startActivity(intent);
+                    } catch (Exception e){
+                        Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                                "This phone does not support this File type.",
+                                Snackbar.LENGTH_SHORT);
+                        View view = snack.getView();
+                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+                        tv.setTextColor(Color.WHITE);
+                        snack.show();
+                    }
                 }
             });
             holder.imageview.setImageBitmap(thumbnails.get(position));
