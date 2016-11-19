@@ -349,6 +349,7 @@ public class CryptoUtility extends Activity {
                         if (fileOut != null)
                             fileOut.delete();
                         Log.e("CryptoError", "Bad Padding: " + e.toString());
+                        success = false;
                     } catch (Exception e){
                         if (stream_in != null)
                             stream_in.close();
@@ -357,6 +358,7 @@ public class CryptoUtility extends Activity {
                         if (fileOut != null)
                             fileOut.delete();
                         Log.e("CryptoError", "Unknown Exception: " + e.toString());
+                        success = false;
                     }
                 }
 
