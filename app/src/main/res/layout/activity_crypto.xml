@@ -28,6 +28,7 @@
             android:layout_centerVertical="true"
             android:theme="@style/checkBoxStyle" />
         <TextView
+            android:id="@+id/cryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete original file"

@@ -139,6 +139,7 @@ public class CryptoUtility extends Activity {
         //Layout Functions
         final EditText etPassword = (EditText) findViewById(R.id.crypto_password);
         final Button btOkBtn = (Button) findViewById(R.id.crypto_ok_button);
+        final TextView txtView = (TextView) findViewById(R.id.@+id/cryTextView);
         final CheckBox cryCheckbox = (CheckBox) findViewById(R.id.cryCheckBox);
         final RelativeLayout relLayout = (RelativeLayout) findViewById(R.id.cryDeleteLayout);
 
@@ -164,6 +165,13 @@ public class CryptoUtility extends Activity {
                     //hide UI
                     etPassword.setVisibility(View.GONE);
                     relLayout.setVisibility(View.GONE);
+
+                    //change text to encrypting/decrypting
+                    if (cipherMode == Cipher.ENCRYPT_MODE){
+                        txtView.setText("Encrypting...");
+                    } else if (cipherMode == Cipher.DECRYPT_MODE){
+                        txtView.setText("Decrypting...");
+                    }
 
                     //Flag delete
                     deleteAfterCipher = cryCheckbox.isChecked();
