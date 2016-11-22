@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import javax.crypto.Cipher;
 
-import static fssg.filesafesg.R.id.toolbar;
 
 
 /**
