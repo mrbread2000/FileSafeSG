@@ -32,15 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity"
-
-            android:finishOnTaskLaunch="true"
-            android:clearTaskOnLaunch="true"
-            android:launchMode="singleTask"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            ></activity>
-
         <activity android:name=".CryptoUtility"
 
             android:theme="@android:style/Theme.Dialog"
