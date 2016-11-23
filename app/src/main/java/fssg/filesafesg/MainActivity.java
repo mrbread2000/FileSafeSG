@@ -6,22 +6,30 @@ package fssg.filesafesg;
  */
 
 
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity  {
-    Button audios, photos, videos, docs;
-    ImageButton encryptfiles;
+public class MainActivity extends AppCompatActivity {
+    Button audios, photos, videos, docs,encryptedfiles;
     private Toolbar toolbar;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -39,12 +47,11 @@ public class MainActivity extends AppCompatActivity  {
         getSupportActionBar().setSubtitle("You Provide, We Protect");
 
 
-                audios = (Button) findViewById(R.id.audios);
+        audios = (Button) findViewById(R.id.audios);
         photos = (Button) findViewById(R.id.photos);
         videos = (Button) findViewById(R.id.videos);
         docs = (Button) findViewById(R.id.documents);
-        encryptfiles = (ImageButton) findViewById(R.id.encryptedfiles);
-
+        encryptedfiles = (Button) findViewById(R.id.encryptedfiles);
 
 
         photos.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity  {
                 }
             }
         });
-        encryptfiles.setOnClickListener(new View.OnClickListener() {
+        encryptedfiles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), EncryptionClass.class);
@@ -123,7 +130,6 @@ public class MainActivity extends AppCompatActivity  {
                 i.putExtra("EXIT", true);
 
 
-
                 if (getIntent().getBooleanExtra("EXIT", false)) {
                     finish();
                 }
@@ -132,10 +138,13 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         //delete cached file
@@ -149,4 +158,39 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }

@@ -30,8 +30,6 @@
     <string name="title_dialog_crypto">Input Password</string>
 
 
-
-
     <!-- Strings related to Question and Answer -->
     <string name="secret_question_prompt">Choose a secret question</string>
     <string-array name="secret_question_arrays">
