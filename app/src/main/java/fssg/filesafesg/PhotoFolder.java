@@ -12,9 +12,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -269,6 +271,9 @@ public class PhotoFolder extends AppCompatActivity {
                 holder.imageview = (ImageView) convertView.findViewById(R.id.thumbImage);
                 holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
 
+                holder.imageview.setTag(arrPath.get(position));
+                new LoadImage(holder.imageview).execute();
+
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -311,10 +316,50 @@ public class PhotoFolder extends AppCompatActivity {
                     }
                 }
             });
-            holder.imageview.setImageBitmap(thumbnails.get(position));
+            //holder.imageview.setImageBitmap(thumbnails.get(position));
             holder.checkbox.setChecked(thumbnailsselection.get(position));
             holder.id = position;
             return convertView;
+        }
+
+        class LoadImage extends AsyncTask<Object, Void, Bitmap> {
+
+            private ImageView imv;
+            private String path;
+
+            public LoadImage(ImageView imv) {
+                this.imv = imv;
+                this.path = imv.getTag().toString();
+            }
+
+            @Override
+            protected Bitmap doInBackground(Object... params) {
+                Bitmap bitmap = null;
+                File file = new File(this.path);
+
+                if(file.exists()){
+                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                }
+
+                return bitmap;
+            }
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                if (!imv.getTag().toString().equals(path)) {
+               /* The path is not same. This means that this
+                  image view is handled by some other async task.
+                  We don't do anything and return. */
+                    return;
+                }
+
+                if(result != null && imv != null){
+                    imv.setVisibility(View.VISIBLE);
+                    imv.setImageBitmap(result);
+                }else{
+                    imv.setVisibility(View.GONE);
+                }
+            }
+
         }
     }
 
