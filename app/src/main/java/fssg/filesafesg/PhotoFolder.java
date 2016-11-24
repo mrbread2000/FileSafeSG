@@ -322,10 +322,6 @@ public class PhotoFolder extends AppCompatActivity {
             });
             //holder.imageview.setImageBitmap(thumbnails.get(position));
             if (thumbnails.get(position) == null){
-                //Bitmap bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
-                //        THUMBSIZE, THUMBSIZE);
-                //thumbnails.set(position, ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
-                //        THUMBSIZE, THUMBSIZE));
                 holder.imageview.setImageBitmap(null);
                 holder.imageview.setTag(position);
                 new LoadImage(holder.imageview).execute();

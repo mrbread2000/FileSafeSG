@@ -276,7 +276,7 @@ public class VideoFolder extends AppCompatActivity {
                     int id = v.getId();
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("file://" + arrPath.get(id)), "image/*");
+                    intent.setDataAndType(Uri.parse("file://" + arrPath.get(id)), "video/*");
 
                     //check if viewing is supported
                     try{
