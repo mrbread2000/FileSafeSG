@@ -355,7 +355,6 @@ public class PhotoFolder extends AppCompatActivity {
             protected Bitmap doInBackground(Object... params) {
                 Bitmap bitmap = null;
                 File file = new File(this.path);
-                final int THUMBSIZE = 64;
 
                 try {
                     if(file.exists()){
