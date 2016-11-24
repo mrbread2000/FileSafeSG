@@ -53,7 +53,7 @@ public class PhotoFolder extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private Toolbar toolbar;
 
-    private final int THUMBSIZE = 64;
+    private final int THUMBSIZE = 150;
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
     /**
