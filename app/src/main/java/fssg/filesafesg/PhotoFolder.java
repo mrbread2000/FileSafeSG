@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -40,6 +41,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.crypto.Cipher;
 
@@ -51,6 +53,7 @@ public class PhotoFolder extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private Toolbar toolbar;
 
+    private final int THUMBSIZE = 64;
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
     /**
@@ -80,12 +83,15 @@ public class PhotoFolder extends AppCompatActivity {
             imagecursor.moveToPosition(i);
             int id = imagecursor.getInt(image_column_index);
             int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            thumbnails.add(MediaStore.Images.Thumbnails.getThumbnail(
-                    getApplicationContext().getContentResolver(), id,
-                    MediaStore.Images.Thumbnails.MICRO_KIND, null));
+            //thumbnails.add(MediaStore.Images.Thumbnails.getThumbnail(
+            //        getApplicationContext().getContentResolver(), id,
+            //        MediaStore.Images.Thumbnails.MICRO_KIND, null));
             arrPath.add(imagecursor.getString(dataColumnIndex));
+            thumbnails.add(null);
             thumbnailsselection.add(false);
         }
+
+
         GridView imagegrid = (GridView) findViewById(R.id.gridView);
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
@@ -271,8 +277,6 @@ public class PhotoFolder extends AppCompatActivity {
                 holder.imageview = (ImageView) convertView.findViewById(R.id.thumbImage);
                 holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
 
-                holder.imageview.setTag(arrPath.get(position));
-                new LoadImage(holder.imageview).execute();
 
                 convertView.setTag(holder);
             } else {
@@ -317,6 +321,18 @@ public class PhotoFolder extends AppCompatActivity {
                 }
             });
             //holder.imageview.setImageBitmap(thumbnails.get(position));
+            if (thumbnails.get(position) == null){
+                //Bitmap bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
+                //        THUMBSIZE, THUMBSIZE);
+                //thumbnails.set(position, ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
+                //        THUMBSIZE, THUMBSIZE));
+                holder.imageview.setImageBitmap(null);
+                holder.imageview.setTag(position);
+                new LoadImage(holder.imageview).execute();
+            } else {
+                holder.imageview.setImageBitmap(thumbnails.get(position));
+            }
+            //holder.imageview.setImageBitmap(thumbnails.get(position));
             holder.checkbox.setChecked(thumbnailsselection.get(position));
             holder.id = position;
             return convertView;
@@ -324,31 +340,43 @@ public class PhotoFolder extends AppCompatActivity {
 
         class LoadImage extends AsyncTask<Object, Void, Bitmap> {
 
+            private volatile Exception mError;
             private ImageView imv;
+            private int position;
             private String path;
 
             public LoadImage(ImageView imv) {
                 this.imv = imv;
-                this.path = imv.getTag().toString();
+                this.position = (Integer) imv.getTag();
+                this.path = arrPath.get(this.position);
             }
 
             @Override
             protected Bitmap doInBackground(Object... params) {
                 Bitmap bitmap = null;
                 File file = new File(this.path);
+                final int THUMBSIZE = 64;
 
-                if(file.exists()){
-                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                try {
+                    if(file.exists()){
+                        //bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        //bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(this.path),
+                        //       THUMBSIZE, THUMBSIZE);
+                        //thumbnails.set(position, bitmap);
+                        thumbnails.set(position, ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(this.path),
+                                        THUMBSIZE, THUMBSIZE));
+                    }
+                } catch (Exception e){
+                    mError = e;
+                    Log.e("Error", e.toString());
+                    return null;
                 }
 
-                return bitmap;
+                return thumbnails.get(position);
             }
             @Override
             protected void onPostExecute(Bitmap result) {
-                if (!imv.getTag().toString().equals(path)) {
-               /* The path is not same. This means that this
-                  image view is handled by some other async task.
-                  We don't do anything and return. */
+                if (!(arrPath.get((Integer) imv.getTag())).equals(path)) {
                     return;
                 }
 
@@ -356,10 +384,9 @@ public class PhotoFolder extends AppCompatActivity {
                     imv.setVisibility(View.VISIBLE);
                     imv.setImageBitmap(result);
                 }else{
-                    imv.setVisibility(View.GONE);
+                    //imv.setVisibility(View.GONE);
                 }
             }
-
         }
     }
 
