@@ -168,9 +168,9 @@ public class CryptoUtility extends Activity {
 
                     //change text to encrypting/decrypting
                     if (cipherMode == Cipher.ENCRYPT_MODE){
-                        txtView.setText("Encrypting...");
+                        setTitle("Encrypting...");
                     } else if (cipherMode == Cipher.DECRYPT_MODE){
-                        txtView.setText("Decrypting...");
+                        setTitle("Decrypting...");
                     }
 
                     //Flag delete

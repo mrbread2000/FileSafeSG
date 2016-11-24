@@ -53,7 +53,7 @@ public class PhotoFolder extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private Toolbar toolbar;
 
-    private final int THUMBSIZE = 150;
+    private final int THUMBSIZE = 160;
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
     /**
@@ -358,6 +358,7 @@ public class PhotoFolder extends AppCompatActivity {
 
                 try {
                     if(file.exists()){
+                        //MediaStore.Images.Thumbnails.getThumbnail
                         //bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         //bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(this.path),
                         //       THUMBSIZE, THUMBSIZE);

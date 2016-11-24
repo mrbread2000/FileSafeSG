@@ -45,6 +45,7 @@ public class VideoFolder extends AppCompatActivity {
     private GridView imagegrid;
     private Toolbar toolbar;
 
+    private Activity thisActivity;
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
     @Override
@@ -80,6 +81,9 @@ public class VideoFolder extends AppCompatActivity {
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
+
+        //var assign
+        thisActivity = this;
 
         //hide button lazy way
         Button b = (Button) findViewById(R.id.encryptBtn);
@@ -274,22 +278,7 @@ public class VideoFolder extends AppCompatActivity {
 
                 public void onClick(View v) {
                     int id = v.getId();
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("file://" + arrPath.get(id)), "image/*");
-
-                    //check if viewing is supported
-                    try{
-                        startActivity(intent);
-                    } catch (Exception e){
-                        Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
-                                "This phone does not support this File type.",
-                                Snackbar.LENGTH_SHORT);
-                        View view = snack.getView();
-                        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
-                        tv.setTextColor(Color.WHITE);
-                        snack.show();
-                    }
+                    Utility.openFile(thisActivity, arrPath.get(id));
                 }
             });
             holder.imageview.setImageBitmap(thumbnails.get(position));

@@ -118,6 +118,13 @@ public class Utility {
     }
 
     //test function
+    public static void openFile(Activity act, String url){
+        File file = new File(url);
+        if (file.exists())
+            openFile(act, file);
+        else
+            Log.e("Utility", "openFile - File does not exist [" + url + "]");
+    }
     public static void openFile(Activity activity, File url) {
         File file = url;
         Uri uri = Uri.fromFile(file);
