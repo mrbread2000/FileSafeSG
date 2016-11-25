@@ -128,6 +128,9 @@ public class CryptoUtility extends Activity {
             File f = new File(str);
             totalFileSize += f.length() / 1024;
         }
+        if (totalFileSize == 0){
+            totalFileSize = 1;
+        }
 
         //Misc
         thisActivity = this;
