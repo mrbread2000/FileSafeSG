@@ -60,7 +60,7 @@ public class DocumentFolder extends AppCompatActivity {
         arrPath = new ArrayList<>();
         thumbnailsselection = new ArrayList<>();
         displayName = new ArrayList<>();
-        String mime[] = {"doc", "txt", "ppt", "pdf", "xls"};
+        String mime[] = {"doc", "txt", "ppt", "pdf", "xls", "docx"};
         for (int j = 0; j < mime.length; j++) {
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mime[j]);
             String[] selectionArgsPdf = new String[]{mimeType};
@@ -317,12 +317,15 @@ public class DocumentFolder extends AppCompatActivity {
             // Check what kind of file user trying to open, by comparing the url with extensions.
             // Set the correct intent MIME type
 
-            if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
+            if (url.toString().contains(".doc")) {
                 // Word document
                 intent.setDataAndType(uri, "application/msword");
             } else if (url.toString().contains(".pdf")) {
                 // PDF file
                 intent.setDataAndType(uri, "application/pdf");
+            } else if (url.toString().contains(".docx")) {
+                // PDF file
+                intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
                 // Powerpoint file
                 intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
