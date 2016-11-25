@@ -606,6 +606,7 @@ public class EncryptionClass extends AppCompatActivity {
                 // View is being recycled, retrieve the viewHolder object from tag
                 viewHolder = (ViewHolder) convertView.getTag();
                 viewHolder.checkbox.setTag(ef);
+                viewHolder.btnView.setTag(ef);
 
             }
 
