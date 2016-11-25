@@ -42,6 +42,13 @@
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Dialog" />
         <activity
+            android:name=".DeleteUtility"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
             android:name=".EncryptionClass"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation"

@@ -1,3 +1,8 @@
+/**
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
+ */
+
 package fssg.filesafesg;
 
 import android.app.Activity;
@@ -18,7 +23,7 @@ public class MediaScanner {
 
     public static void scanMedia(ArrayList<String> paths, Activity act) {
         if ((paths != null) && (!paths.isEmpty())) {
-            for (String path:paths) {
+            for (String path : paths) {
                 MediaScanner.scanMedia(path, act);
             }
         } else {
@@ -35,14 +40,14 @@ public class MediaScanner {
     }
 
     public static void deleteMedia(String path, Activity act) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             File file = new File(path);
             Uri testuri = Uri.fromFile(file);
-            String[] projection = { MediaStore.Files.FileColumns._ID };
+            String[] projection = {MediaStore.Files.FileColumns._ID};
 
             // Match on the file path
             String selection = MediaStore.Files.FileColumns.DATA + " = ?";
-            String[] selectionArgs = new String[] { file.getAbsolutePath() };
+            String[] selectionArgs = new String[]{file.getAbsolutePath()};
 
             // Query for the ID of the media matching the file path
             Uri queryUri = MediaStore.Files.getContentUri("external");

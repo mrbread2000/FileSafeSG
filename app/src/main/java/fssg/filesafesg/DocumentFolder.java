@@ -1,14 +1,13 @@
-package fssg.filesafesg;
-
 /**
- * Created by Kevin on 9/27/2016.
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
  */
 
+package fssg.filesafesg;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,11 +25,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,21 +92,22 @@ public class DocumentFolder extends AppCompatActivity {
 
     //test code=============================
     private boolean wentToBackground = false;
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         wentToBackground = true;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (wentToBackground)
             this.finish();
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -122,7 +119,7 @@ public class DocumentFolder extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
-            if(resultCode == CryptoUtility.CRYPTO_FAILED){
+            if (resultCode == CryptoUtility.CRYPTO_FAILED) {
                 //snack the message
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Encryption failed. There may be an issue with the file you are trying to encrypt.",
@@ -131,7 +128,7 @@ public class DocumentFolder extends AppCompatActivity {
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextColor(Color.WHITE);
                 snack.show();
-            } else if (resultCode == RESULT_OK){
+            } else if (resultCode == RESULT_OK) {
             } else if (resultCode == RESULT_CANCELED) {
                 //message interruption
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
@@ -150,11 +147,34 @@ public class DocumentFolder extends AppCompatActivity {
                 }
                 SharedPreference.pendingDeletionIntArray.clear();
             }
+        } else if (requestCode == DeleteUtility.DELETE_ACTIVITY_RQ_CODE){
+
+            //Delete Handling
+            if (resultCode == DeleteUtility.DELETE_YES){
+                if (thumbnailsselection == null)
+                    return;
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
+            } else if (resultCode == DeleteUtility.DELETE_NO){
+
+            }
+
         }
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         findViewById(R.id.docLoadingBar).setVisibility(View.GONE);
     }
@@ -214,7 +234,7 @@ public class DocumentFolder extends AppCompatActivity {
             intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
             intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
-            startActivityForResult(intent,77);
+            startActivityForResult(intent, 77);
         }
     }
 
@@ -342,9 +362,9 @@ public class DocumentFolder extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             //check if viewing is supported
-            try{
+            try {
                 context.startActivity(intent);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "This phone does not support this File type.",
                         Snackbar.LENGTH_SHORT);
@@ -361,6 +381,7 @@ public class DocumentFolder extends AppCompatActivity {
         CheckBox checkbox;
         int id;
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.aud_menu, menu);
@@ -405,25 +426,43 @@ public class DocumentFolder extends AppCompatActivity {
                     intent.putExtra(CryptoUtility.TARGET_DIR_PATHS, targetPathDirs);
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
                     intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
-                    startActivityForResult(intent,77);
+                    startActivityForResult(intent, 77);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
                 return true;
 
             case R.id.deleteBtn:
 
+                int deletecount = 0;
+                if (thumbnailsselection == null)
+                    return true;
                 for (int i = 0; i < thumbnailsselection.size(); i++) {
                     boolean selected = thumbnailsselection.get(i);
                     if (selected) {
-                        String path = arrPath.get(i);
-                        File file = new File(path);
-                        if (file != null && file.exists())
-                            file.delete();
-                        MediaScanner.deleteMedia(path, this);
-                        Log.d("DocFolder", path);
-                        if (imageAdapter != null)
-                            imageAdapter.remove(i);
-                        i--;
+                        deletecount++;
                     }
+                }
+
+                //Do delete prompt
+                if (deletecount > 0) {
+                    Intent intent = new Intent(getApplicationContext(), DeleteUtility.class);
+                    intent.putExtra(DeleteUtility.DELETE_COUNT_EXTRA, deletecount);
+                    startActivityForResult(intent,DeleteUtility.DELETE_ACTIVITY_RQ_CODE);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
                 return true;
 

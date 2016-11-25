@@ -1,26 +1,21 @@
-package fssg.filesafesg;
-
 /**
- * Created by Kevin on 9/26/2016.
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
  */
 
+package fssg.filesafesg;
 
-import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +36,6 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.crypto.Cipher;
 
@@ -69,7 +63,7 @@ public class PhotoFolder extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        final String[] columns = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
+        final String[] columns = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
         final String orderBy = MediaStore.Images.Media._ID;
         Cursor imagecursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
@@ -105,21 +99,22 @@ public class PhotoFolder extends AppCompatActivity {
 
     //test code=============================
     private boolean wentToBackground = false;
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         wentToBackground = true;
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (wentToBackground)
             this.finish();
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -131,7 +126,7 @@ public class PhotoFolder extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
-            if(resultCode == CryptoUtility.CRYPTO_FAILED){
+            if (resultCode == CryptoUtility.CRYPTO_FAILED) {
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Encryption failed. There may be an issue with the file you are trying to encrypt.",
                         Snackbar.LENGTH_SHORT);
@@ -139,7 +134,7 @@ public class PhotoFolder extends AppCompatActivity {
                 TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextColor(Color.WHITE);
                 snack.show();
-            } else if (resultCode == RESULT_OK){
+            } else if (resultCode == RESULT_OK) {
             } else if (resultCode == RESULT_CANCELED) {
                 //message interruption
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
@@ -158,10 +153,34 @@ public class PhotoFolder extends AppCompatActivity {
                 }
                 SharedPreference.pendingDeletionIntArray.clear();
             }
+        } else if (requestCode == DeleteUtility.DELETE_ACTIVITY_RQ_CODE){
+
+            //Delete Handling
+            if (resultCode == DeleteUtility.DELETE_YES){
+                if (thumbnailsselection == null)
+                    return;
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
+            } else if (resultCode == DeleteUtility.DELETE_NO){
+
+            }
+
         }
     }
+
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         findViewById(R.id.photoLoadingBar).setVisibility(View.GONE);
     }
@@ -200,7 +219,7 @@ public class PhotoFolder extends AppCompatActivity {
             if (selected) {
                 String path = arrPath.get(i);
                 File filein = new File(path);
-                if (filein != null && filein.exists()){
+                if (filein != null && filein.exists()) {
 
                     innames.add(path);
                     targetPathDirs.add(Utility.getEncryptionDirectory());
@@ -223,10 +242,9 @@ public class PhotoFolder extends AppCompatActivity {
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
             intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
             //startActivity(intent);
-            startActivityForResult(intent,77);
+            startActivityForResult(intent, 77);
         }
     }
-
 
 
     class ViewHolder {
@@ -234,12 +252,12 @@ public class PhotoFolder extends AppCompatActivity {
         CheckBox checkbox;
         int id;
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.aud_menu, menu);
         return true;
     }
-
 
 
     public class ImageAdapter extends BaseAdapter {
@@ -252,9 +270,11 @@ public class PhotoFolder extends AppCompatActivity {
         public int getCount() {
             return count;
         }
+
         public Object getItem(int position) {
             return position;
         }
+
         public long getItemId(int position) {
             return position;
         }
@@ -307,9 +327,9 @@ public class PhotoFolder extends AppCompatActivity {
                     intent.setDataAndType(Uri.parse("file://" + arrPath.get(id)), "image/*");
 
                     //check if viewing is supported
-                    try{
+                    try {
                         startActivity(intent);
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                                 "This phone does not support this File type.",
                                 Snackbar.LENGTH_SHORT);
@@ -321,7 +341,7 @@ public class PhotoFolder extends AppCompatActivity {
                 }
             });
             //holder.imageview.setImageBitmap(thumbnails.get(position));
-            if (thumbnails.get(position) == null){
+            if (thumbnails.get(position) == null) {
                 //Bitmap bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
                 //        THUMBSIZE, THUMBSIZE);
                 //thumbnails.set(position, ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(arrPath.get(position)),
@@ -357,16 +377,16 @@ public class PhotoFolder extends AppCompatActivity {
                 File file = new File(this.path);
 
                 try {
-                    if(file.exists()){
+                    if (file.exists()) {
                         //MediaStore.Images.Thumbnails.getThumbnail
                         //bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         //bitmap = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(this.path),
                         //       THUMBSIZE, THUMBSIZE);
                         //thumbnails.set(position, bitmap);
                         thumbnails.set(position, ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(this.path),
-                                        THUMBSIZE, THUMBSIZE));
+                                THUMBSIZE, THUMBSIZE));
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     mError = e;
                     Log.e("Error", e.toString());
                     return null;
@@ -374,16 +394,17 @@ public class PhotoFolder extends AppCompatActivity {
 
                 return thumbnails.get(position);
             }
+
             @Override
             protected void onPostExecute(Bitmap result) {
                 if (!(arrPath.get((Integer) imv.getTag())).equals(path)) {
                     return;
                 }
 
-                if(result != null && imv != null){
+                if (result != null && imv != null) {
                     imv.setVisibility(View.VISIBLE);
                     imv.setImageBitmap(result);
-                }else{
+                } else {
                     //imv.setVisibility(View.GONE);
                 }
             }
@@ -407,7 +428,7 @@ public class PhotoFolder extends AppCompatActivity {
                     if (selected) {
                         String path = arrPath.get(i);
                         File filein = new File(path);
-                        if (filein != null && filein.exists()){
+                        if (filein != null && filein.exists()) {
 
                             innames.add(path);
                             targetPathDirs.add(Utility.getEncryptionDirectory());
@@ -430,25 +451,44 @@ public class PhotoFolder extends AppCompatActivity {
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
                     intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
                     //startActivity(intent);
-                    startActivityForResult(intent,77);
+                    startActivityForResult(intent, 77);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
                 return true;
 
             case R.id.deleteBtn:
 
+
+                int deletecount = 0;
+                if (thumbnailsselection == null)
+                    return true;
                 for (int i = 0; i < thumbnailsselection.size(); i++) {
                     boolean selected = thumbnailsselection.get(i);
                     if (selected) {
-                        String path = arrPath.get(i);
-                        File file = new File(path);
-                        if (file != null && file.exists())
-                            file.delete();
-                        MediaScanner.deleteMedia(path, this);
-                        Log.d("PhotoFolder", path);
-                        if (imageAdapter != null)
-                            imageAdapter.remove(i);
-                        i--;
+                        deletecount++;
                     }
+                }
+
+                //Do delete prompt
+                if (deletecount > 0) {
+                    Intent intent = new Intent(getApplicationContext(), DeleteUtility.class);
+                    intent.putExtra(DeleteUtility.DELETE_COUNT_EXTRA, deletecount);
+                    startActivityForResult(intent,DeleteUtility.DELETE_ACTIVITY_RQ_CODE);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
                 return true;
 

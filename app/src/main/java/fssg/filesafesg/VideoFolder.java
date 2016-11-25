@@ -120,6 +120,8 @@ public class VideoFolder extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
+
+            //Crpyto Related
             if(resultCode == CryptoUtility.CRYPTO_FAILED){
                 //snack the message
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
@@ -148,6 +150,29 @@ public class VideoFolder extends AppCompatActivity {
                 }
                 SharedPreference.pendingDeletionIntArray.clear();
             }
+        } else if (requestCode == DeleteUtility.DELETE_ACTIVITY_RQ_CODE){
+
+            //Delete Handling
+            if (resultCode == DeleteUtility.DELETE_YES){
+                if (thumbnailsselection == null)
+                    return;
+                for (int i = 0; i < thumbnailsselection.size(); i++) {
+                    boolean selected = thumbnailsselection.get(i);
+                    if (selected) {
+                        String path = arrPath.get(i);
+                        File file = new File(path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(path, this);
+                        if (imageAdapter != null)
+                            imageAdapter.remove(i);
+                        i--;
+                    }
+                }
+            } else if (resultCode == DeleteUtility.DELETE_NO){
+
+            }
+
         }
     }
 
@@ -158,20 +183,29 @@ public class VideoFolder extends AppCompatActivity {
     }
 
     public void delete(View view) {
+        int deletecount = 0;
         if (thumbnailsselection == null)
             return;
         for (int i = 0; i < thumbnailsselection.size(); i++) {
             boolean selected = thumbnailsselection.get(i);
             if (selected) {
-                String path = arrPath.get(i);
-                File file = new File(path);
-                if (file != null && file.exists())
-                    file.delete();
-                MediaScanner.deleteMedia(path, this);
-                if (imageAdapter != null)
-                    imageAdapter.remove(i);
+                deletecount++;
             }
-            i--;
+        }
+
+        //Do delete prompt
+        if (deletecount > 0) {
+            Intent intent = new Intent(getApplicationContext(), DeleteUtility.class);
+            intent.putExtra(DeleteUtility.DELETE_COUNT_EXTRA, deletecount);
+            startActivityForResult(intent,DeleteUtility.DELETE_ACTIVITY_RQ_CODE);
+        } else {
+            Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                    "No file is selected.",
+                    Snackbar.LENGTH_SHORT);
+            View v = snack.getView();
+            TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
+            snack.show();
         }
 
     }
@@ -215,6 +249,14 @@ public class VideoFolder extends AppCompatActivity {
             intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
             intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
             startActivityForResult(intent,77);
+        } else {
+            Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                    "No file is selected.",
+                    Snackbar.LENGTH_SHORT);
+            View v = snack.getView();
+            TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.WHITE);
+            snack.show();
         }
     }
 
@@ -342,25 +384,43 @@ public class VideoFolder extends AppCompatActivity {
                     intent.putExtra(CryptoUtility.OUT_NAMES, outnames);
                     intent.putExtra(CryptoUtility.PENDING_DELETION_INT, pendingDeletionArr);
                     startActivityForResult(intent,77);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
 
                 return true;
 
             case R.id.deleteBtn:
 
+                int deletecount = 0;
+                if (thumbnailsselection == null)
+                    return true;
                 for (int i = 0; i < thumbnailsselection.size(); i++) {
                     boolean selected = thumbnailsselection.get(i);
                     if (selected) {
-                        String path = arrPath.get(i);
-                        File file = new File(path);
-                        if (file != null && file.exists())
-                            file.delete();
-                        MediaScanner.deleteMedia(path, this);
-                        Log.d("VideoFolder", path);
-                        if (imageAdapter != null)
-                            imageAdapter.remove(i);
-                        i--;
+                        deletecount++;
                     }
+                }
+
+                //Do delete prompt
+                if (deletecount > 0) {
+                    Intent intent = new Intent(getApplicationContext(), DeleteUtility.class);
+                    intent.putExtra(DeleteUtility.DELETE_COUNT_EXTRA, deletecount);
+                    startActivityForResult(intent,DeleteUtility.DELETE_ACTIVITY_RQ_CODE);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
                 return true;
 

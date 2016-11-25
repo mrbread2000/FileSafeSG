@@ -1,10 +1,9 @@
-package fssg.filesafesg;
-
-
 /**
- * Created by Kevin on 9/26/2016.
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
  */
 
+package fssg.filesafesg;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -23,7 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-    Button audios, photos, videos, docs,encryptedfiles;
+    Button audios, photos, videos, docs, encryptedfiles;
     private Toolbar toolbar;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.

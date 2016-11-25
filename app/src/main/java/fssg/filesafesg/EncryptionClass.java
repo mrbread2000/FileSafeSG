@@ -1,3 +1,8 @@
+/**
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
+ */
+
 package fssg.filesafesg;
 
 import android.content.Context;
@@ -27,15 +32,9 @@ import java.util.ArrayList;
 import javax.crypto.Cipher;
 
 
-
-/**
- * Created by MrBread2000 on 30/09/16.
- */
 public class EncryptionClass extends AppCompatActivity {
 
     private int count = 0;
-    private ArrayList<String> displayName;
-    private ArrayList<Boolean> thumbnailsselection;
     private ArrayList<EncFile> arrEncFiles;
     private EncryptionAdapter encryptionAdapter;
     private Toolbar toolbar;
@@ -54,8 +53,6 @@ public class EncryptionClass extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         arrEncFiles = new ArrayList<EncFile>();
-        thumbnailsselection = new ArrayList<>();
-        displayName = new ArrayList<>();
 
         //Get files in designated encryption directory
         String path = Utility.getEncryptionDirectory();
@@ -169,19 +166,19 @@ public class EncryptionClass extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 77) {
-            if(resultCode == CryptoUtility.CRYPTO_FAILED){
+            if (resultCode == CryptoUtility.CRYPTO_FAILED) {
                 //snack the message
                 Snackbar snack = null;
 
                 //check if viewing
-                if (singleDecryptionOnly){
+                if (singleDecryptionOnly) {
                     snack = Snackbar.make(findViewById(android.R.id.content),
                             "Decryption failed. Password possibly wrong.",
                             Snackbar.LENGTH_SHORT);
                 } else {
                     String s1 = Integer.toString(SharedPreference.successfulFileCount);
                     String s2 = Integer.toString(SharedPreference.expectedFileCount);
-                    String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                    String s3 = SharedPreference.successfulFileCount > 1 ? " file(s) are" : " file(s) is";
                     snack = Snackbar.make(findViewById(android.R.id.content),
                             s1 + " of " + s2 + s3 + " decrypted.",
                             Snackbar.LENGTH_SHORT);
@@ -195,9 +192,9 @@ public class EncryptionClass extends AppCompatActivity {
                     snack.show();
                 }
 
-            } else if (resultCode == RESULT_OK){
+            } else if (resultCode == RESULT_OK) {
 
-                if (singleDecryptionOnly == true){
+                if (singleDecryptionOnly == true) {
                     File ff = new File(SharedPreference.targetCacheToClearDir);
                     if (ff != null && ff.exists())
                         Utility.openFile(this, ff);
@@ -206,7 +203,7 @@ public class EncryptionClass extends AppCompatActivity {
                     Snackbar snack = null;
                     String s1 = Integer.toString(SharedPreference.successfulFileCount);
                     String s2 = Integer.toString(SharedPreference.expectedFileCount);
-                    String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                    String s3 = SharedPreference.successfulFileCount > 1 ? " file(s) are" : " file(s) is";
                     snack = Snackbar.make(findViewById(android.R.id.content),
                             s1 + " of " + s2 + s3 + " decrypted.",
                             Snackbar.LENGTH_SHORT);
@@ -218,11 +215,11 @@ public class EncryptionClass extends AppCompatActivity {
                     }
                 }
 
-            } else if (resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 //snack the message
                 String s1 = Integer.toString(SharedPreference.successfulFileCount);
                 String s2 = Integer.toString(SharedPreference.expectedFileCount);
-                String s3 = SharedPreference.successfulFileCount > 1? " file(s) are":" file(s) is";
+                String s3 = SharedPreference.successfulFileCount > 1 ? " file(s) are" : " file(s) is";
                 Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
                         "Decryption has been interrupted. " + s1 + " of " + s2 + s3 + " decrypted.",
                         Snackbar.LENGTH_SHORT);
@@ -240,6 +237,27 @@ public class EncryptionClass extends AppCompatActivity {
                 }
                 SharedPreference.pendingDeletionIntArray.clear();
             }
+        } else if (requestCode == DeleteUtility.DELETE_ACTIVITY_RQ_CODE){
+
+            //Delete Handling
+            if (resultCode == DeleteUtility.DELETE_YES){
+                if (arrEncFiles == null)
+                    return;
+                for (int i = 0; i < arrEncFiles.size(); i++) {
+                    EncFile ef = arrEncFiles.get(i);
+                    if (ef.ticked) {
+                        File file = new File(ef.path);
+                        if (file != null && file.exists())
+                            file.delete();
+                        MediaScanner.deleteMedia(ef.path, this);
+                        encryptionAdapter.remove(i);
+                        i--;
+                    }
+                }
+            } else if (resultCode == DeleteUtility.DELETE_NO){
+
+            }
+
         }
     }
 
@@ -260,7 +278,6 @@ public class EncryptionClass extends AppCompatActivity {
         }
 
     }
-
 
 
     public void decrypt(View view) {
@@ -287,7 +304,6 @@ public class EncryptionClass extends AppCompatActivity {
                 }
             }
         }
-
 
 
         //Do decryptions
@@ -362,7 +378,7 @@ public class EncryptionClass extends AppCompatActivity {
                 || path.contains(".png")
                 ) {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        //video go to video folder
+            //video go to video folder
         } else if (path.contains(".3gp")
                 || path.contains(".mpg")
                 || path.contains(".mpeg")
@@ -371,7 +387,7 @@ public class EncryptionClass extends AppCompatActivity {
                 || path.contains(".avi")
                 || path.contains(".flv")) {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath();
-        //everythig else go to document folder
+            //everythig else go to document folder
         } else {
             targetDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         }
@@ -389,8 +405,6 @@ public class EncryptionClass extends AppCompatActivity {
 
         return targetDirectory;
     }
-
-
 
 
     //encrypted files
@@ -445,7 +459,6 @@ public class EncryptionClass extends AppCompatActivity {
                 }
 
 
-
                 //Do decryptions
                 if (innames.size() > 0) {
                     singleDecryptionOnly = false;
@@ -464,28 +477,49 @@ public class EncryptionClass extends AppCompatActivity {
                     //startActivity(intent);
                     startActivityForResult(intent, 77);
 
-
-                    return true;
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
                 }
-                    case R.id.deleteBtn:
-                        for (int i = 0; i < arrEncFiles.size(); i++) {
-                            EncFile ef = arrEncFiles.get(i);
-                            if (ef.ticked) {
-                                File file = new File(ef.path);
-                                if (file != null && file.exists())
-                                    file.delete();
-                                MediaScanner.deleteMedia(ef.path, this);
-                                encryptionAdapter.remove(i);
-                                i--;
-                            }
-                        }
-                        return true;
-                    case R.id.shareit:
-                        shareIt();
-                        return true;
-                    default:
+                return true;
+            case R.id.deleteBtn:
 
-                        return super.onOptionsItemSelected(item);
+                int deletecount = 0;
+                if (arrEncFiles == null)
+                    return true;
+                for (int i = 0; i < arrEncFiles.size(); i++) {
+                    EncFile ef = arrEncFiles.get(i);
+                    if (ef.ticked) {
+                        deletecount++;
+                    }
+                }
+
+                //Do delete prompt
+                if (deletecount > 0) {
+                    Intent intent = new Intent(getApplicationContext(), DeleteUtility.class);
+                    intent.putExtra(DeleteUtility.DELETE_COUNT_EXTRA, deletecount);
+                    startActivityForResult(intent,DeleteUtility.DELETE_ACTIVITY_RQ_CODE);
+                } else {
+                    Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
+                            "No file is selected.",
+                            Snackbar.LENGTH_SHORT);
+                    View v = snack.getView();
+                    TextView tv = (TextView) v.findViewById(android.support.design.R.id.snackbar_text);
+                    tv.setTextColor(Color.WHITE);
+                    snack.show();
+                }
+                return true;
+            case R.id.shareit:
+                shareIt();
+                return true;
+            default:
+
+                return super.onOptionsItemSelected(item);
 
 
         }

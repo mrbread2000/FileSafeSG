@@ -1,3 +1,9 @@
+/**
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
+ * File: AudioFolder.java
+ */
+
 package fssg.filesafesg;
 
 import android.app.Activity;
@@ -5,28 +11,22 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.spec.KeySpec;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
