@@ -315,9 +315,6 @@ public class AudioFolder extends AppCompatActivity {
                 intent.setDataAndType(uri, "audio/x-wav");
             } else {
                 //Future intent type for any other file types
-
-                //Use this else clause below to manage other unknown extensions
-                //Android will show all applications installed on the device(let user choose)
                 intent.setDataAndType(uri, "*/*");
             }
 
