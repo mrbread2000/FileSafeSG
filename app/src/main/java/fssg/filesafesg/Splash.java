@@ -1,8 +1,12 @@
+/**
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
+ */
+
 package fssg.filesafesg;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;

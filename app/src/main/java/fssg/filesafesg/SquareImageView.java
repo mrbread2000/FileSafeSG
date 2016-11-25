@@ -1,8 +1,9 @@
-package fssg.filesafesg;
-
 /**
- * Created by Kevin on 9/27/2016.
+ * Group: SS16/3C
+ * Title: Secure File Folder in Android/iOS
  */
+
+package fssg.filesafesg;
 
 import android.content.Context;
 import android.util.AttributeSet;
