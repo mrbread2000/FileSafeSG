@@ -56,7 +56,6 @@ public class DocumentFolder extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         String selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?";
         Uri uri = MediaStore.Files.getContentUri("external");
-        // BaseColumns.DATA
         String[] projection = {MediaStore.Files.FileColumns.TITLE, MediaStore.Files.FileColumns.DATA};
         arrPath = new ArrayList<>();
         thumbnailsselection = new ArrayList<>();
@@ -314,9 +313,9 @@ public class DocumentFolder extends AppCompatActivity {
             Uri uri = Uri.fromFile(file);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
+            // Default opener
             // Check what kind of file user trying to open, by comparing the url with extensions.
-            // When the if condition is matched, plugin sets the correct intent (mime) type,
-            // so Android knows what application to use to open the file
+            // Set the correct intent MIME type
 
             if (url.toString().contains(".doc") || url.toString().contains(".docx")) {
                 // Word document
@@ -353,9 +352,6 @@ public class DocumentFolder extends AppCompatActivity {
                 intent.setDataAndType(uri, "video/*");
             } else {
                 //Future intent type for any other file types
-
-                //Use this else clause below to manage other unknown extensions
-                //Android will show all applications installed on the device(let user choose)
                 intent.setDataAndType(uri, "*/*");
             }
 

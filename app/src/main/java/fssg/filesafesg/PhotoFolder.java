@@ -46,13 +46,9 @@ public class PhotoFolder extends AppCompatActivity {
     private ArrayList<String> arrPath;
     private ImageAdapter imageAdapter;
     private Toolbar toolbar;
-
     private final int THUMBSIZE = 160;
     private ArrayList<Integer> pendingDeletionArr = new ArrayList<Integer>();
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
