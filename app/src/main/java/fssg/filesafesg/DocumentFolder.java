@@ -324,7 +324,7 @@ public class DocumentFolder extends AppCompatActivity {
                 // PDF file
                 intent.setDataAndType(uri, "application/pdf");
             } else if (url.toString().contains(".docx")) {
-                // PDF file
+                // docx
                 intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             } else if (url.toString().contains(".ppt") || url.toString().contains(".pptx")) {
                 // Powerpoint file
