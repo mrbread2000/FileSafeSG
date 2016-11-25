@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -22,7 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-    Button audios, photos, videos, docs, encryptedfiles;
+    ImageButton audios, photos, videos, docs, encryptedfiles;
     private Toolbar toolbar;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("You Provide, We Protect");
 
 
-        audios = (Button) findViewById(R.id.audios);
-        photos = (Button) findViewById(R.id.photos);
-        videos = (Button) findViewById(R.id.videos);
-        docs = (Button) findViewById(R.id.documents);
-        encryptedfiles = (Button) findViewById(R.id.encryptedfiles);
+        audios = (ImageButton) findViewById(R.id.audios);
+        photos = (ImageButton) findViewById(R.id.photos);
+        videos = (ImageButton) findViewById(R.id.videos);
+        docs = (ImageButton) findViewById(R.id.documents);
+        encryptedfiles = (ImageButton) findViewById(R.id.encryptedfiles);
 
 
         photos.setOnClickListener(new View.OnClickListener() {
